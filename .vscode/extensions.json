@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "yoavbls.pretty-ts-errors",
+    "biomejs.biome",
+    "jumail.headwind",
+    "coderabbit.coderabbit-vscode",
+    "snyk-security.snyk-vulnerability-scanner",
+    "codacy-app.codacy",
+    "sonarsource.sonarlint-vscode",
+    "codium.codium",
+  ]
+}

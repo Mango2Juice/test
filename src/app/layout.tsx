@@ -1,28 +1,69 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
+// src/app/layout.tsx
+import { GeistMono } from 'geist/font/mono'
+import { GeistSans } from 'geist/font/sans'
+import type { Metadata, Viewport } from 'next'
+import type React from 'react'
+import { AppLayout } from '@/components/layout/app-layout'
+import { PersistentStorageRegistrar } from '@/components/persistent-storage-registrar'
+import { ServiceWorkerRegistrar } from '@/components/service-worker-registrar'
+import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
+import { StoreInitializer } from '@/lib/stores/store-initializer'
+import './globals.css'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
-  title: 'Verdant Planner',
-  description: 'A simple, intuitive daily planner app to organize and manage tasks and events.',
-};
+  applicationName: 'Doses',
+  title: 'Doses - Medication Dose Calculator',
+  description: 'Calculate medication doses accurately and safely for adults and children.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Doses',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#26A69A' },
+    { media: '(prefers-color-scheme: dark)', color: '#39B8AA' },
+  ],
+  viewportFit: 'cover',
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
+  children: React.ReactNode
+}>): React.ReactElement {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
-        {children}
-        <Toaster />
+    <html lang='en' className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning={true}>
+      <head>{/* PWA-related meta tags are handled by the Metadata object */}</head>
+      <body className='flex flex-col min-h-screen antialiased bg-background'>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem={true} themes={['light', 'dark', 'system']}>
+          <StoreInitializer />
+          <AppLayout>{children}</AppLayout>
+          <Toaster />
+          <ServiceWorkerRegistrar />
+          <PersistentStorageRegistrar />
+        </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
-  );
+  )
 }

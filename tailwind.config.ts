@@ -1,11 +1,11 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate'
 
 export default {
-  darkMode: ['class'],
+  darkMode: 'class',
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    // Include all files under `src` so new layouts/components aren't missed by the scanner
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -95,5 +95,5 @@ export default {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [animate],
 } satisfies Config;

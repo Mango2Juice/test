@@ -1,0 +1,96 @@
+@layer base {
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    body {
+      --foreground: 0 0% 0%;
+      --background: 0 0% 100%;
+      --muted-foreground: 0 0% 20%;
+    }
+    .dark {
+      --foreground: 0 0% 100%;
+      --background: 0 0% 0%;
+      --muted-foreground: 0 0% 80%;
+    }
+  }
+
+  /* Reduced motion support - Comprehensive fallbacks */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      animation-delay: 0s !important;
+      transition-delay: 0s !important;
+      scroll-behavior: auto !important;
+    }
+
+    /* Override common animation classes */
+    .animate-spin,
+    .animate-ping,
+    .animate-pulse,
+    .animate-bounce,
+    .animate-check,
+    .animate-progress {
+      animation: none !important;
+    }
+
+    /* Override transition utilities */
+    .transition,
+    .transition-all,
+    .transition-colors,
+    .transition-opacity,
+    .transition-shadow,
+    .transition-transform {
+      transition: none !important;
+    }
+
+    /* Ensure interactive elements still provide visual feedback */
+    button:active,
+    [role="button"]:active {
+      opacity: 0.8;
+    }
+
+    /* Ensure focus is still visible */
+    *:focus-visible {
+      outline: 2px solid hsl(var(--ring));
+      outline-offset: 2px;
+    }
+
+    /* Ensure loading states are visible without animation */
+    [aria-busy="true"],
+    [data-loading="true"] {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
+    /* Ensure disabled states are clear */
+    [disabled],
+    [aria-disabled="true"] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Ensure expanded/collapsed states are clear without animation */
+    [aria-expanded="true"] {
+      /* Content is visible - no additional styles needed */
+      display: block;
+    }
+
+    [aria-expanded="false"] {
+      /* Content is hidden - no additional styles needed */
+      display: none;
+    }
+
+    /* Ensure modal/dialog visibility without animation */
+    [data-state="open"],
+    [aria-modal="true"] {
+      display: block;
+    }
+
+    [data-state="closed"] {
+      display: none;
+    }
+  }
+}
