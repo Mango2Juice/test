@@ -128,16 +128,12 @@ function ErrorFallback({ error, onRetry }: { error: Error; onRetry: () => void }
 }
 
 /**
- * Render the quick drug reference UI and manage client-side state, dose calculations, and navigation for pediatric medications.
+ * Render the quick drug reference UI, manage client-side state, compute doses for filtered medications, and handle user interactions and navigation.
  *
- * Initializes client-side defaults, computes doses for filtered medications based on age and weight (manual or computed), updates calculation results, and responds to user interactions (filter changes and drug selection).
- *
- * @param audience - Target audience to customize UI and weight input behavior
- * @param defaultWeight - Optional initial weight to populate the weight input
- * @param initialComplaintFilter - Optional initial complaint/category filter to apply
- * @param medications - List of quick-reference medications used for filtering and dose calculations
- * @param categories - List of complaint categories used to build the category filter bar
- * @returns The rendered quick drug reference content JSX for use inside the page
+ * @param audience - Target audience ('paediatric' | 'adult') that adjusts weight input behavior and UI labels
+ * @param defaultWeight - Optional initial weight (in kilograms) to populate the weight input
+ * @param initialComplaintFilter - Optional complaint/category id to apply as the initial filter
+ * @returns The quick drug reference content as JSX
  */
 function QuickDrugReferenceContent({
   audience,
@@ -464,6 +460,12 @@ function QuickDrugReferenceContent({
   )
 }
 
+/**
+ * Renders the Quick Drug Reference page by mounting the quick-reference content inside an error boundary.
+ *
+ * @param props - Properties forwarded to QuickDrugReferenceContent (e.g., audience, defaultWeight, medications, categories).
+ * @returns The page element that displays the quick drug reference UI wrapped with an error boundary.
+ */
 export function QuickDrugReferencePage(props: QuickDrugReferencePageProps) {
   return (
     <PageErrorBoundary>

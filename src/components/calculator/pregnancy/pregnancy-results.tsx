@@ -13,6 +13,14 @@ interface ResultCardProps {
   description?: string
 }
 
+/**
+ * Renders a compact card showing a title, a prominent value, and an optional description.
+ *
+ * @param title - Short label displayed in the card header
+ * @param value - Prominent value displayed in the card content
+ * @param description - Optional supplementary text shown beneath the value
+ * @returns A React element representing the styled result card
+ */
 function ResultCard({ title, value, description }: ResultCardProps) {
   return (
     <Card className='text-center bg-secondary/30'>
@@ -27,6 +35,13 @@ function ResultCard({ title, value, description }: ResultCardProps) {
   )
 }
 
+/**
+ * Displays an informational alert explaining which estimate determined the estimated due date.
+ *
+ * @param source - The source of the best estimate; expected values: `'LMP'`, `'LMP_ADJUSTED'`, or `'Ultrasound'`.
+ * @param discrepancyDays - The difference in days between LMP and ultrasound estimates; incorporated into the alert text when relevant.
+ * @returns An Alert element describing the chosen EDD source and rationale, or `null` when `source` is unrecognized.
+ */
 function BestEstimateAlert({ source, discrepancyDays }: { source: string; discrepancyDays: number }) {
   let title = ''
   let description = ''
@@ -61,6 +76,12 @@ interface PregnancyResultsProps {
   pregnancyInfo: PregnancyInfo
 }
 
+/**
+ * Renders a compact pregnancy results dashboard showing the estimated due date, best-estimate alert, gestational age, probable conception date, key trimester milestones, and screening windows.
+ *
+ * @param pregnancyInfo - Data object containing dates, gestational metrics, milestone ranges, and the source/discrepancy used to determine the best estimate.
+ * @returns The React element that displays the pregnancy results UI.
+ */
 export function PregnancyResults({ pregnancyInfo }: PregnancyResultsProps) {
   return (
     <div className='space-y-4'>

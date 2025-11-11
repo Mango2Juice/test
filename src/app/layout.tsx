@@ -45,6 +45,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+/**
+ * Provides the root HTML layout for the application, wrapping app content with global theming, layout, storage/service worker registrars, and analytics.
+ *
+ * @param children - The application content to render inside the main AppLayout
+ * @returns The top-level `<html>` React element tree used as the app's document root
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

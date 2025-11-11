@@ -5,6 +5,15 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
+/**
+ * Page component demonstrating all Button component variants, sizes, and interactive states.
+ *
+ * Renders grouped examples of default, primary, secondary, outline, ghost, destructive, and link buttons,
+ * showcases size variants (sm, default, lg, touch, icon), and provides interactive state examples.
+ * Includes a "Test Loading" button that simulates a 2-second loading state when clicked.
+ *
+ * @returns The rendered Test Buttons page as a React element.
+ */
 export default function TestButtonsPage() {
   const [loading, setLoading] = useState(false)
 

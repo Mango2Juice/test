@@ -60,6 +60,13 @@ const COMPLAINT_COLORS = {
 
 type ColorKey = keyof typeof COMPLAINT_COLORS
 
+/**
+ * Resolve the Tailwind CSS class string for a complaint color based on active state.
+ *
+ * @param color - Color key identifying a complaint color (e.g., "gray", "red", "blue", "orange", "green", "purple", "pink"); unknown keys default to "gray".
+ * @param isActive - If `true`, returns the active variant of the color classes; otherwise returns the inactive variant.
+ * @returns The Tailwind class string associated with the provided color key and active state.
+ */
 function getComplaintColorClasses(color: string, isActive: boolean): string {
   const colorKey = color as ColorKey
   const colorConfig = COMPLAINT_COLORS[colorKey] || COMPLAINT_COLORS.gray

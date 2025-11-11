@@ -13,6 +13,14 @@ import { cn } from '@/lib/utils'
 import type { AgeGroup, Criteria } from '@/lib/utils/centor-score'
 import { criteria } from '@/lib/utils/centor-score'
 
+/**
+ * Renders a single clinical criterion row with a checkbox, label, and description.
+ *
+ * @param criterion - Criterion data containing `id`, `text`, and `description`
+ * @param checked - Whether the criterion's checkbox is selected
+ * @param onCheckedChange - Callback invoked with the new checked state when the checkbox changes
+ * @returns The JSX element for the criterion row
+ */
 function CriteriaRow({
   criterion,
   checked,
@@ -35,6 +43,15 @@ function CriteriaRow({
   )
 }
 
+/**
+ * Render a card displaying the Centor Score with associated risk and management guidance.
+ *
+ * @param score - The numeric Centor Score to display
+ * @param risk - Short risk label shown as the alert title
+ * @param management - Recommended management text shown as the alert description
+ * @param color - CSS text color class applied to the displayed score; one of `'text-green-600'`, `'text-yellow-600'`, or `'text-red-600'`
+ * @returns A Card element that prominently shows the score and an Alert containing the risk and management guidance
+ */
 function ResultCard({
   score,
   risk,
