@@ -18,6 +18,16 @@ interface AgeInputSectionProps {
   disabled?: boolean
 }
 
+/**
+ * Render a patient age input with a years/months unit toggle and accessible announcements.
+ *
+ * Updates the global age display and unit in the calculator store, resets the manual-weight flag
+ * so weight gets re-estimated when age changes, and emits screen-reader status messages for
+ * value updates, clears, and unit changes.
+ *
+ * @param disabled - If `true`, disables the age input and the unit toggle button
+ * @returns The rendered AgeInputSection React element
+ */
 export function AgeInputSection({ disabled }: AgeInputSectionProps) {
   // Directly use the global state from Zustand store
   const { displayAge, displayAgeUnit, setDisplayAge, setIsWeightManuallyEntered } = useCalculatorStore()

@@ -65,6 +65,16 @@ const calculators = [
   },
 ]
 
+/**
+ * Render the Medical Calculators page with a responsive grid of calculator cards.
+ *
+ * The page includes a header (title and subtitle) and a grid labelled "Available calculators".
+ * Each calculator is shown as a card with icon, title, and description. Enabled cards are wrapped
+ * in a navigation link to the calculator's route; disabled cards are non-interactive and styled
+ * with reduced opacity and a not-allowed cursor.
+ *
+ * @returns The page's React element containing the header and the responsive grid of calculator cards.
+ */
 export default function CalculatorsPage() {
   return (
     <div className='w-full max-w-4xl mx-auto'>

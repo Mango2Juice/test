@@ -21,6 +21,21 @@ interface PregnancyInputFormProps {
   setGaDays: (days: string) => void
 }
 
+/**
+ * Renders inputs for pregnancy-related data: LMP, first-trimester ultrasound date, and gestational age at ultrasound.
+ *
+ * Renders date pickers for the first day of the last menstrual period (LMP) and the ultrasound date, and numeric inputs for gestational age in weeks and days.
+ *
+ * @param lmpDate - Currently selected LMP date or `undefined` when not set.
+ * @param setLmpDate - Callback invoked with a new LMP date when the user selects one.
+ * @param ultrasoundDate - Currently selected ultrasound date or `undefined` when not set.
+ * @param setUltrasoundDate - Callback invoked with a new ultrasound date when the user selects one.
+ * @param gaWeeks - Gestational age weeks value (string) shown in the weeks input.
+ * @param setGaWeeks - Callback invoked with the new weeks value when the weeks input changes.
+ * @param gaDays - Gestational age days value (string) shown in the days input.
+ * @param setGaDays - Callback invoked with the new days value when the days input changes.
+ * @returns The form UI for selecting LMP and ultrasound dates and entering gestational age values.
+ */
 export function PregnancyInputForm({
   lmpDate,
   setLmpDate,

@@ -109,9 +109,7 @@ const tsbGuidelines: string[] = [
 ]
 
 /**
- * Page component rendering the Neonatal Jaundice Assessment UI, including Kramer’s Rule, risk-stratified TSB thresholds, and clinical guidelines.
- *
- * Renders three sections: a Kramer’s Rule reference table, a multi-column TSB threshold table for phototherapy and exchange transfusion (by risk group and age), and a list of clinical guideline statements. All content is driven from static data arrays.
+ * Render the Neonatal Jaundice Assessment page containing Kramer’s Rule, risk-stratified TSB thresholds, and clinical guidelines.
  *
  * @returns The React element for the Neonatal Jaundice Assessment page.
  */

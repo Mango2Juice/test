@@ -12,6 +12,17 @@ import { cn } from '@/lib/utils'
 import type { AnswerValue, Question } from '@/lib/utils/dass-score'
 import { questions } from '@/lib/utils/dass-score'
 
+/**
+ * Renders a single DASS-21 question with a four-option radio group for selecting an answer.
+ *
+ * Displays the question text prefixed by its (zero-based) index and four radio options (0–3)
+ * describing severity. The component does not manage state beyond invoking the provided callback.
+ *
+ * @param question - The question object to render (contains `id` and `text`)
+ * @param value - The currently selected answer: `0`–`3` for chosen options, or `-1` to indicate unanswered
+ * @param onChange - Callback invoked with the new answer value (`0`–`3`) when the user selects an option
+ * @param index - Zero-based index used for display numbering
+ */
 function QuestionRow({
   question,
   value,
@@ -67,6 +78,15 @@ function QuestionRow({
   )
 }
 
+/**
+ * Renders a result card showing a numeric score and its severity with visual emphasis.
+ *
+ * @param title - Heading for the result card (for example, "Depression")
+ * @param score - Numeric score displayed prominently
+ * @param severity - Severity label shown in the alert (for example, "Normal", "Moderate", "Severe")
+ * @param color - Tailwind text color class applied to the severity label
+ * @returns A Card element containing the title, large score, and an Alert that reflects the severity with an appropriate variant and icon
+ */
 function ResultCard({
   title,
   score,
@@ -103,6 +123,16 @@ function ResultCard({
   )
 }
 
+/**
+ * Render the DASS-21 questionnaire page that collects responses, allows calculation/reset of scores,
+ * and displays categorized results when available.
+ *
+ * The page presents 21 items with selectable responses, a submit action to calculate scores,
+ * a reset action to clear answers, and a results section showing Depression, Anxiety, and Stress
+ * scores when the calculation is complete.
+ *
+ * @returns The page's React element containing the questionnaire form and optional results display.
+ */
 export default function DassScorePage() {
   const { answers, results, showResult, handleAnswerChange, handleSubmit, handleReset, isComplete } = useDassScore()
 

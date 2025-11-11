@@ -19,8 +19,17 @@ interface ScrollRevealProps {
 }
 
 /**
- * Component that reveals content when scrolled into view
- * Uses Intersection Observer for optimal performance
+ * Reveals its children with a configurable entrance animation when the element enters the viewport.
+ *
+ * Renders a wrapper div that applies initial hidden-state classes for the selected `animation` and switches to the corresponding visible-state classes when the element becomes visible according to the intersection `threshold`. When visible, the component applies `delay` (in milliseconds) to the transition; if `triggerOnce` is true the reveal will not revert when scrolled out of view.
+ *
+ * @param children - Content to render inside the reveal container.
+ * @param className - Optional additional CSS classes applied to the wrapper.
+ * @param animation - Animation type to use for the reveal. Supported values: `"fade"`, `"slide-up"`, `"slide-down"`, `"slide-left"`, `"slide-right"`, `"scale"`. Defaults to `"fade"`.
+ * @param delay - Transition delay in milliseconds applied when the element becomes visible. Defaults to `0`.
+ * @param threshold - IntersectionObserver threshold (0 to 1) that determines how much of the element must be visible before revealing. Defaults to `0.1`.
+ * @param triggerOnce - If `true`, the element reveals only on the first intersection and does not hide again. Defaults to `true`.
+ * @returns A JSX element wrapping `children` that performs the configured scroll reveal animation.
  */
 export function ScrollReveal({
   children,
@@ -77,8 +86,16 @@ interface ScrollRevealListProps {
 }
 
 /**
- * List component that reveals items with staggered timing on scroll
- * Optimized with Intersection Observer
+ * Renders a list of children where each item is wrapped in a ScrollReveal with an incremental (staggered) delay.
+ *
+ * @param children - Array of React nodes to reveal as list items
+ * @param className - Optional CSS classes applied to the outer container
+ * @param itemClassName - Optional CSS classes applied to each item wrapper
+ * @param animation - Animation type for each item; defaults to `'slide-up'`
+ * @param staggerDelay - Milliseconds to add to the delay for each successive item; defaults to `100`
+ * @param threshold - IntersectionObserver threshold for visibility; defaults to `0.1`
+ * @param triggerOnce - If `true`, each item reveals only on its first intersection; defaults to `true`
+ * @returns A container div whose children are rendered as ScrollReveal-wrapped items with staggered delays
  */
 export function ScrollRevealList({
   children,

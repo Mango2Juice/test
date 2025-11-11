@@ -28,6 +28,14 @@ const resources = [
   },
 ]
 
+/**
+ * Render the Clinical Resources page with a header and a responsive, accessible grid of linked resource cards.
+ *
+ * The page displays a section title and description, and maps the module-level `resources` array into
+ * interactive cards wrapped with navigation links.
+ *
+ * @returns A JSX element representing the resources page containing a header and a responsive, accessible grid of linked resource cards.
+ */
 export default function ResourcesPage() {
   return (
     <div className='w-full max-w-4xl mx-auto'>

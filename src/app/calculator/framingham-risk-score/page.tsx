@@ -19,6 +19,19 @@ interface PatientDataCardProps {
   handleReset: () => void
 }
 
+/**
+ * Render a card collecting patient inputs required for the Framingham Risk Score.
+ *
+ * The card includes controls for gender, age, smoking status, total and HDL cholesterol,
+ * systolic blood pressure, and hypertension treatment status. Control changes invoke the
+ * provided handlers and the reset button invokes `handleReset`.
+ *
+ * @param state - The current Framingham form state values
+ * @param handleInputChange - Handler invoked with (field, value) for text/number input changes
+ * @param handleSelectChange - Handler invoked with (field, value) for select/radio changes
+ * @param handleReset - Handler to reset the form to its initial state
+ * @returns A React element containing the patient data input card
+ */
 function PatientDataCard({ state, handleInputChange, handleSelectChange, handleReset }: PatientDataCardProps) {
   return (
     <Card>
@@ -134,9 +147,13 @@ function PatientDataCard({ state, handleInputChange, handleSelectChange, handleR
 }
 
 /**
- * Framingham Risk Score calculator page.
- * Computes 10-year risk of hard coronary heart disease based on patient data.
- * Intended for adults aged 20-79 without known heart disease or diabetes.
+ * Renders the Framingham Risk Score calculator page with a patient data form and a risk results panel.
+ *
+ * Collects patient inputs (gender, age, smoking status, total and HDL cholesterol, systolic blood pressure, and blood pressure treatment)
+ * and displays the calculated 10-year hard coronary heart disease (CHD) risk percentage and Framingham point total.
+ * Intended for adults aged 20–79 without known heart disease or diabetes.
+ *
+ * @returns The React element containing the input form, controls, and results display for the Framingham Risk Score calculator.
  */
 export default function FraminghamRiskScorePage() {
   const { state, result, showResult, handleInputChange, handleSelectChange, handleSubmit, handleReset, getRiskColor } =

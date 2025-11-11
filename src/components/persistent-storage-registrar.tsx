@@ -4,6 +4,10 @@
 
 import { useEffect } from 'react'
 
+/**
+ * Attempts to obtain persistent storage permission from the browser when supported.
+ *
+ * If the StorageManager persist API is available, checks whether storage is already persistent and, if not, requests persistence and logs the outcome. */
 async function requestPersistentStorage() {
   if (typeof navigator.storage?.persist !== 'function') {
     return

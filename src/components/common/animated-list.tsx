@@ -18,8 +18,14 @@ interface AnimatedListProps {
 }
 
 /**
- * List component that animates children with staggered timing
- * Automatically limits animations for performance
+ * Renders a list whose children enter with a staggered animation.
+ *
+ * @param children - Items to render inside the list; each child will be wrapped for animation.
+ * @param staggerDelay - Milliseconds between each item's animation start.
+ * @param className - Additional className applied to the outer container.
+ * @param itemClassName - Additional className applied to each item wrapper.
+ * @param animate - When `true`, triggers the staggered animation once on first render; when `false`, items render without delay.
+ * @returns The rendered container element that wraps each child with per-item transition delay and active state.
  */
 export function AnimatedList({
   children,
@@ -70,8 +76,15 @@ interface AnimatedGridProps {
 }
 
 /**
- * Grid component that animates children with staggered timing
- * Optimized for performance with limited simultaneous animations
+ * Animate children in a responsive CSS grid with configurable staggered entrance timing.
+ *
+ * @param children - Grid items to render.
+ * @param columns - Number of grid columns; controls the CSS grid template (default: 3).
+ * @param staggerDelay - Delay in milliseconds between successive item animations (default: 50).
+ * @param className - Additional className(s) applied to the grid container.
+ * @param itemClassName - Additional className(s) applied to each item wrapper.
+ * @param animate - If `false`, disables animation and renders items without staggered delays (default: true).
+ * @returns A grid container whose children are wrapped in elements that receive staggered transition delays and an `active` class when their animation is active.
  */
 export function AnimatedGrid({
   children,

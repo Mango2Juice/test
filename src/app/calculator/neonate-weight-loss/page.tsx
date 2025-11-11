@@ -10,6 +10,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useNeonateWeightLoss } from '@/hooks/use-neonate-weight-loss'
 import { cn } from '@/lib/utils'
 
+/**
+ * Renders a compact result card showing a labeled value and its unit.
+ *
+ * @param title - Short label shown above the value
+ * @param value - Display-ready value string (already formatted for presentation)
+ * @param unit - Unit label shown next to the value
+ * @returns A Card element containing the title, the bolded value, and the unit
+ */
 function ResultCard({ title, value, unit }: { readonly title: string; readonly value: string; readonly unit: string }) {
   return (
     <Card className='text-center bg-secondary/30 flex-1'>
@@ -25,6 +33,14 @@ function ResultCard({ title, value, unit }: { readonly title: string; readonly v
   )
 }
 
+/**
+ * Render a severity-styled alert describing a weight-change interpretation.
+ *
+ * @param interpretation - An object containing the interpretation details:
+ *   - `message`: The text to display inside the alert.
+ *   - `severity`: One of `'normal'`, `'concern'`, or `'danger'` indicating informational, warning, or high-risk intent respectively.
+ * @returns The alert JSX element displaying a severity title and the interpretation message.
+ */
 function InterpretationAlert({
   interpretation,
 }: {
@@ -47,6 +63,13 @@ function InterpretationAlert({
   )
 }
 
+/**
+ * Render the Neonate Weight Loss Calculator page which collects birth weight, current weight, weight unit, and infant age, then displays calculated weight change, percentage change, and an interpretation.
+ *
+ * The UI includes unit selection (grams, kilograms, pounds), numeric inputs for birth/current weight and age in hours, a reset control, conditional error display, and conditional results with interpretation when available.
+ *
+ * @returns The rendered React element for the Neonate Weight Loss Calculator page.
+ */
 export default function NeonateWeightLossPage() {
   const {
     birthWeight,

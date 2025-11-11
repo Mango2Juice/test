@@ -8,6 +8,16 @@ interface PageTransitionProps {
   children: ReactNode
 }
 
+/**
+ * Wraps content to animate a page transition when the route changes, while respecting the user's reduced-motion preference.
+ *
+ * When reduced motion is preferred, the component renders the current children without animation classes. Otherwise,
+ * it triggers an exit animation, replaces the rendered children after a 200ms exit delay, then completes the enter
+ * animation after an additional ~50ms. The transition is triggered when the pathname or children change.
+ *
+ * @param children - The content to render and animate between route changes
+ * @returns A div containing `children` with either `page-exit` (during exit) or `page-enter` (during enter) class applied; no animation classes when reduced motion is preferred.
+ */
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname()
   const [displayChildren, setDisplayChildren] = useState(children)

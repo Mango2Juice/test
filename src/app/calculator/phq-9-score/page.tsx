@@ -12,6 +12,18 @@ import { cn } from '@/lib/utils'
 import type { AnswerValue, Question } from '@/lib/utils/phq-9-score'
 import { questions } from '@/lib/utils/phq-9-score'
 
+/**
+ * Renders a single PHQ-9 question row with selectable response options.
+ *
+ * Displays the question text prefixed by its numbered position and a 4-option
+ * radio group for responses: `0` ("Not at all") through `3` ("Nearly every day").
+ *
+ * @param question - The question object containing `id` and `text` to display.
+ * @param value - The currently selected answer value (0–3).
+ * @param onChange - Callback invoked with the new answer value when the selection changes.
+ * @param index - Zero-based index of the question, used to display the question number.
+ * @returns The rendered question row element.
+ */
 function QuestionRow({
   question,
   value,
@@ -67,6 +79,15 @@ function QuestionRow({
   )
 }
 
+/**
+ * Render a card displaying a PHQ-9 total score with its severity label and recommendation.
+ *
+ * @param score - The numeric PHQ-9 total score to display
+ * @param severity - A human-readable severity label (e.g., "Moderate", "Severe")
+ * @param color - Tailwind text color class applied to the severity label
+ * @param recommendation - Guidance or recommendation text associated with the severity
+ * @returns A Card element containing the score and an Alert that highlights the severity and recommendation
+ */
 function ResultCard({
   score,
   severity,
@@ -105,6 +126,11 @@ function ResultCard({
   )
 }
 
+/**
+ * Render the PHQ-9 questionnaire page with per-question inputs, submission and reset controls, and conditional result display.
+ *
+ * @returns The React element for the PHQ-9 questionnaire UI, including question rows, action buttons, and the result card when available.
+ */
 export default function Phq9ScorePage() {
   const { answers, result, showResult, handleAnswerChange, handleSubmit, handleReset, isComplete } = usePhq9Score()
 

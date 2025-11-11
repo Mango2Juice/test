@@ -20,14 +20,14 @@ interface WeightInputSectionProps {
 }
 
 /**
- * Renders a mobile-friendly weight input field with validation, debounced updates, and accessibility support.
+ * Render a responsive, accessible weight input section for entering patient weight in kilograms.
  *
- * The component displays an optional weight input (kilograms) with validation rules (positive number, 0.1–200 range, max 1 decimal),
- * debounces changes before updating the shared calculator store, announces updates to screen readers, and cleans up pending timers on unmount.
+ * The input validates and normalizes user input, updates the shared calculator state after a short delay,
+ * and exposes descriptive text for screen readers.
  *
- * @param audience - Determines audience-specific descriptive text used for the input's accessible description
+ * @param audience - Audience mode used to generate the input's accessible description
  * @param disabled - If true, disables the input control
- * @returns The weight input section as JSX for use in forms and mobile layouts
+ * @returns The weight input section as a JSX element
  */
 export function WeightInputSection({ audience, disabled }: WeightInputSectionProps) {
   const debounceRef = useRef<NodeJS.Timeout>()

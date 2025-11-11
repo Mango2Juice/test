@@ -12,6 +12,14 @@ import { cn } from '@/lib/utils'
 import type { Question, YesNo } from '@/lib/utils/stop-bang-score'
 import { questions } from '@/lib/utils/stop-bang-score'
 
+/**
+ * Render a single STOP‑BANG question row with labeled text and a Yes/No radio group.
+ *
+ * @param question - The question object (includes `id`, `text`, and optional `description`)
+ * @param value - Current selected answer, either `'yes'` or `'no'`
+ * @param onChange - Callback invoked with the new answer when the selection changes
+ * @returns The rendered question row element containing the label, optional description, and Yes/No radios
+ */
 function QuestionRow({
   question,
   value,
@@ -49,6 +57,15 @@ function QuestionRow({
   )
 }
 
+/**
+ * Render a result card summarizing the STOP-BANG score, risk category, and explanatory alert.
+ *
+ * @param score - Total positive responses on the STOP-BANG questionnaire (0–8)
+ * @param risk - Risk category: "Low", "Intermediate", or "High"
+ * @param color - Tailwind text color class applied to the prominent risk heading; must be one of `text-green-600`, `text-yellow-600`, or `text-red-600`
+ * @param description - Explanatory message displayed in the alert describing the risk
+ * @returns A Card element showing the risk label, numeric score, and an alert with an icon and description
+ */
 function ResultCard({
   score,
   risk,
@@ -90,6 +107,14 @@ function ResultCard({
   )
 }
 
+/**
+ * Render the STOP‑BANG questionnaire UI that collects answers, computes an OSA risk score, and displays the result.
+ *
+ * The component presents a list of screening questions with Yes/No controls, provides actions to calculate the score
+ * or reset responses, and conditionally renders a summarized risk card and descriptive note after submission.
+ *
+ * @returns A React element containing the questionnaire form, action buttons, and a conditional result card
+ */
 export default function StopBangPage() {
   const { answers, result, showResult, handleAnswerChange, handleSubmit, handleReset } = useStopBangScore()
 

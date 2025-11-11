@@ -34,6 +34,14 @@ interface EmptyStateProps {
   icon?: React.ReactNode
 }
 
+/**
+ * Render a centered empty-state block with an optional icon, title, and description.
+ *
+ * @param title - Heading text displayed prominently in the empty state
+ * @param description - Secondary descriptive text explaining the empty state
+ * @param icon - Optional icon or node shown above the title; defaults to a responsive search icon
+ * @returns A React element representing the empty-state UI, styled responsively for mobile and desktop
+ */
 function EmptyState({ title, description, icon }: EmptyStateProps) {
   const { isMobile } = useDevice()
 
@@ -46,6 +54,11 @@ function EmptyState({ title, description, icon }: EmptyStateProps) {
   )
 }
 
+/**
+ * Renders a centered loading indicator and message shown while dosage calculations are in progress.
+ *
+ * @returns A JSX element containing a spinner and the text "Calculating dosages...", with responsive sizing for mobile.
+ */
 function LoadingState() {
   const { isMobile } = useDevice()
 
@@ -59,6 +72,12 @@ function LoadingState() {
   )
 }
 
+/**
+ * Renders a responsive grid of skeleton medication cards used as a loading placeholder.
+ *
+ * @param count - Number of skeleton cards to render (default: 8)
+ * @returns A React element containing the grid of loading skeleton cards
+ */
 function LoadingGrid({ count = 8 }: { count?: number }) {
   const { isMobile } = useDevice()
 

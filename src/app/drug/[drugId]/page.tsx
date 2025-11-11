@@ -17,9 +17,10 @@ interface DrugPageProps {
 }
 
 /**
- * Fetches the MDX content for a given drug ID from the filesystem.
- * @param baseDrugId The base identifier for the drug, used to find the .mdx file.
- * @returns The parsed MDX content and frontmatter, or null if not found.
+ * Load and parse the MDX file for a given drug identifier and return its content and frontmatter.
+ *
+ * @param baseDrugId - Base drug identifier used to locate the corresponding `.mdx` file (without extension)
+ * @returns The parsed MDX `content` and `frontmatter` object, or `null` if the file is missing or could not be read
  */
 async function getMdxContent(baseDrugId: string) {
   try {
@@ -73,10 +74,11 @@ async function getDrugPageData(drugId: string) {
 }
 
 /**
- * Produce page metadata for a drug using MDX frontmatter when available, otherwise fall back to quick-reference data.
+ * Create page metadata for a drug using MDX frontmatter when available, falling back to quick-reference data.
  *
- * @param params - Route parameters containing `drugId`
- * @returns An object with `title` and `description` strings. If the drug or MDX data is missing, `title` will be `"Drug Not Found"` and `description` will be a default not-found message. */
+ * @param params - Route parameters providing `drugId`
+ * @returns An object with `title` and `description` strings; when the drug or MDX data is missing, `title` is `"Drug Not Found"` and `description` is `"The requested medication could not be found."`
+ */
 export async function generateMetadata({ params }: DrugPageProps) {
   const { drugId } = await params
   const data = await getDrugPageData(drugId)
