@@ -71,11 +71,11 @@ export class ValidationErrorHandler {
     const operation = context.operation.toLowerCase().replace(/_/g, ' ')
 
     if (error.message.includes('JSON')) {
-      return `There was a problem reading the medication data file. Please check the file format and try again.`
+      return 'There was a problem reading the medication data file. Please check the file format and try again.'
     }
 
     if (error.message.includes('network') || error.message.includes('fetch')) {
-      return `Unable to load medication data. Please check your connection and try again.`
+      return 'Unable to load medication data. Please check your connection and try again.'
     }
 
     if (error.message.includes('permission') || error.message.includes('access')) {
@@ -84,9 +84,9 @@ export class ValidationErrorHandler {
 
     switch (context.operation) {
       case 'LOAD_MEDICATIONS':
-        return `Failed to load medications. Some medications may not be available.`
+        return 'Failed to load medications. Some medications may not be available.'
       case 'LOAD_CATEGORIES':
-        return `Failed to load complaint categories. Default categories will be used.`
+        return 'Failed to load complaint categories. Default categories will be used.'
       case 'CALCULATE_DOSE':
         return `Unable to calculate dose for ${context.medicationId || 'this medication'}. Please verify the medication data.`
       case 'VALIDATE_MEDICATION':

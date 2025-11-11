@@ -21,9 +21,9 @@ export function useNeonateWeightLoss() {
   const [unit, setUnit] = useState<WeightUnit>('grams')
 
   const { result, error } = useMemo(() => {
-    const bw = parseFloat(birthWeight)
-    const cw = parseFloat(currentWeight)
-    const age = ageInHours ? parseInt(ageInHours, 10) : undefined
+    const bw = Number.parseFloat(birthWeight)
+    const cw = Number.parseFloat(currentWeight)
+    const age = ageInHours ? Number.parseInt(ageInHours, 10) : undefined
 
     if (Number.isNaN(bw) || Number.isNaN(cw)) {
       return { result: null, error: '' }

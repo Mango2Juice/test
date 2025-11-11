@@ -132,8 +132,8 @@ export const averageWeights: GrowthDataPoint[] = (() => {
 
     return {
       ageMonths: femaleData.ageMonths,
-      weightLbs: parseFloat(((femaleData.weightLbs + maleData.weightLbs) / 2).toFixed(2)),
-      weightKg: parseFloat(((femaleData.weightKg + maleData.weightKg) / 2).toFixed(2)),
+      weightLbs: Number.parseFloat(((femaleData.weightLbs + maleData.weightLbs) / 2).toFixed(2)),
+      weightKg: Number.parseFloat(((femaleData.weightKg + maleData.weightKg) / 2).toFixed(2)),
     } as GrowthDataPoint
   })
 })()

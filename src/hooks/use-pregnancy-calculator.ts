@@ -12,8 +12,8 @@ export function usePregnancyCalculator() {
 
   useEffect(() => {
     if (lmpDate) {
-      const weeks = gaWeeks ? parseInt(gaWeeks, 10) : undefined
-      const days = gaDays ? parseInt(gaDays, 10) : undefined
+      const weeks = gaWeeks ? Number.parseInt(gaWeeks, 10) : undefined
+      const days = gaDays ? Number.parseInt(gaDays, 10) : undefined
       const info = calculatePregnancyInfo(lmpDate, ultrasoundDate, weeks, days)
       setPregnancyInfo(info)
     } else {

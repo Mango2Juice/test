@@ -29,7 +29,7 @@ export function AgeInputSection({ disabled }: AgeInputSectionProps) {
 
   const handleAgeValueChange = useCallback(
     (value: string) => {
-      const numericValue = parseInt(value, 10)
+      const numericValue = Number.parseInt(value, 10)
       // Only update if the value is a valid, non-negative integer
       if (!Number.isNaN(numericValue) && numericValue >= 0) {
         setDisplayAge(numericValue, displayAgeUnit)

@@ -66,7 +66,7 @@ export function WeightInputSection({ audience, disabled }: WeightInputSectionPro
         return
       }
 
-      const numericValue = parseFloat(value)
+      const numericValue = Number.parseFloat(value)
       if (!Number.isNaN(numericValue) && numericValue > 0) {
         debouncedWeightChange(numericValue, true)
       } else {

@@ -31,7 +31,7 @@ export function useFraminghamScore() {
 
   const getRiskColor = (risk: string | undefined): string => {
     if (!risk) return 'text-muted-foreground'
-    const numericRisk = parseInt(risk.replace(/[><]/g, ''), 10)
+    const numericRisk = Number.parseInt(risk.replace(/[><]/g, ''), 10)
     if (numericRisk >= 20) return 'text-red-600'
     if (numericRisk >= 10) return 'text-orange-500'
     if (numericRisk >= 5) return 'text-yellow-500'

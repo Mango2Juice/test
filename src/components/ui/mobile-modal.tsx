@@ -47,10 +47,9 @@ export const MobileModal = forwardRef<ElementRef<'div'>, MobileModalProps>(
         return () => {
           document.body.style.overflow = 'unset'
         }
-      } else {
-        document.body.style.overflow = 'unset'
-        return undefined
       }
+      document.body.style.overflow = 'unset'
+      return undefined
     }, [open])
 
     if (!mounted) {
@@ -77,13 +76,17 @@ export const MobileModal = forwardRef<ElementRef<'div'>, MobileModalProps>(
           'fixed inset-0 z-50 transition-all duration-300',
           fullScreen ? 'bg-background' : 'flex items-center justify-center bg-black/50',
           open ? 'opacity-100' : 'opacity-0 pointer-events-none',
-        )}
-        role='button'
+          )}
+          role='dialog'
         tabIndex={0}
         onClick={handleBackdropClick}
         onKeyDown={(e) => {
-          if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
-            handleBackdropClick(e as unknown as React.MouseEvent)
+          if (e.key === 'Escape') {
+            e.preventDefault()
+            e.stopPropagation()
+            // Close the modal on Escape. Do not reuse the backdrop mouse handler
+            // because it relies on MouseEvent properties (e.target === e.currentTarget).
+            onOpenChange(false)
           }
         }}
         aria-label='Close modal'

@@ -13,7 +13,7 @@ import type {
 } from '@/lib/quick-reference-database'
 import { cn } from '@/lib/utils'
 import { AriaLabels } from '@/lib/utils/accessibility/labels'
-import { DrugDosageCard } from './'
+import { DrugDosageCard } from './drug-dosage-card'
 
 interface DrugReferenceGridProps {
   drugs: readonly QuickReferenceMedication[]

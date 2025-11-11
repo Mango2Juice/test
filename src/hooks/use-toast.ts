@@ -78,14 +78,14 @@ const useToastStore = create<ToastState>((set, get) => ({
           toasts: state.toasts.map((t) => (t.id === toastId ? { ...t, open: false } : t)),
           timeouts: newTimeouts,
         }
-      } else {
-        state.toasts.forEach((t) => {
-          dismiss(t.id)
-        })
-        return {
-          toasts: state.toasts.map((t) => ({ ...t, open: false })),
-          timeouts: newTimeouts,
-        }
+      }
+
+      state.toasts.forEach((t) => {
+        dismiss(t.id)
+      })
+      return {
+        toasts: state.toasts.map((t) => ({ ...t, open: false })),
+        timeouts: newTimeouts,
       }
     })
   },
@@ -103,14 +103,14 @@ const useToastStore = create<ToastState>((set, get) => ({
           toasts: state.toasts.filter((t) => t.id !== toastId),
           timeouts: newTimeouts,
         }
-      } else {
-        newTimeouts.forEach((timeoutId) => {
-          clearTimeout(timeoutId)
-        })
-        return {
-          toasts: [],
-          timeouts: new Map(),
-        }
+      }
+
+      newTimeouts.forEach((timeoutId) => {
+        clearTimeout(timeoutId)
+      })
+      return {
+        toasts: [],
+        timeouts: new Map(),
       }
     })
   },

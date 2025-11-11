@@ -30,10 +30,9 @@ export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
         return () => {
           document.body.style.overflow = 'unset'
         }
-      } else {
-        document.body.style.overflow = 'unset'
-        return undefined
       }
+      document.body.style.overflow = 'unset'
+      return undefined
     }, [open])
 
     if (!mounted) {

@@ -40,7 +40,8 @@ export function ViewTransition({
       }, 50) // Small delay to ensure DOM update
 
       return () => clearTimeout(enterTimer)
-    } else if (!isVisible && shouldRender) {
+    }
+    if (!isVisible && shouldRender) {
       setAnimationState('exiting')
 
       // Start exit animation

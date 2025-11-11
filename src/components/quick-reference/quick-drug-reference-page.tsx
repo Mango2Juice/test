@@ -22,8 +22,10 @@ import { useQuickReferenceDatabase } from '@/lib/quick-reference-database'
 import { getWeightForAge } from '@/lib/quick-reference-database/calculations'
 import { useCalculatorStore } from '@/lib/stores/calculator-store'
 import { cn } from '@/lib/utils'
-import { ComplaintFilterBar, DrugReferenceGrid, WeightInputSection } from './'
 import { AgeInputSection } from './age-input-section'
+import { ComplaintFilterBar } from './complaint-filter-bar'
+import { DrugReferenceGrid } from './drug-reference-grid'
+import { WeightInputSection } from './weight-input-section'
 
 interface QuickDrugReferencePageProps {
   audience: 'paediatric' | 'adult'

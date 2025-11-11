@@ -25,7 +25,7 @@ export function useIdealBodyWeight() {
   const [actualBw, setActualBw] = useState<string>('')
 
   const { results, error } = useMemo(() => {
-    const h = parseFloat(heightCm)
+    const h = Number.parseFloat(heightCm)
     if (Number.isNaN(h) || h <= 0) {
       return { results: null, error: 'Please enter a valid positive height.' }
     }
@@ -35,7 +35,7 @@ export function useIdealBodyWeight() {
     }
 
     const ibw = calculateIBW(h, gender)
-    const aBw = parseFloat(actualBw)
+    const aBw = Number.parseFloat(actualBw)
     const adjBw = !Number.isNaN(aBw) && aBw > 0 ? calculateAdjBW(ibw, aBw) : null
 
     return { results: { ibw, adjBw }, error: '' }

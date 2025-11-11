@@ -216,10 +216,10 @@ const getRiskPercent = (gender: Gender, points: number): string => {
 }
 
 export function calculateFraminghamScore(state: FraminghamState) {
-  const age = parseInt(state.age, 10)
-  const tc = parseInt(state.totalCholesterol, 10)
-  const hdl = parseInt(state.hdlCholesterol, 10)
-  const sbp = parseInt(state.systolicBP, 10)
+  const age = Number.parseInt(state.age, 10)
+  const tc = Number.parseInt(state.totalCholesterol, 10)
+  const hdl = Number.parseInt(state.hdlCholesterol, 10)
+  const sbp = Number.parseInt(state.systolicBP, 10)
 
   if (Number.isNaN(age) || Number.isNaN(tc) || Number.isNaN(hdl) || Number.isNaN(sbp)) {
     return null

@@ -28,7 +28,7 @@ export const ServiceWorkerRegistrar = (): null => {
     toast({
       title: 'Update Available',
       description: 'A new version of the app is ready. Reload to apply changes.',
-      duration: Infinity, // Keep the toast visible until action is taken
+      duration: Number.POSITIVE_INFINITY, // Keep the toast visible until action is taken
       action: (
         <ToastAction altText='Reload' onClick={() => window.location.reload()}>
           Reload
