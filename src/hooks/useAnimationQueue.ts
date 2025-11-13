@@ -47,35 +47,44 @@ export function useAnimationQueue(options: UseAnimationQueueOptions = {}) {
   }, [])
 
   const processQueue = useCallback(async () => {
-    if (processingRef.current) return
+    if (processingRef.current || running.size >= maxConcurrent) return
     processingRef.current = true
 
-    while (queue.length > 0 && running.size < maxConcurrent) {
-      const item = queue[0]
-      if (!item) break
+    const availableSlots = maxConcurrent - running.size
+    const itemsToProcess = queue.slice(0, availableSlots)
 
-      setQueue((prev) => prev.slice(1))
-      setRunning((prev) => new Set(prev).add(item.id))
+    if (itemsToProcess.length > 0) {
+      // Batch state updates
+      setQueue((prev) => prev.slice(itemsToProcess.length))
+      setRunning((prev) => {
+        const newRunning = new Set(prev)
+        itemsToProcess.forEach((item) => newRunning.add(item.id))
+        return newRunning
+      })
 
-      try {
-        await Promise.resolve(item.callback())
-      } catch (error) {
-        console.error(`Animation ${item.id} failed:`, error)
-      } finally {
-        setRunning((prev) => {
-          const updated = new Set(prev)
-          updated.delete(item.id)
-          return updated
-        })
-      }
-
-      if (staggerDelay > 0 && queue.length > 0) {
-        await new Promise((resolve) => setTimeout(resolve, staggerDelay))
-      }
+      // Process items
+      await Promise.all(
+        itemsToProcess.map(async (item, index) => {
+          try {
+            if (staggerDelay > 0 && index > 0) {
+              await new Promise((resolve) => setTimeout(resolve, staggerDelay * index))
+            }
+            await Promise.resolve(item.callback())
+          } catch (error) {
+            console.error(`Animation ${item.id} failed:`, error)
+          } finally {
+            setRunning((prev) => {
+              const updated = new Set(prev)
+              updated.delete(item.id)
+              return updated
+            })
+          }
+        }),
+      )
     }
 
     processingRef.current = false
-  }, [queue, running, maxConcurrent, staggerDelay])
+  }, [queue, running.size, maxConcurrent, staggerDelay])
 
   useEffect(() => {
     if (queue.length > 0 && running.size < maxConcurrent) {

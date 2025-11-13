@@ -25,7 +25,7 @@ const salbutamol: QuickReferenceMedication = {
       unit: 'mg/kg/dose',
       frequency: 'QID',
       maxDose: 5,
-      minAge: 2,
+      minAge: 24,
     },
   ],
   concentration: {
