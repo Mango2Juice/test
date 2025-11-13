@@ -3,15 +3,8 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata, Viewport } from 'next'
 import type React from 'react'
-import { AppLayout } from '@/components/layout/app-layout'
-import { PersistentStorageRegistrar } from '@/components/persistent-storage-registrar'
-import { ServiceWorkerRegistrar } from '@/components/service-worker-registrar'
-import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
-import { StoreInitializer } from '@/lib/stores/store-initializer'
+import { AppProviders } from '@/components/layout/app-providers'
 import './globals.css'
-import { Analytics } from '@vercel/analytics/next'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   applicationName: 'Doses',
@@ -54,15 +47,7 @@ export default function RootLayout({
     <html lang='en' className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning={true}>
       <head>{/* PWA-related meta tags are handled by the Metadata object */}</head>
       <body className='flex flex-col min-h-screen antialiased bg-background'>
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem={true} themes={['light', 'dark', 'system']}>
-          <StoreInitializer />
-          <AppLayout>{children}</AppLayout>
-          <Toaster />
-          <ServiceWorkerRegistrar />
-          <PersistentStorageRegistrar />
-        </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   )
