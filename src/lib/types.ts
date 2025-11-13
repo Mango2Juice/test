@@ -1,8 +1,3 @@
-export interface Task {
-  id: string;
-  title: string;
-  time: string; // HH:MM
-  date: string; // YYYY-MM-DD
-  completed: boolean;
-  reminder: boolean;
-}
+// src/lib/types.ts
+
+// The AudienceMode type has been removed as it is no longer needed.
