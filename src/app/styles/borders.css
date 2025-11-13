@@ -1,0 +1,72 @@
+@theme {
+  /* Border Radius System */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  --radius-base: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Component-specific Radius */
+  --radius-button: var(--radius-md);
+  --radius-card: var(--radius-lg);
+  --radius-input: var(--radius-base);
+  --radius-modal: var(--radius-xl);
+  --radius-badge: var(--radius-full);
+}
+
+/* Border Radius Utility Classes */
+@utility rounded-none {
+  border-radius: var(--radius-none);
+}
+
+@utility rounded-sm {
+  border-radius: var(--radius-sm);
+}
+
+@utility rounded-base {
+  border-radius: var(--radius-base);
+}
+
+@utility rounded-md {
+  border-radius: var(--radius-md);
+}
+
+@utility rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+@utility rounded-xl {
+  border-radius: var(--radius-xl);
+}
+
+@utility rounded-2xl {
+  border-radius: var(--radius-2xl);
+}
+
+@utility rounded-full {
+  border-radius: var(--radius-full);
+}
+
+/* Component-specific Radius Utility Classes */
+@utility rounded-button {
+  border-radius: var(--radius-button);
+}
+
+@utility rounded-card {
+  border-radius: var(--radius-card);
+}
+
+@utility rounded-input {
+  border-radius: var(--radius-input);
+}
+
+@utility rounded-modal {
+  border-radius: var(--radius-modal);
+}
+
+@utility rounded-badge {
+  border-radius: var(--radius-badge);
+}

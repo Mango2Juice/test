@@ -1,0 +1,154 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  body {
+    font-family: var(--font-geist-sans);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground leading-relaxed;
+    /* Optimize text rendering for mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Support zoom and touch interactions on mobile */
+    touch-action: manipulation;
+    /* Improve text selection on mobile */
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  /* Mobile-first heading typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+    /* Improve heading readability on mobile */
+    line-height: 1.2;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Mobile-optimized heading sizes */
+  h1 {
+    font-size: max(28px, 1.75rem);
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: max(24px, 1.5rem);
+    margin-bottom: 0.75rem;
+  }
+  h3 {
+    font-size: max(20px, 1.25rem);
+    margin-bottom: 0.5rem;
+  }
+  h4 {
+    font-size: max(18px, 1.125rem);
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    h3 {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  /* Improve paragraph readability on mobile */
+  p {
+    line-height: 1.6;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Ensure minimum font sizes for critical content */
+  .medication-content,
+  .dosage-content,
+  .medical-info {
+    font-size: max(16px, 1rem);
+  }
+
+  /* Smooth transitions for color properties */
+  body,
+  input,
+  select,
+  button,
+  textarea,
+  .bg-background,
+  .bg-card,
+  .bg-popover,
+  .bg-primary,
+  .bg-secondary,
+  .bg-muted,
+  .bg-accent,
+  .bg-destructive,
+  .text-foreground,
+  .text-card-foreground,
+  .text-popover-foreground,
+  .text-primary-foreground,
+  .text-secondary-foreground,
+  .text-muted-foreground,
+  .text-accent-foreground,
+  .text-destructive-foreground,
+  .border-border,
+  .border-input,
+  .ring-ring {
+    transition:
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
+      border-color 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out,
+      fill 0.2s ease-in-out;
+  }
+}

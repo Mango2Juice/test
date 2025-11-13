@@ -1,134 +1,82 @@
-"use client";
+// src/app/page.tsx
+import { Loader2 } from 'lucide-react'
+import { Suspense } from 'react'
+import { QuickDrugReferencePage } from '@/components/quick-reference'
+import { getWeightForAge } from '@/lib/quick-reference-database/calculations'
+import { loadComplaintCategories, loadMedications } from '@/lib/quick-reference-database/data-loader'
 
-import { useState, useMemo, useEffect } from "react";
-import { format, addDays, subDays } from "date-fns";
-import { type Task } from "@/lib/types";
-import PlannerHeader from "@/components/verdant-planner/planner-header";
-import DayOverview from "@/components/verdant-planner/day-overview";
-import { useToast } from "@/hooks/use-toast";
-
-const getInitialTasks = (): Task[] => {
-    if (typeof window === 'undefined') return [];
-    const today = format(new Date(), "yyyy-MM-dd");
-    return [
-      { id: "1", title: "Morning meditation", time: "07:00", date: today, completed: true, reminder: false },
-      { id: "2", title: "Team standup meeting", time: "09:00", date: today, completed: false, reminder: true },
-      { id: "3", title: "Work on Project A", time: "09:30", date: today, completed: false, reminder: false },
-      { id: "4", title: "Lunch break", time: "12:30", date: today, completed: false, reminder: false },
-      { id: "5", title: "Design review", time: "14:00", date: today, completed: false, reminder: true },
-      { id: "6", title: "Evening workout", time: "18:00", date: today, completed: false, reminder: false },
-    ];
+/**
+ * Renders a full-screen, centered loading indicator for the quick drug reference.
+ *
+ * Shows a spinner and the text "Loading quick drug reference..." while content is loading.
+ *
+ * @returns A JSX element containing a full-screen centered spinner and the loading message.
+ */
+function LoadingFallback() {
+  return (
+    <div className='min-h-screen flex items-center justify-center'>
+      <div className='text-center space-y-4'>
+        <Loader2 className='animate-spin h-8 w-8 text-primary mx-auto' />
+        <p className='text-sm text-muted-foreground'>Loading quick drug reference...</p>
+      </div>
+    </div>
+  )
 }
 
+interface PageProps {
+  searchParams: Promise<{
+    weight?: string
+    complaint?: string
+    audience?: string
+  }>
+}
 
-export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const { toast } = useToast();
-
-  useEffect(() => {
-    setTasks(getInitialTasks());
-  }, []);
-
-  const handleAddTask = (task: Omit<Task, "id" | "date" | "completed">) => {
-    const newTask: Task = {
-      ...task,
-      id: crypto.randomUUID(),
-      date: format(selectedDate, "yyyy-MM-dd"),
-      completed: false,
-    };
-    setTasks((prev) => [...prev, newTask]);
-    toast({
-      title: "Task Added",
-      description: `"${newTask.title}" has been added to your schedule.`,
-    });
-  };
-
-  const handleToggleComplete = (taskId: string) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
-
-  const handleDeleteTask = (taskId: string) => {
-    const taskToDelete = tasks.find(t => t.id === taskId);
-    setTasks((prev) => prev.filter((task) => task.id !== taskId));
-    if (taskToDelete) {
-        toast({
-            title: "Task Removed",
-            description: `"${taskToDelete.title}" has been removed.`,
-            variant: "destructive",
-        });
-    }
-  };
-
-  const handleSetReminder = (taskId: string, reminder: boolean) => {
-    setTasks(tasks.map(task => {
-      if (task.id === taskId) {
-        if (reminder) {
-          toast({
-            title: `Reminder set for "${task.title}"`,
-            description: `We'll remind you at ${task.time}.`,
-          });
-        }
-        return { ...task, reminder };
+/**
+ * Server component that renders the quick drug reference page initialized from URL search parameters.
+ *
+ * The component loads medications and complaint categories on the server and passes them, along with
+ * initial UI state, to QuickDrugReferencePage.
+ *
+ * @param searchParams - A promise resolving to query parameters. Recognized keys:
+ *   - `weight`: parsed as a float to set the initial weight; if missing or invalid, the average weight for a 6-year-old (72 months) is used.
+ *   - `complaint`: used as the initial complaint filter; an empty string is treated as undefined.
+ *   - `audience`: ignored by this page (audience is set to 'paediatric').
+ * @returns The page element that renders the quick drug reference with server-loaded medications and categories.
+ */
+export default async function HomePage({ searchParams }: PageProps) {
+  const params = await searchParams
+  // Use provided weight or get average weight for default age (6 years)
+  const defaultWeight = (() => {
+    if (params.weight != null && params.weight.trim() !== '') {
+      const parsed = Number.parseFloat(params.weight)
+      if (!Number.isNaN(parsed)) {
+        return parsed
       }
-      return task;
-    }));
-  };
-
-  const tasksForSelectedDate = useMemo(() => {
-    const formattedDate = format(selectedDate, "yyyy-MM-dd");
-    return tasks
-      .filter((task) => task.date === formattedDate)
-      .sort((a, b) => a.time.localeCompare(b.time));
-  }, [tasks, selectedDate]);
-  
-  useEffect(() => {
-    const checkReminders = () => {
-      const now = new Date();
-      const currentTime = format(now, 'HH:mm');
-      const today = format(now, 'yyyy-MM-dd');
-
-      tasksForSelectedDate.forEach(task => {
-        if (task.reminder && !task.completed && task.time === currentTime && task.date === today) {
-          toast({
-            title: 'Task Reminder',
-            description: `It's time for: ${task.title}`,
-          });
-          handleSetReminder(task.id, false); 
-        }
-      });
-    };
-
-    const intervalId = setInterval(checkReminders, 60000);
-    return () => clearInterval(intervalId);
-  }, [tasksForSelectedDate, toast]);
-
-
-  const handleDateChange = (direction: "prev" | "next") => {
-    if (direction === "prev") {
-      setSelectedDate((prev) => subDays(prev, 1));
-    } else {
-      setSelectedDate((prev) => addDays(prev, 1));
     }
-  };
+    return getWeightForAge(72) // Default age is 6 years (72 months)
+  })()
+  const initialComplaintFilter = params.complaint || undefined // Convert empty string to undefined
+  const audience = 'paediatric'
+
+  // Fetch data on the server
+  const allMedications = loadMedications()
+  const allCategories = loadComplaintCategories()
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-body">
-      <main className="container mx-auto max-w-2xl px-4 py-8 md:py-12">
-        <PlannerHeader onAddTask={handleAddTask} />
-        <DayOverview
-          selectedDate={selectedDate}
-          tasks={tasksForSelectedDate}
-          onDateChange={handleDateChange}
-          onToggleComplete={handleToggleComplete}
-          onDeleteTask={handleDeleteTask}
-          onSetReminder={handleSetReminder}
-        />
-      </main>
-    </div>
-  );
+    <Suspense fallback={<LoadingFallback />}>
+      <QuickDrugReferencePage
+        audience={audience}
+        defaultWeight={defaultWeight}
+        initialComplaintFilter={initialComplaintFilter}
+        medications={allMedications}
+        categories={allCategories}
+      />
+    </Suspense>
+  )
+}
+
+export const metadata = {
+  title: 'Quick Drug Reference | Doses',
+  description:
+    'Quick reference for medication dosages with real-time calculations and filtering by complaint categories. Your go-to tool for accurate drug dosing.',
 }

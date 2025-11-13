@@ -1,0 +1,177 @@
+@utility mobile-safe-area {
+  /* Mobile safe area utilities */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+@utility mobile-safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+@utility mobile-safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility mobile-safe-area-full {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
+
+@utility mobile-container {
+  /* Mobile container utilities */
+  padding-left: 0.75rem; /* 12px */
+  padding-right: 0.75rem;
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .mobile-container {
+    /* Reduce padding for mobile landscape */
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+@utility tablet-container {
+  padding-left: 1.5rem; /* 24px */
+  padding-right: 1.5rem;
+}
+
+@utility orientation-transition {
+  /* Orientation-aware utilities */
+  transition: all 0.3s ease-in-out;
+
+  /* Mobile landscape specific optimizations */
+
+  /* Tablet landscape optimizations */
+
+  /* Smooth transitions for orientation changes */
+  transition:
+    grid-template-columns 0.3s ease-in-out,
+    gap 0.3s ease-in-out,
+    padding 0.3s ease-in-out,
+    max-height 0.3s ease-in-out;
+  @media (prefers-reduced-motion: no-preference) {
+    transition-duration: 0.3s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition-duration: 0.1s;
+  }
+}
+
+@utility landscape-optimized {
+  /* Optimizations for landscape orientation */
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .landscape-optimized {
+    max-height: 85vh;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .landscape-optimized {
+    max-height: 70vh;
+  }
+}
+
+@utility portrait-optimized {
+  /* Optimizations for portrait orientation */
+  min-height: 400px;
+}
+
+@utility mobile-landscape-layout {
+  /* Layout-specific orientation classes */
+  /* Mobile landscape optimizations */
+  --spacing-y: 0.5rem;
+  --container-padding: 0.75rem;
+  --form-height: 60vh;
+}
+
+@utility mobile-portrait-layout {
+  /* Mobile portrait optimizations */
+  --spacing-y: 1rem;
+  --container-padding: 0.75rem;
+  --form-height: auto;
+}
+
+@utility tablet-landscape-layout {
+  /* Tablet landscape optimizations */
+  --spacing-y: 1.5rem;
+  --container-padding: 1.5rem;
+  --form-height: 70vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@utility tablet-portrait-layout {
+  /* Tablet portrait optimizations */
+  --spacing-y: 1.25rem;
+  --container-padding: 1rem;
+  --form-height: auto;
+}
+
+@utility landscape-layout {
+  transition:
+    grid-template-columns 0.3s ease-in-out,
+    gap 0.3s ease-in-out,
+    padding 0.3s ease-in-out,
+    max-height 0.3s ease-in-out;
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .landscape-layout {
+    --spacing-y: 0.5rem;
+    --container-padding: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .landscape-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+@utility space-y-3 {
+  & > * + * {
+    margin-top: 0.75rem;
+  }
+}
+
+@utility space-y-4 {
+  & > * + * {
+    margin-top: 1rem;
+  }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .space-y-3 {
+    /* Compact form spacing in mobile landscape */
+    & > * + * {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .space-y-4 {
+    & > * + * {
+      margin-top: 0.75rem;
+    }
+  }
+}
+
+@utility portrait-layout {
+  transition:
+    grid-template-columns 0.3s ease-in-out,
+    gap 0.3s ease-in-out,
+    padding 0.3s ease-in-out,
+    max-height 0.3s ease-in-out;
+}

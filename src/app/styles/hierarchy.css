@@ -1,0 +1,132 @@
+@theme {
+  /* Visual Hierarchy Variables */
+  --hierarchy-primary-size: 1;
+  --hierarchy-secondary-size: 0.875;
+  --hierarchy-tertiary-size: 0.75;
+
+  --hierarchy-primary-weight: 600;
+  --hierarchy-secondary-weight: 500;
+  --hierarchy-tertiary-weight: 400;
+}
+
+/* Typography Hierarchy Utilities */
+
+/* Primary information - most important */
+@utility text-hierarchy-primary {
+  font-size: calc(var(--text-base) * var(--hierarchy-primary-size));
+  font-weight: var(--hierarchy-primary-weight);
+  color: var(--foreground);
+  line-height: var(--leading-tight);
+}
+
+/* Secondary information - supporting details */
+@utility text-hierarchy-secondary {
+  font-size: calc(var(--text-base) * var(--hierarchy-secondary-size));
+  font-weight: var(--hierarchy-secondary-weight);
+  color: var(--muted-foreground);
+  line-height: var(--leading-normal);
+}
+
+/* Tertiary information - least important */
+@utility text-hierarchy-tertiary {
+  font-size: calc(var(--text-base) * var(--hierarchy-tertiary-size));
+  font-weight: var(--hierarchy-tertiary-weight);
+  color: var(--muted-foreground);
+  line-height: var(--leading-normal);
+}
+
+/* Visual Grouping Utilities */
+
+/* Group related content with subtle background */
+@utility group-subtle {
+  background-color: var(--muted);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-element);
+}
+
+/* Group related content with border */
+@utility group-bordered {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-element);
+}
+
+/* Group related content with card styling */
+@utility group-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-component);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Group related content with elevated styling */
+@utility group-elevated {
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-component);
+  box-shadow: var(--shadow-md);
+}
+
+/* Visual Separation Utilities */
+
+/* Subtle divider between sections */
+@utility divider-subtle {
+  border-top: 1px solid var(--border);
+  margin-top: var(--spacing-component);
+  margin-bottom: var(--spacing-component);
+}
+
+/* Prominent divider between major sections */
+@utility divider-prominent {
+  border-top: 2px solid var(--border);
+  margin-top: var(--spacing-section);
+  margin-bottom: var(--spacing-section);
+}
+
+/* Content Hierarchy Utilities */
+
+/* Primary content area */
+@utility content-primary {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Secondary content area */
+@utility content-secondary {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* Highlighted content area */
+@utility content-highlight {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: var(--spacing-element);
+  border-radius: var(--radius-base);
+}
+
+/* Muted content area */
+@utility content-muted {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  padding: var(--spacing-element);
+  border-radius: var(--radius-base);
+}
+
+/* Section Headers */
+@utility section-header {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--foreground);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--spacing-component);
+}
+
+@utility section-subheader {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+  line-height: var(--leading-snug);
+  margin-bottom: var(--spacing-element);
+}
