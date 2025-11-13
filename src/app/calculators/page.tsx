@@ -67,10 +67,10 @@ const calculators = [
 
 export default function CalculatorsPage() {
   return (
-    <div className='w-full max-w-4xl mx-auto'>
+    <div className='w-full max-w-4xl mx-auto pb-24'>
       <header className='spacing-section'>
-        <h1 className='section-header'>Medical Calculators</h1>
-        <p className='text-hierarchy-secondary'>A collection of essential tools for clinical practice.</p>
+        <h1 className='hidden section-header'>Medical Calculators</h1>
+        <p className='hidden text-hierarchy-secondary'>A collection of essential tools for clinical practice.</p>
       </header>
 
       <section

@@ -4,7 +4,7 @@ Thank you for your interest in contributing to Doses! This document outlines the
 
 ## Getting Started
 
-To get started, you'll need to have Node.js (version 20 or higher) and `pnpm` installed on your machine.
+To get started, you'll need to have Node.js (version 20 or higher) and `npm` installed on your machine.
 
 1.  **Clone the repository:**
     ```bash
@@ -13,15 +13,15 @@ To get started, you'll need to have Node.js (version 20 or higher) and `pnpm` in
     ```
 
 2.  **Install dependencies:**
-    This project uses `pnpm` for package management. To install dependencies, run:
+    This project uses `npm` for package management. To install dependencies, run:
     ```bash
-    pnpm install
+    npm install
     ```
 
 3.  **Run the development server:**
     To start the Next.js development server, run:
     ```bash
-    pnpm dev
+    npm run dev
     ```
     The application will be available at `http://localhost:9002`.
 
@@ -37,15 +37,15 @@ This project uses **Biome** for linting and formatting. Before committing your c
 
 -   **Format code:**
     ```bash
-    pnpm format
+    npm format
     ```
 -   **Lint code:**
     ```bash
-    pnpm lint
+    npm lint
     ```
 -   **Check for both formatting and linting errors:**
     ```bash
-    pnpm check
+    npm check
     ```
 
 ### Type Checking
@@ -53,7 +53,7 @@ This project uses **Biome** for linting and formatting. Before committing your c
 Ensure your code is type-safe by running the TypeScript compiler:
 
 ```bash
-pnpm typecheck
+npm typecheck
 ```
 
 ## Testing
@@ -62,22 +62,22 @@ We use **Vitest** for unit and integration testing. All new features and bug fix
 
 -   **Run all tests:**
     ```bash
-    pnpm test
+    npm test
     ```
 -   **Run tests in watch mode:**
     ```bash
-    pnpm test:watch
+    npm test:watch
     ```
 -   **Generate a coverage report:**
     ```bash
-    pnpm test:coverage
+    npm test:coverage
     ```
 
 ## Submitting Changes
 
 1.  **Preflight Check**: Before submitting your changes, run the full preflight check to ensure all quality gates are met:
     ```bash
-    pnpm preflight
+    npm preflight
     ```
     This command runs formatting, linting, building, and testing in one step.
 

@@ -6,7 +6,7 @@ This document provides a high-level overview of the Doses application's architec
 
 The application is built on a modern, robust technology stack chosen for performance, type safety, and maintainability.
 
-- **Framework**: **Next.js 14+** with the **App Router** is used for its hybrid rendering capabilities (Server and Client Components), file-based routing, and performance optimizations.
+- **Framework**: **Next.js 16+** with the **App Router** is used for its hybrid rendering capabilities (Server and Client Components), file-based routing, and performance optimizations.
 - **Language**: **TypeScript** is used across the entire codebase to ensure type safety and improve developer experience. The configuration is set to `strict` mode.
 - **UI Components**: **shadcn/ui** provides a set of accessible and composable base components, built on top of **Radix UI**.
 - **Styling**: **Tailwind CSS** is used for utility-first styling, allowing for rapid and consistent UI development. A custom theme is defined in `src/app/globals.css` and related style files.

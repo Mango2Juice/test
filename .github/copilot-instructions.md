@@ -9,7 +9,7 @@
 - **Framework**: Next.js 16.x with App Router
 - **Size**: ~224 TypeScript source files
 - **Node Version**: 20.x (specified in `.nvmrc`)
-- **Package Manager**: pnpm (ALWAYS use pnpm, never yarn or npm)
+- **Package Manager**: npm (ALWAYS use npm, never yarn or pnpm)
 
 ### Technology Stack
 - **Next.js**: React framework with App Router for hybrid server/client rendering
@@ -28,29 +28,16 @@
 ```bash
 npm ci
 ```
-**CRITICAL**: Prefer `pnpm install --frozen-lockfile` for clean, reproducible installs (especially in CI/CD). Use `pnpm install` only when adding/updating dependencies. This takes ~20-30 seconds. The repository uses `pnpm-lock.yaml`, which must not be modified manually.
-
-### Preflight Check (Recommended Before Committing)
-```bash
-pnpm preflight
-```
-This runs the complete validation pipeline: `pnpm install --frozen-lockfile && pnpm run format && pnpm run lint && pnpm run build && pnpm run typecheck`. **This is the gold standard** - if it passes, your changes meet all quality gates.
-
-**Build time**: ~5-7 minutes total
-- `pnpm install --frozen-lockfile`: ~20-30 seconds
-- `format`: ~1 second
-- `lint`: ~2 seconds
-- `build`: ~4-5 minutes (Next.js production build)
-- `typecheck`: ~5-10 seconds
+**CRITICAL**: Prefer `npm install` for clean, reproducible installs (especially in CI/CD). Use `npm install` only when adding/updating dependencies. This takes ~20-30 seconds. The repository uses `package-lock.yaml`, which must not be modified manually.
 
 ### Individual Commands
 
 #### Formatting & Linting (Biome)
 ```bash
-pnpm format      # Auto-fix formatting issues
-pnpm lint        # Auto-fix linting issues
-pnpm check       # Run both format + lint together
-pnpm ci          # Check-only mode (no fixes, for CI)
+npm format      # Auto-fix formatting issues
+npm lint        # Auto-fix linting issues
+npm check       # Run both format + lint together
+npm ci          # Check-only mode (no fixes, for CI)
 ```
 - Uses Biome.js (configured in `biome.json`)
 - 120 character line width
@@ -60,7 +47,7 @@ pnpm ci          # Check-only mode (no fixes, for CI)
 
 #### Type Checking
 ```bash
-pnpm run typecheck
+npm run typecheck
 ```
 - Runs TypeScript compiler with `--noEmit`
 - Takes ~5-10 seconds
@@ -68,9 +55,9 @@ pnpm run typecheck
 
 #### Testing
 ```bash
-pnpm test              # Run all tests once
-pnpm test:watch        # Watch mode for development
-pnpm test:coverage     # Generate coverage report
+npm test              # Run all tests once
+npm test:watch        # Watch mode for development
+npm test:coverage     # Generate coverage report
 ```
 - Uses Vitest with jsdom environment
 - **Test setup file**: `src/test/setup.ts` must exist and import `@testing-library/jest-dom` (already created in this repository)
@@ -80,9 +67,9 @@ pnpm test:coverage     # Generate coverage report
 
 #### Building
 ```bash
-pnpm build         # Production build
-pnpm dev           # Development server (port 9002)
-pnpm start         # Run production build locally
+npm build         # Production build
+npm dev           # Development server (port 9002)
+npm start         # Run production build locally
 ```
 - **Production build time**: ~4-5 minutes with Turbopack
 - **Build artifacts**: Output to `.next/` directory (already in .gitignore, do not commit)
@@ -133,21 +120,6 @@ pnpm start         # Run production build locally
 #### `src/hooks/` - Custom React Hooks
 - Co-located with components or in dedicated `__tests__/` subdirectories
 
-#### `docs/` - Documentation
-- `development.md` - Setup instructions
-- `testing.md` - Testing guidelines
-- `architecture.md` - System architecture
-- `clean-code.md`, `typescript.md`, `react.md` - Coding standards
-- `medication-database-guide.md` - Adding medications guide
-
-#### `.kiro/steering/` - AI Agent Guidelines
-**CRITICAL**: Read ALL files in `.kiro/steering/` before making changes:
-- `style.md` - Biome code style rules
-- `tech.md` - Technical conventions
-- `structure.md` - File organization
-- `product.md` - Product requirements
-- `sentry.md` - Error monitoring setup
-
 ---
 
 ## Core Architecture & Data Flow
@@ -176,43 +148,34 @@ The heart of Doses is its modular medication database system:
 - **Error Boundaries**: Global error handling via `global-error.tsx`
 - **Compound Components**: UI components follow radix-ui patterns with composition
 
-### PWA & Performance
- **Node Version**: 22.x (specified in `.nvmrc`)
- **Package Manager**: pnpm (ALWAYS use pnpm, never npm or yarn)
-- **Code Splitting**: Automatic route-based splitting via App Router
-- **Image Optimization**: Next.js built-in optimization for medical illustrations
-
-pnpm install --frozen-lockfile
-
 ## Development Workflow
 
-pnpm run preflight
-1. **Read steering docs**: Check `.kiro/steering/*.md` for relevant guidelines
+1. **Read steering docs**: Check `GEMINI.md` for relevant guidelines
 2. **Install dependencies**: `npm ci` (if starting fresh)
 3. **Check existing state**: Run `npm run typecheck && npm run check` to ensure baseline passes
 
 ### Making Changes
 1. **Write code** following TypeScript/React guidelines (see `AGENTS.md`)
 2. **Add tests** if touching critical logic (calculations, validations)
-pnpm run format      # Auto-fix formatting issues
-pnpm run lint        # Auto-fix linting issues
-pnpm run check       # Run both format + lint together
-pnpm run ci          # Check-only mode (no fixes, for CI)
-2. **Run tests**: `pnpm test` (skip if only docs changed)
-3. **Type check**: `pnpm typecheck`
-4. **Build**: `pnpm build` (critical validation)
+npm run format      # Auto-fix formatting issues
+npm run lint        # Auto-fix linting issues
+npm run check       # Run both format + lint together
+npm run ci          # Check-only mode (no fixes, for CI)
+2. **Run tests**: `npm test` (skip if only docs changed)
+3. **Type check**: `npm typecheck`
+4. **Build**: `npm build` (critical validation)
 
 ---
 
-pnpm run test              # Run all tests once
-pnpm run test:watch        # Watch mode for development
-pnpm run test:coverage     # Generate coverage report
+npm run test              # Run all tests once
+npm run test:watch        # Watch mode for development
+npm run test:coverage     # Generate coverage report
 **Symptom**: `Error: Cannot find module 'src/test/setup.ts'`
 
 **Solution**: The file `src/test/setup.ts` should exist with:
-pnpm run build         # Production build
-pnpm run dev           # Development server (port 9002)
-pnpm run start         # Run production build locally
+npm run build         # Production build
+npm run dev           # Development server (port 9002)
+npm run start         # Run production build locally
 This has been added to the repository.
 
 
@@ -232,7 +195,7 @@ This has been added to the repository.
 
 **Don't**: Try to cancel or optimize. This is expected for Next.js with Turbopack.
 
-**Do**: Use `pnpm dev` for faster iteration during development.
+**Do**: Use `npm run dev` for faster iteration during development.
 
 ### Issue: Medication Not Appearing
 **Symptom**: New medication file created but not showing in app
@@ -240,9 +203,9 @@ This has been added to the repository.
 **Debug Steps**:
 1. Check file exports `QuickReferenceMedication` interface
 2. Verify file is in correct category directory
-3. Run `pnpm typecheck` to catch schema errors
+3. Run `npm typecheck` to catch schema errors
 4. Check `medications/index.ts` auto-discovery (should not need manual editing)
-5. Restart dev server (`pnpm dev`)
+5. Restart dev server (`npm run dev`)
 
 ### Issue: Calculation Errors
 **Symptom**: Incorrect dosage calculations
@@ -316,9 +279,9 @@ src/lib/quick-reference-database/medications/
 
 ### Validation
 ```bash
-pnpm typecheck   # Verify TypeScript compliance
-pnpm test        # Run test suite
-pnpm dev         # Manual testing
+npm typecheck   # Verify TypeScript compliance
+npm test        # Run test suite
+npm dev         # Manual testing
 ```
 
 ---
