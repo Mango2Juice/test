@@ -157,28 +157,33 @@ The heart of Doses is its modular medication database system:
 ### Making Changes
 1. **Write code** following TypeScript/React guidelines (see `AGENTS.md`)
 2. **Add tests** if touching critical logic (calculations, validations)
-npm run format      # Auto-fix formatting issues
-npm run lint        # Auto-fix linting issues
-npm run check       # Run both format + lint together
-npm run ci          # Check-only mode (no fixes, for CI)
-2. **Run tests**: `npm test` (skip if only docs changed)
-3. **Type check**: `npm typecheck`
-4. **Build**: `npm build` (critical validation)
+3. **Format & lint**: `npm run check` (runs Biome)
+4. **Run tests**: `npm test` (skip if only docs changed)
+5. **Type check**: `npm typecheck`
+6. **Build**: `npm build` (critical validation)
 
 ---
 
-npm run test              # Run all tests once
-npm run test:watch        # Watch mode for development
-npm run test:coverage     # Generate coverage report
+## Troubleshooting & Common Issues
+
+### Issue: Vitest Fails with Missing Module
 **Symptom**: `Error: Cannot find module 'src/test/setup.ts'`
 
 **Solution**: The file `src/test/setup.ts` should exist with:
-npm run build         # Production build
-npm run dev           # Development server (port 9002)
-npm run start         # Run production build locally
+```typescript
+import '@testing-library/jest-dom'
+```
 This has been added to the repository.
 
-
+### Issue: Sentry Build Errors
+**Symptom**: `error: API request failed` or `error: Command failed`
+```
+> Sentry CLI Plugin: Notifying Sentry of release...
+> Sentry CLI Plugin: Running `sentry-cli releases ...`
+...
+error: API request failed
+  reason: The request failed due to a timeout
+```
 **Expected**: These are timeout warnings when building without network access to sentry.io. They do NOT fail the build. The build completes successfully.
 
 ### Issue: Pre-existing Test Failures
