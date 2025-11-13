@@ -22,7 +22,7 @@ const metronidazole: QuickReferenceMedication = {
       frequency: 'TDS',
       maxDose: 400,
       maxDoseUnit: 'mg/dose',
-      minAge: 1,
+      minAge: 2,
     },
   ],
   concentration: {

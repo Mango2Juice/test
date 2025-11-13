@@ -148,7 +148,7 @@ export function usePullToRefresh({
     const container = containerRef.current
     if (!container || !enabled) return
 
-    container.addEventListener('touchstart', handleTouchStart, { passive: true })
+    container.addEventListener('touchstart', handleTouchStart, { passive: false })
     container.addEventListener('touchmove', handleTouchMove, { passive: false })
     container.addEventListener('touchend', handleTouchEnd, { passive: true })
 

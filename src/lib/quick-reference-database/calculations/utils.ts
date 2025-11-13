@@ -86,23 +86,18 @@ export const getWeightForAge = (ageInMonths: number): number | undefined => {
   const lastPoint = averageWeights[averageWeights.length - 1]
   if (lastPoint && ageInMonths > lastPoint.ageMonths) return lastPoint.weightKg
 
-  // Find the closest data points for interpolation
-  let lowerBound = averageWeights[0]
-  let upperBound = averageWeights[averageWeights.length - 1]
+  // Find the two closest data points for interpolation
+  const lowerBound = averageWeights
+    .slice()
+    .reverse()
+    .find((p) => p.ageMonths <= ageInMonths);
+  const upperBound = averageWeights.find((p) => p.ageMonths > ageInMonths)
 
-  for (const point of averageWeights) {
-    if (point.ageMonths <= ageInMonths) {
-      lowerBound = point
-    }
-    if (point.ageMonths >= ageInMonths && (!upperBound || point.ageMonths < upperBound.ageMonths)) {
-      upperBound = point
-    }
-  }
+  if (!lowerBound) return upperBound?.weightKg; // Should be covered by firstPoint check, but for safety
+  if (!upperBound) return lowerBound.weightKg; // Should be covered by lastPoint check, but for safety
 
-  if (!lowerBound || !upperBound) return undefined
-
-  // Handle edge cases
-  if (lowerBound.ageMonths === upperBound.ageMonths) return lowerBound.weightKg
+  // Handle exact match
+  if (lowerBound.ageMonths === ageInMonths) return lowerBound.weightKg
 
   // Linear interpolation
   const ageRange = upperBound.ageMonths - lowerBound.ageMonths
