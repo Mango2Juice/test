@@ -186,17 +186,6 @@ export class ValidationErrorHandler {
     if (this.errorLog.length > 100) {
       this.errorLog = this.errorLog.slice(-100)
     }
-
-    // Console logging for development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Quick Reference Database Error:', {
-        operation: context.operation,
-        medicationId: context.medicationId,
-        categoryId: context.categoryId,
-        error: error.message,
-        timestamp: context.timestamp,
-      })
-    }
   }
 
   /**
