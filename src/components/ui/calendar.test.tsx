@@ -2,7 +2,7 @@
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { CalendarDay, Modifiers, WeekNumberProps } from 'react-day-picker'
+import type { CalendarDay, CalendarWeek, Modifiers, WeekNumberProps } from 'react-day-picker'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarDayButton } from './calendar'
 
@@ -62,13 +62,13 @@ describe('Calendar', () => {
   })
 
   it('forwards custom components and preserves built-ins', () => {
-    const CustomWeekNumber = ({ weekNumber }: { weekNumber: number }) => <td data-testid='custom-week'>{weekNumber}</td>
+    const CustomWeekNumber = ({ number }: { number: number }) => <td data-testid='custom-week'>{number}</td>
 
     render(
       <Calendar
         showWeekNumber
         components={{
-          WeekNumber: (props: WeekNumberProps) => <CustomWeekNumber weekNumber={props.number} />,
+          WeekNumber: (props: WeekNumberProps) => <CustomWeekNumber number={props.number} />,
         }}
       />,
     )
@@ -102,7 +102,10 @@ describe('CalendarDayButton', () => {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
       activeModifiers: { focused: true },
-    } as unknown as CalendarDay
+      dateLib: {} as any, // Mocking DateLib as it's complex and not needed for this test
+      isEqualTo: () => false,
+      outside: false,
+    }
 
     const modifiers: Modifiers = { focused: true }
 
@@ -128,9 +131,9 @@ describe('CalendarDayButton', () => {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
       activeModifiers: {},
-      dateLib: new Date(),
+      dateLib: {} as any,
       isEqualTo: () => false,
-      outside: 'start',
+      outside: true,
     }
     const modifiers: Modifiers = {
       selected: true,
@@ -161,9 +164,9 @@ describe('CalendarDayButton', () => {
       date: new Date('2024-05-20'),
       displayMonth: new Date('2024-05-01'),
       activeModifiers: {},
-      dateLib: new Date(),
+      dateLib: {} as any,
       isEqualTo: () => false,
-      outside: 'start',
+      outside: true,
     }
     const modifiers: Modifiers = { selected: true }
 
