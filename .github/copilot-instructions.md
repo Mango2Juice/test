@@ -8,7 +8,7 @@
 - **Primary Language**: TypeScript (100%)
 - **Framework**: Next.js 16.x with App Router
 - **Size**: ~224 TypeScript source files
-- **Node Version**: 22.x (specified in `.nvmrc`)
+- **Node Version**: 20.x (specified in `.nvmrc`)
 - **Package Manager**: pnpm (ALWAYS use pnpm, never yarn or npm)
 
 ### Technology Stack
