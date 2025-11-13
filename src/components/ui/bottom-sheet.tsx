@@ -16,7 +16,7 @@ interface BottomSheetProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
-  ({ open, onOpenChange, title, description, children, className, ...props }, ref) => {
+  ({ open, onOpenChange, title, description, children, className, ...props }) => {
     const [mounted, setMounted] = useState(false)
     const sheetRef = useRef<HTMLDivElement>(null)
     const triggerRef = useRef<HTMLElement | null>(null)

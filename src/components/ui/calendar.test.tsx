@@ -3,6 +3,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type React from 'react'
+import type { WeekNumberProps } from 'react-day-picker'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarDayButton } from './calendar'
 
@@ -29,7 +30,7 @@ describe('Calendar', () => {
 
     // By default showOutsideDays=true means we should see days from previous/next month
     // Validate by finding more than 28 day buttons carrying data-day
-    const dayButtons = screen.getAllByRole('button').filter((b: any) => b?.dataset?.day)
+    const dayButtons = screen.getAllByRole('button').filter((b: HTMLButtonElement) => b?.dataset.day)
     expect(dayButtons.length).toBeGreaterThan(28)
   })
 
@@ -57,15 +58,13 @@ describe('Calendar', () => {
   })
 
   it('forwards custom components and preserves built-ins', () => {
-    const CustomWeekNumber = ({ children }: { children: React.ReactNode }) => (
-      <td data-testid='custom-week'>{children}</td>
-    )
+    const CustomWeekNumber = ({ number }: WeekNumberProps) => <td data-testid='custom-week'>{number}</td>
 
     render(
       <Calendar
         showWeekNumber
         components={{
-          WeekNumber: CustomWeekNumber as any,
+          WeekNumber: CustomWeekNumber,
         }}
       />,
     )
