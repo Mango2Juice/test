@@ -6,6 +6,16 @@ interface ProgressBarProps {
   className?: string
 }
 
+/**
+ * Renders a horizontal progress bar supporting determinate and indeterminate modes.
+ *
+ * In determinate mode the inner bar width reflects `value` (clamped to 0–100). In indeterminate mode a looping animated indicator is shown and `aria-valuenow` is omitted for accessibility.
+ *
+ * @param value - Progress percentage (0–100). Defaults to 0.
+ * @param indeterminate - When true, show indeterminate animation and omit `aria-valuenow`. Defaults to false.
+ * @param className - Additional CSS classes applied to the outer container.
+ * @returns The rendered progress bar element.
+ */
 export function ProgressBar({ value = 0, indeterminate = false, className }: ProgressBarProps) {
   return (
     <div

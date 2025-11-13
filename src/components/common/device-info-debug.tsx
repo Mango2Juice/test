@@ -4,8 +4,12 @@
 import { useDevice, useDeviceType, useHasTouch, useOrientation } from '@/hooks/use-device'
 
 /**
- * Debug component to display device information
- * This component can be used during development to test device detection
+ * Renders a fixed on-screen panel that displays current device detection details for development.
+ *
+ * Shows device type, mobile/tablet flags, orientation, screen dimensions, touch support, max touch points,
+ * and haptic capability using the device hooks.
+ *
+ * @returns The JSX element for the device information debug panel
  */
 export function DeviceInfoDebug() {
   const deviceContext = useDevice()

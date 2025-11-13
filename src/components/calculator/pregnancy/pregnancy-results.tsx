@@ -13,6 +13,14 @@ interface ResultCardProps {
   description?: string
 }
 
+/**
+ * Render a small centered Card showing a title, a prominent value, and an optional muted description.
+ *
+ * @param title - The small description text shown in the card header
+ * @param value - The prominent value displayed in the card content
+ * @param description - Optional supplemental text shown below the value in a muted, small style
+ * @returns A Card element containing the rendered title, value, and optional description
+ */
 function ResultCard({ title, value, description }: ResultCardProps) {
   return (
     <Card className='text-center bg-secondary/30'>
@@ -27,6 +35,15 @@ function ResultCard({ title, value, description }: ResultCardProps) {
   )
 }
 
+/**
+ * Renders an informational alert describing which method produced the estimated due date (EDD) and any discrepancy with ultrasound.
+ *
+ * Displays a contextual title and description when `source` is one of `'LMP'`, `'LMP_ADJUSTED'`, or `'Ultrasound'`; renders nothing for other values.
+ *
+ * @param source - The origin of the EDD. Expected values: `'LMP'`, `'LMP_ADJUSTED'`, or `'Ultrasound'`.
+ * @param discrepancyDays - Number of days difference between LMP and ultrasound estimates (used in the alert description when applicable).
+ * @returns A React element containing the alert for recognized `source` values, `null` otherwise.
+ */
 function BestEstimateAlert({ source, discrepancyDays }: { source: string; discrepancyDays: number }) {
   let title = ''
   let description = ''
@@ -61,6 +78,12 @@ interface PregnancyResultsProps {
   pregnancyInfo: PregnancyInfo
 }
 
+/**
+ * Render a composed view showing pregnancy estimates, key milestones, and screening windows.
+ *
+ * @param pregnancyInfo - Pregnancy calculation results used to populate the estimated due date, EDD source and discrepancy, gestational age, conception date, trimester milestone dates, and screening window entries.
+ * @returns A React element that displays the estimated due date, a best-estimate alert (when applicable), current gestational age, probable conception date, trimester milestone dates, and a list of screening windows.
+ */
 export function PregnancyResults({ pregnancyInfo }: PregnancyResultsProps) {
   return (
     <div className='space-y-4'>

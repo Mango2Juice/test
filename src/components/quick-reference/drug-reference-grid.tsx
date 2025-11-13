@@ -34,6 +34,14 @@ interface EmptyStateProps {
   icon?: React.ReactNode
 }
 
+/**
+ * Render a centered empty-state message with an optional icon, title, and description.
+ *
+ * @param title - Heading text displayed prominently in the empty state
+ * @param description - Supporting descriptive text shown below the title
+ * @param icon - Optional React node to display above the title; a default search icon is used when omitted
+ * @returns A JSX element containing a centered icon, title, and description with responsive sizing for mobile
+ */
 function EmptyState({ title, description, icon }: EmptyStateProps) {
   const { isMobile } = useDevice()
 
@@ -46,6 +54,13 @@ function EmptyState({ title, description, icon }: EmptyStateProps) {
   )
 }
 
+/**
+ * Renders a centered loading indicator and status message for dosage calculations.
+ *
+ * The visual layout adapts for mobile vs. desktop sizes.
+ *
+ * @returns A JSX element containing a spinner and the text "Calculating dosages..."
+ */
 function LoadingState() {
   const { isMobile } = useDevice()
 
@@ -59,6 +74,14 @@ function LoadingState() {
   )
 }
 
+/**
+ * Render a responsive grid of skeleton cards used as a placeholder while content is loading.
+ *
+ * The grid adapts column count for mobile and larger viewports and generates `count` pulsing skeleton cards.
+ *
+ * @param count - Number of skeleton cards to render (defaults to 8)
+ * @returns A JSX.Element containing the responsive grid of skeleton placeholders
+ */
 function LoadingGrid({ count = 8 }: { count?: number }) {
   const { isMobile } = useDevice()
 
@@ -116,24 +139,12 @@ const gridItemVariants = {
 }
 
 /**
- * Render a responsive grid of medication dosage cards with mobile "load more" behavior and accessibility support.
+ * Render a responsive, accessible grid of medication dosage cards with mobile "load more" behavior.
  *
- * Displays loading and empty states, sorts medications alphabetically, and shows a results summary. On mobile it
- * initially limits visible items and exposes a "Load More" control that updates the visible set and announces progress
- * to screen readers.
+ * Renders loading placeholders, empty states, or a sorted grid of DrugDosageCard items; on mobile the list is paginated
+ * in increments of 8 with an accessible announcement when more items are loaded.
  *
- * Supports swipe gestures on mobile cards to reveal quick actions.
- *
- * @param drugs - List of medications to display
- * @param categories - List of all available complaint categories.
- * @param calculationResults - Map from medication id to its dosage calculation result; used to populate each card
- * @param onDrugSelect - Optional callback invoked with a drug id when a card is selected
- * @param onDrugFavorite - Optional callback invoked when favorite action is triggered
- * @param onDrugDelete - Optional callback invoked when delete action is triggered
- * @param onDrugHistory - Optional callback invoked when history action is triggered
- * @param onDrugShare - Optional callback invoked when share action is triggered
- * @param isLoading - When true, shows a full-width loading state instead of the grid
- * @param className - Optional container CSS class name(s)
+ * @param calculationResults - Map from medication `id` to its dosage calculation result; used to populate each card (missing entries render a card with `null` result)
  * @returns A React element containing the medication results grid, loading placeholders, or an appropriate empty state
  */
 export function DrugReferenceGrid({

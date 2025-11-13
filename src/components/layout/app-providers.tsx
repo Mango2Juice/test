@@ -19,20 +19,15 @@ import { AppLayout } from './app-layout'
  */
 
 /**
- * A wrapper component that provides all the necessary context and services for the application.
+ * Wraps the application with theme, state, layout, and runtime service providers.
  *
- * This includes:
- * - ThemeProvider: For managing light/dark/system themes.
- * - StoreInitializer: For hydrating Zustand stores on the client.
- * - AppLayout: The main layout structure of the application.
- * - Toaster: For displaying toast notifications.
- * - ServiceWorkerRegistrar: For managing the PWA service worker.
- * - PersistentStorageRegistrar: For requesting persistent storage for offline capabilities.
- * - Analytics & SpeedInsights: For Vercel analytics.
+ * The component composes ThemeProvider, StoreInitializer, AppLayout, Toaster,
+ * ServiceWorkerRegistrar, PersistentStorageRegistrar, Analytics, and SpeedInsights
+ * so the app has theme management, hydrated stores, layout, notifications, PWA
+ * support, persistent storage, and telemetry.
  *
- * @param {object} props - The component props.
- * @param {React.ReactNode} props.children - The child components to render within the providers.
- * @returns {React.ReactElement} The rendered providers and children.
+ * @param children - Child nodes to render; these are mounted inside AppLayout.
+ * @returns The React element containing the composed provider tree with `children` rendered inside AppLayout.
  */
 export function AppProviders({ children }: { children: React.ReactNode }): React.ReactElement {
   return (

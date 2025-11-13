@@ -7,6 +7,11 @@ import type { DeviceType, Orientation } from '@/lib/types/device'
 const MOBILE_BREAKPOINT = 768 // Corresponds to Tailwind's 'md' breakpoint
 const TABLET_BREAKPOINT = 1024 // Corresponds to Tailwind's 'lg' breakpoint
 
+/**
+ * Determines whether the current viewport width is below the configured mobile breakpoint.
+ *
+ * @returns `true` if the viewport width is less than MOBILE_BREAKPOINT, `false` otherwise.
+ */
 export function useIsMobile(): boolean {
   const [isMobile, setIsMobile] = useState<boolean>(false)
 
@@ -34,6 +39,17 @@ interface DeviceInfo {
   orientation: Orientation
 }
 
+/**
+ * Provides current device classification and orientation and keeps it updated when the viewport changes.
+ *
+ * The returned object reflects `isMobile`, `isTablet`, `deviceType`, and `orientation` and is updated on window resize and orientation changes (including the Screen Orientation API when available).
+ *
+ * @returns The current DeviceInfo:
+ * - `isMobile`: `true` when viewport width is less than 768 pixels, `false` otherwise.
+ * - `isTablet`: `true` when viewport width is >= 768 and < 1024 pixels, `false` otherwise.
+ * - `deviceType`: `'mobile'`, `'tablet'`, or `'desktop'` derived from the above flags.
+ * - `orientation`: `'portrait'` when height > width, otherwise `'landscape'`.
+ */
 export function useDeviceInfo(): DeviceInfo {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>({
     isMobile: false,

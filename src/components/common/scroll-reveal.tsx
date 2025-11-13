@@ -19,8 +19,18 @@ interface ScrollRevealProps {
 }
 
 /**
- * Component that reveals content when scrolled into view
- * Uses Intersection Observer for optimal performance
+ * Wraps content in a container that reveals with a configurable animation when it enters the viewport.
+ *
+ * The component toggles between hidden and visible CSS states based on intersection visibility and applies
+ * an optional transition delay to stagger or offset the reveal.
+ *
+ * @param children - Content to render inside the reveal container.
+ * @param className - Additional CSS classes applied to the container.
+ * @param animation - Reveal animation type: 'fade', 'slide-up', 'slide-down', 'slide-left', 'slide-right', or 'scale'.
+ * @param delay - Transition delay in milliseconds applied when the element becomes visible.
+ * @param threshold - Intersection Observer threshold used to determine visibility (0 to 1).
+ * @param triggerOnce - If true, the reveal occurs only the first time the element becomes visible.
+ * @returns The wrapper element that reveals its children when scrolled into view.
  */
 export function ScrollReveal({
   children,
@@ -77,8 +87,16 @@ interface ScrollRevealListProps {
 }
 
 /**
- * List component that reveals items with staggered timing on scroll
- * Optimized with Intersection Observer
+ * Wraps a list of children and reveals each item with a staggered scroll-based animation.
+ *
+ * @param children - Array of items to render and reveal in order
+ * @param className - CSS classes applied to the outer wrapper element
+ * @param itemClassName - CSS classes applied to each item wrapper
+ * @param animation - Animation style to apply to each item (e.g., `'fade'`, `'slide-up'`, `'scale'`)
+ * @param staggerDelay - Milliseconds to wait between the start of each successive item's reveal
+ * @param threshold - Intersection Observer threshold that determines when an item is considered visible
+ * @param triggerOnce - If `true`, each item will reveal only the first time it becomes visible
+ * @returns A wrapper element containing the provided children where each child is revealed according to the configured animation and stagger timing
  */
 export function ScrollRevealList({
   children,

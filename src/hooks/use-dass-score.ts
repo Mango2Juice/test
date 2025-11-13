@@ -6,18 +6,16 @@ import type { AnswerValue, DassState } from '@/lib/utils/dass-score'
 import { calculateDassScore, initialState, questions } from '@/lib/utils/dass-score'
 
 /**
- * Manages Dass questionnaire state and actions for a React component.
+ * Manage DASS questionnaire state and provide handlers for updating, submitting, and resetting it.
  *
- * Provides current answers, computed DASS results, completion and visibility flags, and handlers to update answers, submit, and reset the questionnaire.
- *
- * @returns An object with:
- * - `answers`: current answers keyed by question id
- * - `results`: computed DASS score breakdown
- * - `showResult`: `true` when results should be shown, `false` otherwise
- * - `isComplete`: `true` if every question has been answered (`answer !== -1`), `false` otherwise
- * - `handleAnswerChange`: function `(id, value)` to update a single answer and hide results
- * - `handleSubmit`: form submit handler that prevents default and shows results when `isComplete` is `true`
- * - `handleReset`: function to reset answers to initial state and hide results
+ * @returns An object containing:
+ * - `answers` — current answers keyed by question id
+ * - `results` — computed DASS score breakdown from `answers`
+ * - `showResult` — `true` when results should be displayed, `false` otherwise
+ * - `isComplete` — `true` if every question has an answer (`answer !== -1`), `false` otherwise
+ * - `handleAnswerChange` — `(id, value)` updates a single answer and hides results
+ * - `handleSubmit` — form submit handler that prevents default and shows results when `isComplete` is `true`
+ * - `handleReset` — resets `answers` to the initial state and hides results
  */
 export function useDassScore() {
   const [answers, setAnswers] = useState<DassState>(initialState)

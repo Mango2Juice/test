@@ -10,6 +10,14 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useIdealBodyWeight } from '@/hooks/use-ideal-body-weight'
 
+/**
+ * Render a compact result card that displays a title, a prominent value, and its unit.
+ *
+ * @param title - Short label shown above the value
+ * @param value - Formatted numeric or textual result shown prominently
+ * @param unit - Unit label displayed alongside the value
+ * @returns The card element containing the title, bold value, and unit label
+ */
 function ResultCard({ title, value, unit }: { title: string; value: string; unit: string }) {
   return (
     <Card className='text-center bg-secondary/30 flex-1'>

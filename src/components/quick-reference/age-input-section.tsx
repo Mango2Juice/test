@@ -17,6 +17,15 @@ interface AgeInputSectionProps {
   disabled?: boolean
 }
 
+/**
+ * Render an age input paired with a years/months unit toggle.
+ *
+ * Updates the global calculator state and announces changes to assistive technologies when the
+ * numeric age or unit is changed. Clearing the input resets the stored age to 0.
+ *
+ * @param disabled - If true, disables the age input and unit toggle.
+ * @returns A React element containing a labeled age input and a years/months toggle button.
+ */
 export function AgeInputSection({ disabled }: AgeInputSectionProps) {
   // Directly use the global state from Zustand store
   const { displayAge, displayAgeUnit, setDisplayAge, setIsWeightManuallyEntered } = useCalculatorStore()
