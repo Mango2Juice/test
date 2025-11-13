@@ -58,7 +58,9 @@ export function useAnimationQueue(options: UseAnimationQueueOptions = {}) {
       setQueue((prev) => prev.slice(itemsToProcess.length))
       setRunning((prev) => {
         const newRunning = new Set(prev)
-        itemsToProcess.forEach((item) => newRunning.add(item.id))
+        for (const item of itemsToProcess) {
+          newRunning.add(item.id)
+        }
         return newRunning
       })
 

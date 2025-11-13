@@ -64,34 +64,3 @@ export const vaccines: readonly Vaccine[] = [
   { name: 'HPV', doses: [{ age: '13y', label: '1 Dos' }] },
   { name: 'TT', doses: [{ age: '15y', label: 'Dos Penggalak' }] },
 ] as const
-
-export const vaccineDescriptions: readonly VaccineDescription[] = [
-  {
-    name: 'BCG',
-    description: 'Adalah Bacille Calmette-Guerin, vaksin yang memberi perlindungan terhadap tuberkulosis.',
-  },
-  { name: 'Hepatitis B', description: 'Vaksin hepatitis B untuk mencegah penyakit hepatitis B.' },
-  { name: 'MMR', description: 'Adalah vaksin kombinasi measles (campak), mumps (beguk) dan rubella.' },
-  { name: 'JE', description: 'Vaksin ini diberikan di Sarawak untuk mencegah penyakit Japanese Encephalitis.' },
-  { name: 'DT', description: 'Dos penggalak yang memberi perlindungan terhadap difteria dan tetanus.' },
-  {
-    name: 'TT',
-    description:
-      'Adalah Tetanus Toxoid yang diberi untuk mencegah penyakit tetanus (kancing gigi). Diberi sebagai dos penggalak untuk meningkatkan paras antibodi.',
-  },
-  {
-    name: 'DTaP-IPV-Hep B-Hib',
-    description:
-      'Adalah vaksin kombinasi 6 serangkai yang memberi perlindungan terhadap difteria, tetanus (kancing gigi), pertussis (batuk kokol), poliomyelitis, Hepatitis B dan Haemophilus influenzae type B.',
-  },
-  {
-    name: 'PCV',
-    description:
-      'Diberi untuk mencegah penyakit Pneumokokal serius yang disebabkan oleh serotype bakteria Streptococcus Pneumoniae tertentu.',
-  },
-  {
-    name: 'HPV',
-    description:
-      'Adalah vaksin Human Papillomavirus yang disediakan untuk murid sekolah perempuan tingkatan 1 atau remaja perempuan berumur 13 tahun yang tidak bersekolah. Ianya diberi untuk mencegah jangkitan HPV yang boleh menyebabkan kanser serviks/pangkal rahim.',
-  },
-] as const

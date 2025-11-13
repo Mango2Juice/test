@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ageMonths, ageYears, vaccineDescriptions, vaccines } from '@/lib/medical-data/immunisation-schedule'
 import { cn } from '@/lib/utils'
@@ -99,19 +99,6 @@ export default function NationalImmunisationSchedulePage() {
           </div>
         </CardContent>
       </Card>
-
-      <div className='mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {vaccineDescriptions.map((item) => (
-          <Card key={item.name}>
-            <CardHeader>
-              <CardTitle>{item.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className='text-muted-foreground'>{item.description}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
     </div>
   )
 }
