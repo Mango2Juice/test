@@ -58,7 +58,6 @@ export function PregnancyInputForm({
               mode='single'
               selected={lmpDate}
               onSelect={setLmpDate}
-              autoFocus
               disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
             />
           </PopoverContent>
