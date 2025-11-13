@@ -4,9 +4,6 @@
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type React from 'react'
-
-import { PersistentStorageRegistrar } from '@/components/persistent-storage-registrar'
-import { ServiceWorkerRegistrar } from '@/components/service-worker-registrar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { StoreInitializer } from '@/lib/stores/store-initializer'
@@ -26,8 +23,6 @@ import { AppLayout } from './app-layout'
  * - StoreInitializer: For hydrating Zustand stores on the client.
  * - AppLayout: The main layout structure of the application.
  * - Toaster: For displaying toast notifications.
- * - ServiceWorkerRegistrar: For managing the PWA service worker.
- * - PersistentStorageRegistrar: For requesting persistent storage for offline capabilities.
  * - Analytics & SpeedInsights: For Vercel analytics.
  *
  * @param {object} props - The component props.
@@ -40,8 +35,6 @@ export function AppProviders({ children }: { children: React.ReactNode }): React
       <StoreInitializer />
       <AppLayout>{children}</AppLayout>
       <Toaster />
-      <ServiceWorkerRegistrar />
-      <PersistentStorageRegistrar />
       <Analytics />
       <SpeedInsights />
     </ThemeProvider>
