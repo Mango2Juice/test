@@ -21,6 +21,13 @@ interface PregnancyInputFormProps {
   setGaDays: (days: string) => void
 }
 
+/**
+ * Renders a pregnancy input form with date pickers for LMP and first-trimester ultrasound and numeric inputs for gestational age.
+ *
+ * The LMP picker disables dates before 1900-01-01 and dates after today. The ultrasound picker disables dates after today and dates before the selected LMP (when present). The gestational age inputs (weeks and days) are disabled until an ultrasound date is selected.
+ *
+ * @returns A React element containing the pregnancy input form.
+ */
 export function PregnancyInputForm({
   lmpDate,
   setLmpDate,

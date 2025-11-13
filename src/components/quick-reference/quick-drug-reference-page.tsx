@@ -67,13 +67,13 @@ class PageErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
 }
 
 /**
- * Render an error fallback UI for the quick reference page.
+ * Render a fullscreen error fallback UI for the quick reference page.
  *
- * Displays a descriptive error card with actions to retry loading or navigate back.
+ * Shows a descriptive error card with actions to retry loading or navigate back.
  *
- * @param error - The error that occurred; shown in development details.
+ * @param error - The occurred error; its message and stack are shown only in development.
  * @param onRetry - Callback invoked when the user requests a retry.
- * @returns A React element containing the error message, "Try Again" and "Go Back" actions, and development-only error details when NODE_ENV is "development".
+ * @returns A React element that displays the error message, "Try Again" and "Go Back" actions, and development-only error details when NODE_ENV is "development".
  */
 function ErrorFallback({ error, onRetry }: { error: Error; onRetry: () => void }) {
   const router = useRouter()
@@ -122,15 +122,15 @@ function ErrorFallback({ error, onRetry }: { error: Error; onRetry: () => void }
 }
 
 /**
- * Render the quick drug reference UI and manage client-side state, dose calculations, and navigation for pediatric medications.
+ * Render the pediatric quick drug reference UI and keep client-side dosing state in sync.
  *
- * Initializes client-side defaults, computes doses for filtered medications based on age and weight (manual or computed), updates calculation results, and responds to user interactions (filter changes and drug selection).
+ * Computes and stores dose calculations for the currently filtered pediatric medications based on the displayed age and either a manually entered or age-derived weight, and provides handlers for navigation and user interactions (filter changes, selection, favorites, delete, history, share, refresh, and swipe navigation).
  *
  * @param defaultWeight - Optional initial weight to populate the weight input
  * @param initialComplaintFilter - Optional initial complaint/category filter to apply
- * @param medications - List of quick-reference medications used for filtering and dose calculations
- * @param categories - List of complaint categories used to build the category filter bar
- * @returns The rendered quick drug reference content JSX for use inside the page
+ * @param medications - Quick-reference medications used for filtering and dose calculations
+ * @param categories - Complaint categories used to build the category filter bar
+ * @returns The quick drug reference content as a React element
  */
 function QuickDrugReferenceContent({
   defaultWeight,
@@ -451,6 +451,12 @@ function QuickDrugReferenceContent({
   )
 }
 
+/**
+ * Render the quick drug reference page wrapped in an error boundary.
+ *
+ * @param props - Props forwarded to QuickDrugReferenceContent (page configuration and data)
+ * @returns A React element that renders the quick drug reference content inside a page-level error boundary
+ */
 export function QuickDrugReferencePage(props: QuickDrugReferencePageProps) {
   return (
     <PageErrorBoundary>

@@ -5,6 +5,13 @@ interface SuccessCheckmarkProps {
   className?: string
 }
 
+/**
+ * Renders a scalable SVG checkmark styled as a success indicator.
+ *
+ * @param size - Visual size of the icon; defaults to `'md'`. Accepted values: `'sm' | 'md' | 'lg'`.
+ * @param className - Additional CSS classes to apply to the SVG container.
+ * @returns The SVG element for a success checkmark, with size and styling applied.
+ */
 export function SuccessCheckmark({ size = 'md', className }: SuccessCheckmarkProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',

@@ -28,6 +28,11 @@ const resources = [
   },
 ]
 
+/**
+ * Renders the Clinical Resources page with a header and a responsive grid of resource cards.
+ *
+ * @returns The page's React element containing a header and a grid of linked resource cards.
+ */
 export default function ResourcesPage() {
   return (
     <div className='w-full max-w-4xl mx-auto'>

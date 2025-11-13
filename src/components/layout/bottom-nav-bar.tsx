@@ -9,13 +9,11 @@ import { cn } from '@/lib/utils'
 import { baseNavItems } from './nav-items'
 
 /**
- * Render a fixed bottom navigation bar containing navigation links and a theme toggle.
+ * Renders a fixed bottom navigation bar with navigation links and a theme toggle.
  *
- * The bar displays navigation items from `baseNavItems`, highlights the active item
- * based on the current pathname (active when `href === '/'` matches exactly, otherwise
- * when the pathname starts with the item's `href`), and includes a ThemeToggle control.
+ * Highlights the active navigation item based on the current pathname: the root item is active only on an exact match, while other items are active when the pathname begins with the item's `href`. Tapping an item triggers light haptic feedback when the environment supports vibration.
  *
- * @returns The bottom navigation bar element with navigation links and a theme toggle label.
+ * @returns The bottom navigation bar element containing the navigation links and a theme toggle.
  */
 export function BottomNavBar() {
   const pathname = usePathname()

@@ -8,6 +8,14 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { usePregnancyCalculator } from '@/hooks/use-pregnancy-calculator'
 
+/**
+ * Page component that renders the pregnancy due date calculator UI.
+ *
+ * Displays an input card for clinical data and a results panel that shows calculated
+ * pregnancy details when available or an informational placeholder when no data is present.
+ *
+ * @returns The JSX element for the pregnancy due date calculator page.
+ */
 export default function PregnancyCalculatorPage() {
   const {
     lmpDate,

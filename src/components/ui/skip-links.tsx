@@ -14,8 +14,13 @@ interface SkipLinksProps {
 }
 
 /**
- * Skip links component for keyboard navigation accessibility
- * Provides quick navigation to main content areas
+ * Render an accessible set of skip navigation links that let keyboard users jump to page regions.
+ *
+ * Each link prevents default navigation, finds the target element by the link's `href` (stripping a leading `#`), moves focus to that element, temporarily adds `tabindex="-1"` if needed and removes it on blur, and scrolls the target into view with smooth behavior.
+ *
+ * @param links - Array of skip link descriptors. Each item should include `href` (typically an ID reference like `#main-content`) and `label` (text shown for the link).
+ * @param className - Optional additional CSS class names applied to the outer container.
+ * @returns The rendered skip links container element, or `null` when `links` is empty.
  */
 export function SkipLinks({ links, className }: SkipLinksProps) {
   const handleSkipClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -84,7 +89,9 @@ export function SkipLinks({ links, className }: SkipLinksProps) {
 }
 
 /**
- * Default skip links for the quick drug reference page
+ * Provides a preconfigured set of skip links for the quick drug reference page.
+ *
+ * @returns A SkipLinks element populated with links to primary sections: main content, weight input, category filters, and medication results.
  */
 export function QuickReferenceSkipLinks() {
   const skipLinks: SkipLink[] = [

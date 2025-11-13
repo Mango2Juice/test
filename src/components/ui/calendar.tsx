@@ -6,6 +6,20 @@ import { type DayButton, DayPicker, getDefaultClassNames } from 'react-day-picke
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
+/**
+ * Render a DayPicker calendar preconfigured with the project's styling, layout, and component overrides.
+ *
+ * The component forwards remaining DayPicker props to the underlying DayPicker while applying:
+ * - a layered classNames mapping merging react-day-picker defaults with project classes,
+ * - caption layout and a default month dropdown formatter,
+ * - custom Root, Chevron, DayButton (CalendarDayButton), and WeekNumber components,
+ * - configurable navigation button variant and optional display of outside month days.
+ *
+ * @param showOutsideDays - When true, days from adjacent months are shown in the calendar grid.
+ * @param captionLayout - Layout style for the month caption (e.g., "label" or "dropdown").
+ * @param buttonVariant - Variant passed to navigation buttons to control their visual style.
+ * @returns The configured DayPicker React element.
+ */
 function Calendar({
   className,
   classNames,
@@ -124,6 +138,17 @@ function Calendar({
   )
 }
 
+/**
+ * Render a calendar day as a styled button that reflects selection, range, and focus states.
+ *
+ * The button sets data attributes for single selection, range start/middle/end, and the localized day string.
+ * When `modifiers.focused` becomes true the underlying button receives focus.
+ *
+ * @param className - Additional class names applied to the button container
+ * @param day - Day object for the rendered cell (used for the `data-day` attribute)
+ * @param modifiers - Day modifiers produced by DayPicker that indicate selection, range, and focus states
+ * @returns A Button element representing the calendar day with visual and accessibility state encoded via data attributes
+ */
 function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames()
 

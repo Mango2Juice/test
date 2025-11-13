@@ -15,6 +15,20 @@ export interface ViewTransitionProps {
   onAnimationComplete?: () => void
 }
 
+/**
+ * Manages mounting and unmounting of its children with configurable enter/exit animations.
+ *
+ * Renders the children inside a transition wrapper when visible and keeps them mounted for the duration of exit animations so the exit transition can complete. Calls `onAnimationComplete` after an exit finishes. When `animationType` is `'none'`, renders children immediately only while `isVisible` is true.
+ *
+ * @param children - Content to render inside the transition container
+ * @param isVisible - Controls whether the view should be shown
+ * @param animationType - Type of transition to apply: `'slide'`, `'fade'`, `'scale'`, or `'none'`
+ * @param direction - Direction used for slide transitions: `'left'`, `'right'`, `'up'`, or `'down'`
+ * @param duration - Animation duration in milliseconds
+ * @param className - Additional CSS classes applied to the outer wrapper
+ * @param onAnimationComplete - Optional callback invoked after an exit animation completes
+ * @returns The transition-wrapped children element when rendered, or `null` when not rendered
+ */
 export function ViewTransition({
   children,
   isVisible,
@@ -128,6 +142,14 @@ export interface CalculatorViewTransitionProps {
   className?: string
 }
 
+/**
+ * Specialized view transition configured for calculator and quick-reference screens.
+ *
+ * @param viewType - Determines the slide direction: 'calculator' uses 'right', otherwise 'left'.
+ * @param isActive - Controls whether the view is visible.
+ * @param className - Optional additional CSS classes applied to the outer container.
+ * @returns The transition wrapper that renders the given children with the configured slide animation.
+ */
 export function CalculatorViewTransition({ children, viewType, isActive, className }: CalculatorViewTransitionProps) {
   return (
     <ViewTransition
@@ -155,6 +177,15 @@ export interface LoadingTransitionProps {
   className?: string
 }
 
+/**
+ * Cross-fades between provided content and a loading overlay based on loading state.
+ *
+ * @param isLoading - When `true`, shows the loading overlay; when `false`, shows `children`.
+ * @param children - The primary content to display when not loading.
+ * @param loadingComponent - Optional element to render while loading; a centered spinner is used if omitted.
+ * @param className - Optional additional CSS classes applied to the outer container.
+ * @returns A wrapper element that displays either the content or the loading overlay with fade transitions.
+ */
 export function LoadingTransition({ isLoading, children, loadingComponent, className }: LoadingTransitionProps) {
   const defaultLoadingComponent = (
     <div className='flex items-center justify-center min-h-[200px]'>

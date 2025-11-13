@@ -6,18 +6,18 @@ import type { Gender } from '@/lib/utils/ideal-body-weight'
 import { calculateAdjBW, calculateIBW } from '@/lib/utils/ideal-body-weight'
 
 /**
- * Hook that computes ideal body weight and adjusted body weight while managing related input state.
+ * Manage input state for gender, height (cm), and actual body weight and compute ideal body weight (IBW) and adjusted body weight (AdjBW) when inputs are valid.
  *
- * The hook validates height input and returns computed results when inputs are valid; when invalid, `results` is `null` and `error` contains a user-facing validation message.
+ * The hook validates `heightCm` (must parse to a number greater than 0 and at least 152.4 cm). When validation fails, `results` is `null` and `error` contains a user-facing message; when validation succeeds, `results` contains the calculated `ibw` and an `adjBw` when `actualBw` is a positive number (otherwise `adjBw` is `null`).
  *
- * @returns An object with:
- *  - `gender` — current gender selection (`'male'` | `'female'`).
- *  - `heightCm` — current height input in centimeters as a string.
- *  - `actualBw` — current actual body weight input as a string.
- *  - `results` — `{ ibw: number; adjBw: number | null } | null`; `ibw` is the calculated ideal body weight and `adjBw` is the adjusted body weight when actual weight is a valid positive number, otherwise `adjBw` is `null`. `results` is `null` when inputs are invalid.
- *  - `error` — validation message string; empty when inputs are valid.
- *  - `setGender`, `setHeightCm`, `setActualBw` — setters for the corresponding state values.
- *  - `handleReset` — resets state to the hook's initial defaults.
+ * @returns An object containing:
+ * - `gender` — current gender selection (`'male' | 'female'`).
+ * - `heightCm` — current height input in centimeters as a string.
+ * - `actualBw` — current actual body weight input as a string.
+ * - `results` — `{ ibw: number; adjBw: number | null } | null`; `ibw` is the calculated ideal body weight, `adjBw` is the adjusted body weight when `actualBw` is a valid positive number, and `results` is `null` when inputs are invalid.
+ * - `error` — validation message string; empty when inputs are valid.
+ * - `setGender`, `setHeightCm`, `setActualBw` — setters for the corresponding state values.
+ * - `handleReset` — resets state to the hook's initial defaults.
  */
 export function useIdealBodyWeight() {
   const [gender, setGender] = useState<Gender>('male')

@@ -9,6 +9,11 @@ export const metadata = {
   description: "Malaysia's National Immunisation Programme (NIP) schedule, updated as of August 2023.",
 }
 
+/**
+ * Render the National Immunisation Schedule page with a responsive table of vaccines by age and a grid of descriptive cards.
+ *
+ * @returns The page markup containing a responsive immunisation schedule table (month/year columns with scheduled dose indicators) and a grid of vaccine description cards.
+ */
 export default function NationalImmunisationSchedulePage() {
   return (
     <div className='w-full max-w-6xl mx-auto'>

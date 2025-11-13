@@ -12,6 +12,15 @@ import { cn } from '@/lib/utils'
 import type { AnswerValue, Question } from '@/lib/utils/dass-score'
 import { questions } from '@/lib/utils/dass-score'
 
+/**
+ * Renders a single DASS-21 question row with four selectable response options (0–3).
+ *
+ * @param question - The question object containing at least `id` and `text`.
+ * @param value - The currently selected answer value for this question.
+ * @param onChange - Callback invoked with the new `AnswerValue` when the selection changes.
+ * @param index - Zero-based position of the question used for display numbering.
+ * @returns A JSX element representing the question label and a 4-option radio group for selecting an answer.
+ */
 function QuestionRow({
   question,
   value,
@@ -67,6 +76,15 @@ function QuestionRow({
   )
 }
 
+/**
+ * Render a result card showing a category title, numeric score, and severity indicator.
+ *
+ * @param title - Category name (e.g., "Depression", "Anxiety", "Stress")
+ * @param score - Numeric score to display prominently
+ * @param severity - Severity label shown in the alert (e.g., "Mild", "Moderate", "Severe")
+ * @param color - Tailwind text color class applied to the severity label
+ * @returns A Card containing the title, a large centered score, and an Alert with the severity and corresponding icon/variant
+ */
 function ResultCard({
   title,
   score,
@@ -103,6 +121,11 @@ function ResultCard({
   )
 }
 
+/**
+ * Render the DASS-21 questionnaire page that lets users complete 21 items, calculate category scores, reset responses, and view results.
+ *
+ * @returns A React element representing the DASS-21 questionnaire UI, including question rows, submit/reset actions, and conditional result cards.
+ */
 export default function DassScorePage() {
   const { answers, results, showResult, handleAnswerChange, handleSubmit, handleReset, isComplete } = useDassScore()
 

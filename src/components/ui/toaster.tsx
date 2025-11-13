@@ -9,9 +9,9 @@ import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastVi
 import { useToast } from '@/hooks/use-toast'
 
 /**
- * The main Toaster component that renders all active toasts.
+ * Renders active toast notifications inside a ToastProvider and includes the ToastViewport.
  *
- * @returns {React.ReactElement} The rendered toast provider and viewport.
+ * @returns The JSX element containing the toast provider with rendered toasts and the viewport.
  */
 export function Toaster() {
   const { toasts } = useToast()

@@ -65,6 +65,15 @@ const calculators = [
   },
 ]
 
+/**
+ * Renders the Medical Calculators page showing a responsive grid of calculator cards.
+ *
+ * Each calculator card displays an icon, title, and description. Disabled calculators
+ * are rendered non-interactive with reduced opacity and a not-allowed cursor; enabled
+ * calculators are wrapped in a Next.js Link to their respective `href`.
+ *
+ * @returns The React element for the Medical Calculators page.
+ */
 export default function CalculatorsPage() {
   return (
     <div className='w-full max-w-4xl mx-auto pb-24'>
