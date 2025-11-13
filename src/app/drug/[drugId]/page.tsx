@@ -3,17 +3,19 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import matter from 'gray-matter'
+import { AlertCircle, TriangleAlert } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { findMedicationById } from '@/lib/quick-reference-database/filtering'
 import { medications as allDrugData } from '@/lib/quick-reference-database/medications'
 import { Callout } from '@/mdx-components'
 
 interface DrugPageProps {
-  params: Promise<{
+  params: {
     drugId: string
-  }>
+  }
 }
 
 /**
@@ -75,10 +77,11 @@ async function getDrugPageData(drugId: string) {
 /**
  * Produce page metadata for a drug using MDX frontmatter when available, otherwise fall back to quick-reference data.
  *
- * @param params - Route parameters containing `drugId`
- * @returns An object with `title` and `description` strings. If the drug or MDX data is missing, `title` will be `"Drug Not Found"` and `description` will be a default not-found message. */
+ * @param props - Route props containing `params` with the `drugId`
+ * @returns An object with `title` and `description` strings. If the drug or MDX data is missing, `title` will be `"Drug Not Found"` and `description` will be a default not-found message.
+ */
 export async function generateMetadata({ params }: DrugPageProps) {
-  const { drugId } = await params
+  const { drugId } = params
   const data = await getDrugPageData(drugId)
 
   if (!data) {
@@ -101,11 +104,11 @@ export async function generateMetadata({ params }: DrugPageProps) {
 /**
  * Render the drug detail page with MDX-rendered content and basic metadata.
  *
- * @param params - Route parameters object containing the `drugId` of the drug to load
+ * @param props - Route props object containing `params` with the `drugId` of the drug to load
  * @returns The page's React element. If the drug or its MDX content cannot be found, triggers `notFound()` to render a 404 page.
  */
 export default async function DrugPage({ params }: DrugPageProps) {
-  const { drugId } = await params
+  const { drugId } = params
   const data = await getDrugPageData(drugId)
 
   // If no data is returned (either drug not found or MDX file missing), show a 404 page.
@@ -122,6 +125,11 @@ export default async function DrugPage({ params }: DrugPageProps) {
     TableRow,
     TableHead,
     TableCell,
+    Alert,
+    AlertTitle,
+    AlertDescription,
+    AlertCircle,
+    TriangleAlert,
   }
 
   const aliases = Array.isArray(frontmatter.aliases) ? frontmatter.aliases.join(', ') : frontmatter.aliases
