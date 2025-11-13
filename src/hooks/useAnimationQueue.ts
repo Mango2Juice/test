@@ -119,7 +119,9 @@ export function useStaggeredAnimation(count: number, delay = 50) {
   const timeoutsRef = useRef<NodeJS.Timeout[]>([])
 
   const startStaggered = useCallback(() => {
-    timeoutsRef.current.forEach(clearTimeout)
+    for (const timeout of timeoutsRef.current) {
+      clearTimeout(timeout)
+    }
     timeoutsRef.current = []
     setActiveIndices(new Set())
 
