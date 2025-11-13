@@ -2,6 +2,7 @@
  * Filtering and search functionality for the Quick Reference Database
  */
 
+import type { AudienceMode } from '@/lib/types'
 import type { QuickReferenceComplaintCategory, QuickReferenceMedication } from './types'
 
 /**
@@ -20,12 +21,19 @@ export function filterByComplaintCategory(
 }
 
 /**
- * Filter medications by audience (pediatric only)
- * @lintignore
+ * Filter medications by audience
  */
-export function filterByAudience(medications: QuickReferenceMedication[]): QuickReferenceMedication[] {
-  // All medications are pediatric-only now
-  return medications.filter((medication) => medication.dosingProfiles && medication.dosingProfiles.length > 0)
+export function filterByAudience(medications: QuickReferenceMedication[], audience: AudienceMode): QuickReferenceMedication[] {
+  // For now, all medications are considered pediatric. This can be expanded.
+  if (audience === 'paediatric') {
+    return medications.filter((medication) => medication.dosingProfiles && medication.dosingProfiles.length > 0)
+  }
+  // Adult filtering logic would go here
+  return medications.filter((medication) => {
+    // A simple heuristic: if a med has a dosing profile without age limits, it might be for adults.
+    // This should be replaced with a proper `audience` flag in the medication data.
+    return medication.dosingProfiles.some((p) => p.minAge === undefined && p.maxAge === undefined)
+  })
 }
 
 /**
@@ -80,6 +88,7 @@ export function getFilteredMedications(
     categoryId?: string
     enabledOnly?: boolean
     searchTerm?: string
+    audience?: AudienceMode
   } = {},
 ): QuickReferenceMedication[] {
   let filtered = medications
@@ -87,8 +96,10 @@ export function getFilteredMedications(
   // Apply enabled filter first
   filtered = filterByEnabled(filtered, options.enabledOnly ?? true)
 
-  // Apply audience filter (always pediatric)
-  filtered = filterByAudience(filtered)
+  // Apply audience filter
+  if (options.audience) {
+    filtered = filterByAudience(filtered, options.audience)
+  }
 
   // Apply category filter
   if (options.categoryId) {

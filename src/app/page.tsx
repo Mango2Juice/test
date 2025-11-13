@@ -27,7 +27,6 @@ interface PageProps {
   searchParams: {
     weight?: string
     complaint?: string
-    audience?: string
   }
 }
 
@@ -40,7 +39,6 @@ interface PageProps {
  * @param searchParams - Query parameters from the URL. Recognized keys:
  *   - `weight`: parsed as a float to set the initial weight; if missing or invalid, the average weight for a 6-year-old (72 months) is used.
  *   - `complaint`: used as the initial complaint filter; an empty string is treated as undefined.
- *   - `audience`: ignored by this page (audience is set to 'paediatric').
  * @returns The page element that renders the quick drug reference with server-loaded medications and categories.
  */
 export default async function HomePage({ searchParams }: PageProps) {
@@ -48,7 +46,6 @@ export default async function HomePage({ searchParams }: PageProps) {
   const defaultWeight = !Number.isNaN(parsedWeight) && parsedWeight > 0 ? parsedWeight : getWeightForAge(72) // Default to 6 years old
 
   const initialComplaintFilter = searchParams?.complaint || undefined // Convert empty string to undefined
-  const audience = 'paediatric'
 
   // Fetch data on the server
   const allMedications = loadMedications()
@@ -57,7 +54,6 @@ export default async function HomePage({ searchParams }: PageProps) {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <QuickDrugReferencePage
-        audience={audience}
         defaultWeight={defaultWeight}
         initialComplaintFilter={initialComplaintFilter}
         medications={allMedications}

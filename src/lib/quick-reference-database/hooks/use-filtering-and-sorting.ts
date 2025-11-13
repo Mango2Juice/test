@@ -2,6 +2,7 @@
  * Hook providing filtering and sorting functionalities for the Quick Reference Database.
  */
 
+import type { AudienceMode } from '@/lib/types'
 import {
   getEnabledCategories as getEnabledCategoriesFromUtils,
   getFilteredMedications as getFiltered,
@@ -16,7 +17,7 @@ import type { QuickReferenceComplaintCategory, QuickReferenceMedication } from '
  * @param medications - The medications to be queried and sorted.
  * @param categories - Complaint categories used to derive enabled categories.
  * @returns An object with helper functions:
- *  - `getFilteredMedications(categoryId?)`: returns medications filtered by the optional category ID and limited to enabled medications.
+ *  - `getFilteredMedications(categoryId?, audience?)`: returns medications filtered by the optional category ID and audience, and limited to enabled medications.
  *  - `getEnabledCategories()`: returns the enabled complaint categories derived from `categories`.
  *  - `searchMedications(searchTerm)`: returns medications matching the search term.
  *  - `sortMedicationsByName(ascending?)`: returns medications sorted by name; pass `false` for descending order.
@@ -25,10 +26,11 @@ export function useFilteringAndSorting(
   medications: QuickReferenceMedication[],
   categories: QuickReferenceComplaintCategory[],
 ) {
-  const getFilteredMedications = (categoryId?: string) => {
+  const getFilteredMedications = (categoryId?: string, audience?: AudienceMode) => {
     return getFiltered(medications, {
       categoryId,
       enabledOnly: true,
+      audience,
     })
   }
 
