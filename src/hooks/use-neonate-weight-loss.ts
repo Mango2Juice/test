@@ -5,12 +5,15 @@ import { useMemo, useState } from 'react'
 import { calculateNeonateWeightLoss, type WeightUnit } from '@/lib/utils/neonate-weight-loss'
 
 /**
- * Manages neonate weight inputs and computes the percentage weight loss.
+ * Manage neonate weight inputs and compute the percentage weight loss.
+ *
+ * Validates inputs (weights must be positive and current weight cannot exceed birth weight) and computes the percentage weight loss when inputs are valid.
  *
  * @returns An object containing:
- * - `birthWeight`, `currentWeight`, `ageInHours`, `unit` — current input values.
- * - `setBirthWeight`, `setCurrentWeight`, `setAgeInHours`, `setUnit` — setters for the inputs (note: `setUnit` accepts a string and coerces it to `WeightUnit`).
- * - `result` — calculated weight loss as a number, or `null` when inputs are incomplete or invalid.
+ * - `birthWeight`, `currentWeight`, `ageInHours`, `unit` — current input values (strings for weights/age, `WeightUnit` for `unit`).
+ * - `setBirthWeight`, `setCurrentWeight`, `setAgeInHours` — setters for the corresponding inputs.
+ * - `setUnit` — setter for `unit`; accepts a string and coerces it to `WeightUnit`.
+ * - `result` — calculated weight loss percentage as a number, or `null` when inputs are incomplete or invalid.
  * - `error` — validation error message, or an empty string when inputs are valid.
  * - `handleReset` — function that resets all inputs to their initial empty/default states.
  */

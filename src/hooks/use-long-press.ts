@@ -22,19 +22,20 @@ interface LongPressHandlers {
 }
 
 /**
- * Custom hook for detecting long-press gestures on touch and mouse events.
+ * Detects long-press gestures and provides event handlers for touch and mouse interactions.
  *
- * Tcallback after specified duration of continuous press.
- * Provides press feedback callbacks for visual/haptic feedback.
+ * The returned handlers start a timed detection on press start, invoke `onLongPress` when the
+ * press duration elapses, call `onPress` if released before the duration, and expose optional
+ * start/end callbacks for visual or haptic feedback.
  *
  * @param options - Configuration options for long-press behavior
- * @param options.onLongPress - Callback invoked when long-press duration is reached
- * @param options.onPress - Optional callback for regular press (when released before duration)
+ * @param options.onLongPress - Callback invoked when the long-press duration is reached; receives the originating event
+ * @param options.onPress - Optional callback invoked when the press ends before the long-press duration; receives the originating event
  * @param options.duration - Long-press duration in milliseconds (default: 500)
  * @param options.enabled - Whether long-press detection is enabled (default: true)
- * @param options.onPressStart - Optional callback when press starts (for visual feedback)
- * @param options.onPressEnd - Optional callback when press ends (for visual feedback)
- * @returns Object containing event handlers for touch and mouse events
+ * @param options.onPressStart - Optional callback invoked when a press starts (useful for visual feedback)
+ * @param options.onPressEnd - Optional callback invoked when a press ends (useful for visual feedback)
+ * @returns An object containing event handlers to attach to elements: `onTouchStart`, `onTouchEnd`, `onTouchMove`, `onMouseDown`, `onMouseUp`, and `onMouseLeave`
  */
 export function useLongPress({
   onLongPress,

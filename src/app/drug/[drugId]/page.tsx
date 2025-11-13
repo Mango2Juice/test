@@ -19,9 +19,10 @@ interface DrugPageProps {
 }
 
 /**
- * Fetches the MDX content for a given drug ID from the filesystem.
- * @param baseDrugId The base identifier for the drug, used to find the .mdx file.
- * @returns The parsed MDX content and frontmatter, or null if not found.
+ * Read and parse the MDX file for a given base drug identifier.
+ *
+ * @param baseDrugId - The base identifier used to locate `{baseDrugId}.mdx` in the quick-reference medications directory.
+ * @returns An object with `content` (the MDX body) and `frontmatter` (the parsed frontmatter data), or `null` if the file does not exist or cannot be read.
  */
 async function getMdxContent(baseDrugId: string) {
   try {
@@ -42,9 +43,12 @@ async function getMdxContent(baseDrugId: string) {
 }
 
 /**
- * Retrieves all relevant data for a drug, including quick reference info and detailed MDX content.
- * @param drugId The ID of the drug from the URL parameters.
- * @returns An object containing the quick reference drug data and MDX data, or null if not found.
+ * Retrieve quick-reference data and associated MDX content for a given drug ID.
+ *
+ * Returns `null` if the `drugId` is invalid, the quick-reference entry is missing, or the MDX content cannot be found.
+ *
+ * @param drugId - The drug identifier from the route (e.g., "aspirin-quick" or "aspirin")
+ * @returns `{ quickRefDrug, mdxData }` when both the quick reference entry and MDX content are available, `null` otherwise.
  */
 async function getDrugPageData(drugId: string) {
   if (typeof drugId !== 'string') {
@@ -75,10 +79,10 @@ async function getDrugPageData(drugId: string) {
 }
 
 /**
- * Produce page metadata for a drug using MDX frontmatter when available, otherwise fall back to quick-reference data.
+ * Build page metadata for a drug using MDX frontmatter when available and falling back to quick-reference data.
  *
- * @param props - Route props containing `params` with the `drugId`
- * @returns An object with `title` and `description` strings. If the drug or MDX data is missing, `title` will be `"Drug Not Found"` and `description` will be a default not-found message.
+ * @param props - Route props whose `params` resolve to an object containing the `drugId` string used to locate quick-reference and MDX data
+ * @returns An object with `title` and `description` strings. `title` uses the MDX frontmatter `title` when present or the quick-reference drug name otherwise; if the drug or MDX data is missing, `title` is `"Drug Not Found"`. `description` uses the MDX frontmatter `description` when present or a sensible default describing the drug.
  */
 export async function generateMetadata({ params }: DrugPageProps) {
   const { drugId } = await params
@@ -102,10 +106,10 @@ export async function generateMetadata({ params }: DrugPageProps) {
 }
 
 /**
- * Render the drug detail page with MDX-rendered content and basic metadata.
+ * Render the drug detail page showing MDX-driven content for a specific drug.
  *
- * @param props - Route props object containing `params` with the `drugId` of the drug to load
- * @returns The page's React element. If the drug or its MDX content cannot be found, triggers `notFound()` to render a 404 page.
+ * @param props - Route props containing `params.drugId`, the identifier of the drug to load
+ * @returns The React element for the drug detail page. If the drug or its MDX content cannot be found, triggers a 404 via `notFound()`.
  */
 export default async function DrugPage({ params }: DrugPageProps) {
   const { drugId } = await params

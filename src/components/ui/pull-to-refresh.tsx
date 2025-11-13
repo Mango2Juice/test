@@ -16,18 +16,15 @@ interface PullToRefreshProps {
 }
 
 /**
- * A pull-to-refresh wrapper component that adds pull-down gesture support.
- *
- * Displays a circular spinner indicator that fills as the user pulls down.
- * Triggers refresh callback when threshold is exceeded.
+ * Wraps scrollable content to provide a pull-to-refresh gesture with a visual indicator.
  *
  * @param children - The scrollable content to wrap
- * @param onRefresh - Async callback invoked when refresh is triggered
- * @param enabled - Whether pull-to-refresh is enabled (default: true)
- * @param threshold - Minimum pull distance in pixels to trigger refresh (default: 80)
- * @param onThresholdReached - Optional callback when threshold is reached (for haptic feedback)
- * @param className - Additional CSS classes for the container
- * @returns A pull-to-refresh wrapper with indicator
+ * @param onRefresh - Callback invoked when a pull exceeds the threshold to perform a refresh
+ * @param enabled - Whether pull-to-refresh is active
+ * @param threshold - Minimum pull distance in pixels required to trigger a refresh
+ * @param onThresholdReached - Optional callback invoked once when the pull distance crosses the threshold (useful for haptic feedback)
+ * @param className - Additional CSS classes applied to the outer container
+ * @returns A React element that wraps the children and provides pull-to-refresh UI and behavior
  */
 export function PullToRefresh({
   children,

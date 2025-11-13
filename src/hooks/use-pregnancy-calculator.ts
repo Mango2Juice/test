@@ -3,6 +3,23 @@
 import { useEffect, useState } from 'react'
 import { calculatePregnancyInfo, type PregnancyInfo } from '@/lib/utils/pregnancy-calculator'
 
+/**
+ * Manages pregnancy-related input state and provides a computed PregnancyInfo plus a reset handler.
+ *
+ * Recomputes `pregnancyInfo` whenever `lmpDate`, `ultrasoundDate`, `gaWeeks`, or `gaDays` change; parses `gaWeeks` and `gaDays` from strings when present. The reset handler restores initial defaults.
+ *
+ * @returns An object containing:
+ * - `lmpDate`: the last menstrual period date or `undefined`
+ * - `setLmpDate`: setter for `lmpDate`
+ * - `ultrasoundDate`: the ultrasound date or `undefined`
+ * - `setUltrasoundDate`: setter for `ultrasoundDate`
+ * - `gaWeeks`: gestational age weeks as a string
+ * - `setGaWeeks`: setter for `gaWeeks`
+ * - `gaDays`: gestational age days as a string
+ * - `setGaDays`: setter for `gaDays`
+ * - `pregnancyInfo`: the computed `PregnancyInfo` or `null`
+ * - `handleReset`: function that resets inputs to their initial defaults
+ */
 export function usePregnancyCalculator() {
   const [lmpDate, setLmpDate] = useState<Date | undefined>(new Date())
   const [ultrasoundDate, setUltrasoundDate] = useState<Date | undefined>()

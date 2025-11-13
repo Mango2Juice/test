@@ -32,6 +32,12 @@ type SidebarContext = {
 
 const SidebarContext = React.createContext<SidebarContext | null>(null)
 
+/**
+ * Accesses the current sidebar context value.
+ *
+ * @returns The SidebarContext value containing sidebar state, device flags, and toggle/setter functions.
+ * @throws Error if called outside a `SidebarProvider` (message: "useSidebar must be used within a SidebarProvider.")
+ */
 function useSidebar() {
   const context = React.useContext(SidebarContext)
   if (!context) {

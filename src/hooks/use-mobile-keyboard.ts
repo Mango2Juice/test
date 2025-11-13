@@ -22,10 +22,11 @@ interface UseMobileKeyboardOptions {
 }
 
 /**
- * Determines the new keyboard state based on viewport height changes.
- * @param initialHeight The initial height of the viewport before the keyboard appeared.
- * @param currentHeight The current height of the viewport.
- * @returns The new MobileKeyboardState.
+ * Compute whether a keyboard is visible and its height from initial and current viewport heights.
+ *
+ * @param initialHeight - The viewport height recorded before any keyboard appeared.
+ * @param currentHeight - The current viewport height to compare against `initialHeight`.
+ * @returns `isVisible` is `true` if the viewport height decreased by more than 150 pixels; `height` is the detected keyboard height in pixels (0 if not visible).
  */
 function getNewKeyboardState(
   initialHeight: number,
@@ -44,8 +45,17 @@ function getNewKeyboardState(
 }
 
 /**
- * Hook for managing mobile keyboard interactions and viewport adjustments
- * @lintignore
+ * Manage mobile keyboard visibility, keyboard height, and viewport-related helpers for responsive layouts.
+ *
+ * Tracks the viewport height to detect keyboard appearance (using a height-difference threshold), updates keyboard metrics, optionally adjusts viewport CSS variables, and provides helpers to scroll elements into view when the keyboard is visible.
+ *
+ * @param options - Configuration options for the hook
+ * @param options.adjustViewport - If `true`, exposes CSS custom properties for the keyboard and viewport sizes; if `false`, `getViewportStyles` returns an empty object. Defaults to `true`.
+ * @param options.onKeyboardToggle - Optional callback invoked when keyboard visibility changes with `(isVisible, height)` where `isVisible` is `true` if the keyboard is visible and `height` is the detected keyboard height in pixels.
+ * @returns An object containing:
+ *  - `keyboard`: the current keyboard state with `isVisible` (`true` if keyboard is visible), `height` (keyboard height in pixels), and `viewportHeight` (current viewport height in pixels);
+ *  - `scrollIntoView(element, options?)`: scrolls the given element into view when the keyboard is visible (uses smooth behavior and centers the element);
+ *  - `getViewportStyles()`: returns React CSS properties mapping `--keyboard-height`, `--viewport-height`, and `--available-height` to pixel values when `adjustViewport` is enabled, otherwise an empty object.
  */
 export function useMobileKeyboard(options: UseMobileKeyboardOptions = {}) {
   const { adjustViewport = true, onKeyboardToggle } = options

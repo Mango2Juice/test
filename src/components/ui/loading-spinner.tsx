@@ -6,6 +6,13 @@ interface LoadingSpinnerProps {
   className?: string
 }
 
+/**
+ * Renders a spinning loader icon whose visual size can be adjusted.
+ *
+ * @param size - One of 'sm', 'md', or 'lg' to select the spinner's dimensions.
+ * @param className - Additional CSS classes to apply to the spinner.
+ * @returns A Loader2 icon element styled as a spinning loading indicator.
+ */
 export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',

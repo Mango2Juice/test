@@ -12,6 +12,14 @@ import { cn } from '@/lib/utils'
 import type { Question, YesNo } from '@/lib/utils/stop-bang-score'
 import { questions } from '@/lib/utils/stop-bang-score'
 
+/**
+ * Renders a single questionnaire row showing a question, optional description, and a Yes/No radio control.
+ *
+ * @param question - The question object containing `id`, `text`, and optional `description`.
+ * @param value - The current answer, either `'yes'` or `'no'`.
+ * @param onChange - Callback invoked with the new `YesNo` value when the selection changes.
+ * @returns The QuestionRow React element.
+ */
 function QuestionRow({
   question,
   value,
@@ -49,6 +57,15 @@ function QuestionRow({
   )
 }
 
+/**
+ * Render a result card showing the STOP-BANG score, risk level, and explanatory description.
+ *
+ * @param score - The numeric STOP-BANG score (0–8) to display
+ * @param risk - The categorical risk label: 'Low', 'Intermediate', or 'High'
+ * @param color - Tailwind text color class applied to the risk label
+ * @param description - Explanatory text shown inside the alert for the given risk
+ * @returns A card element that presents the risk label, score, and an alert describing the risk
+ */
 function ResultCard({
   score,
   risk,
@@ -90,6 +107,13 @@ function ResultCard({
   )
 }
 
+/**
+ * Render the STOP-BANG questionnaire page for obstructive sleep apnea screening.
+ *
+ * Renders a list of Yes/No questions, Submit and Reset controls, and a conditional result panel that displays the calculated score and risk after submission.
+ *
+ * @returns The React element containing the questionnaire UI and conditional results panel.
+ */
 export default function StopBangPage() {
   const { answers, result, showResult, handleAnswerChange, handleSubmit, handleReset } = useStopBangScore()
 

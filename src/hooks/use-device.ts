@@ -7,6 +7,20 @@ import type { DeviceContext, DeviceType, Orientation } from '@/lib/types/device'
 const MOBILE_BREAKPOINT = 768 // Corresponds to Tailwind's 'md' breakpoint
 const TABLET_BREAKPOINT = 1024 // Corresponds to Tailwind's 'lg' breakpoint
 
+/**
+ * React hook that exposes current device characteristics and keeps them updated.
+ *
+ * The returned context includes device type flags, screen orientation, current
+ * viewport size, and basic touch capabilities. It updates on window resize and
+ * orientation changes and no-ops during server-side rendering.
+ *
+ * @returns The current DeviceContext containing:
+ * - `isMobile`: `true` when viewport width is less than the mobile breakpoint.
+ * - `isTablet`: `true` when viewport width is between the mobile and tablet breakpoints.
+ * - `orientation`: `'portrait'` or `'landscape'` based on viewport dimensions.
+ * - `screenSize`: `{ width, height }` of the viewport in pixels.
+ * - `touchCapabilities`: `{ supportsHaptics, maxTouchPoints }` detected from the navigator.
+ */
 export function useDevice(): DeviceContext {
   const [deviceContext, setDeviceContext] = useState<DeviceContext>({
     isMobile: false,
@@ -75,7 +89,11 @@ export function useDevice(): DeviceContext {
   return deviceContext
 }
 
-// Utility hook for getting device type
+/**
+ * Derives the current device category based on the device context.
+ *
+ * @returns `'mobile'` if the device width falls below the mobile breakpoint, `'tablet'` if it falls within the tablet range, `'desktop'` otherwise.
+ */
 export function useDeviceType(): DeviceType {
   const { isMobile, isTablet } = useDevice()
 
@@ -84,13 +102,21 @@ export function useDeviceType(): DeviceType {
   return 'desktop'
 }
 
-// Utility hook for getting orientation
+/**
+ * Provides the current screen orientation.
+ *
+ * @returns The device orientation: 'portrait' or 'landscape'
+ */
 export function useOrientation(): Orientation {
   const { orientation } = useDevice()
   return orientation
 }
 
-// Utility hook for checking if device supports touch
+/**
+ * Determines whether the current device exposes touch input capabilities.
+ *
+ * @returns `true` if the device reports more than 0 touch points, `false` otherwise.
+ */
 export function useHasTouch(): boolean {
   const { touchCapabilities } = useDevice()
   return touchCapabilities.maxTouchPoints > 0

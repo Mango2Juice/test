@@ -12,6 +12,19 @@ import { cn } from '@/lib/utils'
 import type { AnswerValue, Question } from '@/lib/utils/phq-9-score'
 import { questions } from '@/lib/utils/phq-9-score'
 
+/**
+ * Render a single PHQ-9 question with a numbered prompt and four selectable answer options.
+ *
+ * The component displays the question text prefixed with its 1-based index and a radio group
+ * offering the four PHQ-9 response choices (0–3). Selecting an option invokes `onChange`
+ * with the chosen numeric `AnswerValue`.
+ *
+ * @param question - The question data (id and text) to display
+ * @param value - The currently selected answer value for this question
+ * @param onChange - Callback invoked with the new `AnswerValue` when the selection changes
+ * @param index - Zero-based position of the question used to render its numeric prefix
+ * @returns The rendered question row element
+ */
 function QuestionRow({
   question,
   value,
@@ -67,6 +80,15 @@ function QuestionRow({
   )
 }
 
+/**
+ * Render a card showing a PHQ-9 numeric score, its severity label, and a recommended action.
+ *
+ * @param score - Total PHQ-9 score to display
+ * @param severity - Severity label corresponding to the score (e.g., "Minimal", "Mild", "Moderate", "Moderately Severe", "Severe")
+ * @param color - CSS text color class applied to the severity title
+ * @param recommendation - Short recommendation or guidance associated with the severity
+ * @returns A Card element containing the numeric score and an Alert showing severity and recommendation
+ */
 function ResultCard({
   score,
   severity,
@@ -105,6 +127,13 @@ function ResultCard({
   )
 }
 
+/**
+ * Render the PHQ-9 questionnaire page with all questions, form controls to calculate or reset answers, and a conditional result display.
+ *
+ * The page presents nine questions with selectable responses, disables submission until all questions are answered, and shows a summary card with score, severity, and recommendation after calculation.
+ *
+ * @returns A JSX element containing the questionnaire form, action buttons (Calculate Score, Reset), helper text when incomplete, and the result card when available.
+ */
 export default function Phq9ScorePage() {
   const { answers, result, showResult, handleAnswerChange, handleSubmit, handleReset, isComplete } = usePhq9Score()
 

@@ -16,7 +16,7 @@ import { AppLayout } from './app-layout'
  */
 
 /**
- * A wrapper component that provides all the necessary context and services for the application.
+ * Wraps the application with theme, state, layout, and runtime service providers.
  *
  * This includes:
  * - ThemeProvider: For managing light/dark/system themes.
@@ -25,9 +25,8 @@ import { AppLayout } from './app-layout'
  * - Toaster: For displaying toast notifications.
  * - Analytics & SpeedInsights: For Vercel analytics.
  *
- * @param {object} props - The component props.
- * @param {React.ReactNode} props.children - The child components to render within the providers.
- * @returns {React.ReactElement} The rendered providers and children.
+ * @param children - Child nodes to render; these are mounted inside AppLayout.
+ * @returns The React element containing the composed provider tree with `children` rendered inside AppLayout.
  */
 export function AppProviders({ children }: { children: React.ReactNode }): React.ReactElement {
   return (

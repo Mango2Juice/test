@@ -38,6 +38,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+/**
+ * Root layout component that renders the document HTML shell, applies global font variables, and wraps page content with application providers.
+ *
+ * @param children - React nodes rendered inside AppProviders within the document body
+ * @returns The top-level HTML element tree (<html>, <head>, <body>) containing the provided children wrapped by AppProviders
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

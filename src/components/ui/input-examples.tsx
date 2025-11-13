@@ -7,7 +7,9 @@ import { FloatingInput } from './floating-input'
 import { Input } from './input'
 
 /**
- * Example component showing various input states and configurations
+ * Renders example usages of Input and FloatingInput components demonstrating sizes, states, mobile keyboard types, and a sample form.
+ *
+ * @returns A JSX element containing the example sections and inputs.
  */
 export function InputExamples() {
   return (

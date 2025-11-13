@@ -16,11 +16,11 @@ const themeIcons: Record<string, React.ElementType> = {
 }
 
 /**
- * Renders a theme selection control that displays the current theme icon and a dropdown of available themes.
+ * Renders a theme selection control that shows the current theme icon and lets the user switch themes via a dropdown.
  *
- * While hydrating, renders a disabled placeholder button to avoid layout shift and hydration errors.
+ * During initial hydration, renders a disabled placeholder button to prevent layout shift and avoid hydration errors.
  *
- * @returns The theme toggle UI as a React element
+ * @returns The theme toggle as a React element
  */
 export function ThemeToggle(): React.ReactElement {
   const { theme, themes, setTheme } = useTheme()

@@ -9,11 +9,9 @@ export const metadata = {
 }
 
 /**
- * Render the Haematological Parameters page showing reference ranges, differential counts, and notes.
+ * Renders the Haematological Parameters page with pediatric reference ranges, differential counts, and notes.
  *
- * Renders a responsive layout with a main title and three cards: a table of parameter ranges, a table of differential counts, and a list of points to note sourced from static haematological data.
- *
- * @returns A React element containing tables and notes for paediatric haematological reference values.
+ * @returns A React element containing tables and a notes list presenting pediatric haematological reference values.
  */
 export default function HaematologicalParametersPage() {
   return (

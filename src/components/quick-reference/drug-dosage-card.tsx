@@ -73,6 +73,17 @@ const MEDICATION_TYPE_COLORS = {
 
 type ColorKey = keyof typeof MEDICATION_TYPE_COLORS
 
+/**
+ * Selects the primary complaint category for a medication from the provided categories.
+ *
+ * Searches the medication's `complaintCategories` for the first category present in `categories`
+ * (ignoring the `'all'` tag). If none match, prefers the category with id `'symptomatic'`.
+ * If no suitable category is found, returns a built-in default general category.
+ *
+ * @param drug - The medication object whose complaint category tags will be matched.
+ * @param categories - The available complaint categories to search.
+ * @returns The matching `QuickReferenceComplaintCategory`, the `'symptomatic'` category if no direct match, or a default general category when no match exists.
+ */
 function getPrimaryComplaintCategory(
   drug: QuickReferenceMedication,
   categories: readonly QuickReferenceComplaintCategory[],
@@ -99,6 +110,12 @@ function getPrimaryComplaintCategory(
   return foundCategory
 }
 
+/**
+ * Selects the color styling entry for a complaint category.
+ *
+ * @param complaintCategory - The complaint category whose `color` key is used to look up the styling mapping
+ * @returns The color/style mapping from MEDICATION_TYPE_COLORS corresponding to the category's color, or the default mapping if no match is found
+ */
 function getMedicationTypeColors(complaintCategory: QuickReferenceComplaintCategory) {
   const color = complaintCategory.color
   if (color in MEDICATION_TYPE_COLORS) {
@@ -107,6 +124,15 @@ function getMedicationTypeColors(complaintCategory: QuickReferenceComplaintCateg
   return MEDICATION_TYPE_COLORS.default
 }
 
+/**
+ * Format a calculation result's dosage into a concise, human-readable string.
+ *
+ * Chooses units based on available fields: prefers `adminVolumeMl` (milliliters) if present,
+ * otherwise uses `doseMg` and represents it in grams when >= 1000 mg or in milligrams when < 1000 mg.
+ *
+ * @param calculationResult - The calculation result whose dosage should be formatted
+ * @returns The formatted dosage, e.g. "2.5 mL", "1.2 g", or "250 mg"
+ */
 function formatDosage(calculationResult: QuickReferenceCalculation): string {
   const { adminVolumeMl, doseMg } = calculationResult
 
@@ -120,6 +146,12 @@ function formatDosage(calculationResult: QuickReferenceCalculation): string {
   return `${doseMg.toFixed(0)} mg`
 }
 
+/**
+ * Normalize common medication frequency text to a standardized abbreviation.
+ *
+ * @param frequencyText - The frequency string to normalize (e.g., `od`, `once daily`, `twice daily`)
+ * @returns The standardized uppercase abbreviation (e.g., `OD`, `BD`, `TDS`); returns the input converted to uppercase if no mapping exists
+ */
 function formatFrequency(frequencyText: string): string {
   const frequencyMap: Record<string, string> = {
     od: 'OD',
@@ -139,22 +171,20 @@ function formatFrequency(frequencyText: string): string {
 }
 
 /**
- * Renders a card showing a medication name and its calculated dosage, or a loading skeleton when no calculation is available.
+ * Display a medication card showing the drug name and either a formatted dosage with frequency or a loading skeleton.
  *
- * If `calculationResult` is null, a pulsating placeholder is rendered. When a valid calculation is provided, the card shows the formatted dosage and frequency or an inline error indicator if the calculation is invalid. The card is keyboard- and click-activatable when `onClick` is supplied.
+ * When `calculationResult` is null a loading skeleton is shown. When provided, the card shows the formatted dosage and frequency or an inline error indicator if the calculation is invalid. The card can expose click, swipe, and long-press actions via the supplied callbacks.
  *
- * Supports swipe gestures on mobile to reveal quick actions (favorite, delete, history, share).
- *
- * @param drug - Medication data to display (used for name and category-based styling)
+ * @param drug - Medication data used for the name and category-based styling
  * @param calculationResult - Calculation details to display; pass `null` to render the loading skeleton
- * @param categories - An array of all available complaint categories, used for styling.
+ * @param categories - Available complaint categories used to determine the primary category for styling
  * @param onClick - Optional callback invoked when the card is clicked or activated via keyboard
- * @param onFavorite - Optional callback for favorite action (revealed on left swipe)
- * @param onDelete - Optional callback for delete action (revealed on left swipe)
- * @param onHistory - Optional callback for history action (revealed on right swipe)
- * @param onShare - Optional callback for share action (revealed on right swipe)
- * @param enableSwipe - Whether to enable swipe gestures (default: true on mobile)
- * @param enableLongPress - Whether to enable long-press context menu (default: true on mobile)
+ * @param onFavorite - Optional callback for the favorite action
+ * @param onDelete - Optional callback for the delete action
+ * @param onHistory - Optional callback for the history action
+ * @param onShare - Optional callback for the share action
+ * @param enableSwipe - Whether to enable swipe gestures (defaults to true on mobile)
+ * @param enableLongPress - Whether to enable long-press context menu (defaults to true on mobile)
  * @param className - Optional additional CSS class names applied to the root element
  * @returns The JSX element for the drug dosage card
  */
