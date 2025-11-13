@@ -24,11 +24,11 @@ function LoadingFallback() {
 }
 
 interface PageProps {
-  searchParams: Promise<{
+  searchParams: {
     weight?: string
     complaint?: string
     audience?: string
-  }>
+  }
 }
 
 /**
@@ -37,25 +37,17 @@ interface PageProps {
  * The component loads medications and complaint categories on the server and passes them, along with
  * initial UI state, to QuickDrugReferencePage.
  *
- * @param searchParams - A promise resolving to query parameters. Recognized keys:
+ * @param searchParams - Query parameters from the URL. Recognized keys:
  *   - `weight`: parsed as a float to set the initial weight; if missing or invalid, the average weight for a 6-year-old (72 months) is used.
  *   - `complaint`: used as the initial complaint filter; an empty string is treated as undefined.
  *   - `audience`: ignored by this page (audience is set to 'paediatric').
  * @returns The page element that renders the quick drug reference with server-loaded medications and categories.
  */
 export default async function HomePage({ searchParams }: PageProps) {
-  const params = await searchParams
-  // Use provided weight or get average weight for default age (6 years)
-  const defaultWeight = (() => {
-    if (params.weight != null && params.weight.trim() !== '') {
-      const parsed = Number.parseFloat(params.weight)
-      if (!Number.isNaN(parsed)) {
-        return parsed
-      }
-    }
-    return getWeightForAge(72) // Default age is 6 years (72 months)
-  })()
-  const initialComplaintFilter = params.complaint || undefined // Convert empty string to undefined
+  const parsedWeight = Number.parseFloat(searchParams?.weight ?? '')
+  const defaultWeight = !Number.isNaN(parsedWeight) && parsedWeight > 0 ? parsedWeight : getWeightForAge(72) // Default to 6 years old
+
+  const initialComplaintFilter = searchParams?.complaint || undefined // Convert empty string to undefined
   const audience = 'paediatric'
 
   // Fetch data on the server
