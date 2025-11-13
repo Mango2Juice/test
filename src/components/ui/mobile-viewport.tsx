@@ -48,15 +48,21 @@ const MobileViewport = forwardRef<HTMLDivElement, MobileViewportProps>(
       const metaViewport = document.querySelector('meta[name="viewport"]')
       if (metaViewport) {
         const currentContent = metaViewport.getAttribute('content') || ''
+        const tokens = new Set(
+          currentContent
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean),
+        )
 
-        // Ensure proper viewport settings for mobile keyboard handling
-        if (!currentContent.includes('viewport-fit=cover')) {
-          metaViewport.setAttribute('content', `${currentContent}, viewport-fit=cover`)
-        }
+        // Ensure required tokens are present
+        tokens.add('viewport-fit=cover')
+        tokens.add('interactive-widget=resizes-content')
 
-        // Add interactive-widget=resizes-content for better keyboard handling on supported browsers
-        if (!currentContent.includes('interactive-widget')) {
-          metaViewport.setAttribute('content', `${currentContent}, interactive-widget=resizes-content`)
+        // Reconstruct the content string
+        const newContent = Array.from(tokens).join(', ')
+        if (newContent !== currentContent) {
+          metaViewport.setAttribute('content', newContent)
         }
       }
     }, [])
