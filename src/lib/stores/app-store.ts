@@ -3,22 +3,19 @@
 
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import type { AudienceMode } from '@/lib/types'
 
 interface AppState {
-  audience: AudienceMode
-  setAudience: (audience: AudienceMode) => void
+  // This store is currently empty but preserved for future global state.
 }
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
-      audience: 'paediatric', // Default audience
-      setAudience: (audience) => set({ audience }),
+    (_set) => ({
+      // No state properties are defined as audience has been removed.
     }),
     {
-      name: 'doses-app-storage', // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // use localStorage
+      name: 'doses-app-storage',
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 )

@@ -9,12 +9,10 @@ import { MobileInput } from '@/components/ui/mobile-input'
 import { useDevice } from '@/hooks/use-device'
 import { useScreenReader } from '@/hooks/use-screen-reader'
 import { useCalculatorStore } from '@/lib/stores/calculator-store'
-import type { AudienceMode } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { AriaLabels } from '@/lib/utils/accessibility/labels'
 
 interface WeightInputSectionProps {
-  audience: AudienceMode
   disabled?: boolean
 }
 
@@ -28,7 +26,7 @@ interface WeightInputSectionProps {
  * @param disabled - If true, disables the input control
  * @returns The weight input section as JSX for use in forms and mobile layouts
  */
-export function WeightInputSection({ audience, disabled }: WeightInputSectionProps) {
+export function WeightInputSection({ disabled }: WeightInputSectionProps) {
   const debounceRef = useRef<NodeJS.Timeout>()
   const { isMobile } = useDevice()
   const { announceStatus } = useScreenReader()
@@ -85,7 +83,7 @@ export function WeightInputSection({ audience, disabled }: WeightInputSectionPro
     }
   }, [])
 
-  const weightDescription = AriaLabels.weightInput(audience)
+  const weightDescription = AriaLabels.weightInput('paediatric')
   const displayValue = displayWeight === undefined ? '' : String(displayWeight)
 
   return (

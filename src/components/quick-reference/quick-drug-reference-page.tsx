@@ -21,7 +21,6 @@ import type {
 } from '@/lib/quick-reference-database'
 import { useQuickReferenceDatabase } from '@/lib/quick-reference-database'
 import { getWeightForAge } from '@/lib/quick-reference-database/calculations'
-import { useAppStore } from '@/lib/stores/app-store'
 import { useCalculatorStore } from '@/lib/stores/calculator-store'
 import { cn } from '@/lib/utils'
 import { ComplaintFilterBar, DrugReferenceGrid, WeightInputSection } from './'
@@ -146,9 +145,6 @@ function QuickDrugReferenceContent({
   const [isPending, startTransition] = useTransition()
   const swipeContainerRef = useRef<HTMLDivElement>(null)
 
-  // Global app state
-  const audience = useAppStore((s) => s.audience)
-
   // Zustand store state and actions
   const {
     displayAge,
@@ -178,7 +174,7 @@ function QuickDrugReferenceContent({
   const calculateAllDoses = useCallback(() => {
     if (isDatabaseLoading) return
 
-    const filteredMeds = getFilteredMedications(selectedComplaintFilter || undefined, audience)
+    const filteredMeds = getFilteredMedications(selectedComplaintFilter || undefined, 'paediatric')
     const results = new Map<string, QuickReferenceCalculation>()
     const ageInMonths = displayAgeUnit === 'years' ? displayAge * 12 : displayAge
 
@@ -189,10 +185,8 @@ function QuickDrugReferenceContent({
         return
       }
       weightToUse = displayWeight
-    } else if (audience === 'paediatric') {
-      weightToUse = getWeightForAge(ageInMonths)
     } else {
-      weightToUse = displayWeight
+      weightToUse = getWeightForAge(ageInMonths)
     }
 
     if (typeof weightToUse !== 'number' || Number.isNaN(weightToUse) || weightToUse <= 0) {
@@ -228,7 +222,6 @@ function QuickDrugReferenceContent({
     isDatabaseLoading,
     getFilteredMedications,
     selectedComplaintFilter,
-    audience,
     displayAgeUnit,
     displayAge,
     isWeightManuallyEntered,
@@ -349,8 +342,8 @@ function QuickDrugReferenceContent({
     setIsClient(true)
     if (defaultWeight) setDisplayWeight(defaultWeight)
     if (initialComplaintFilter) setSelectedComplaintFilter(initialComplaintFilter)
-    announceStatus(`Quick drug reference loaded for ${audience} patients`)
-  }, [defaultWeight, initialComplaintFilter, setDisplayWeight, setSelectedComplaintFilter, announceStatus, audience])
+    announceStatus('Quick drug reference loaded for pediatric patients')
+  }, [defaultWeight, initialComplaintFilter, setDisplayWeight, setSelectedComplaintFilter, announceStatus])
 
   // Calculate doses when dependencies change
   useEffect(() => {
@@ -377,7 +370,10 @@ function QuickDrugReferenceContent({
     )
   }
 
-  const filteredDrugs: QuickReferenceMedication[] = getFilteredMedications(selectedComplaintFilter || undefined, audience)
+  const filteredDrugs: QuickReferenceMedication[] = getFilteredMedications(
+    selectedComplaintFilter || undefined,
+    'paediatric',
+  )
 
   return (
     <MobileViewport
@@ -415,7 +411,7 @@ function QuickDrugReferenceContent({
             <CardContent className={cn('padding-component', isMobile && 'pt-2 px-2 pb-2')}>
               <div className={cn('grid', isMobile ? 'grid-cols-1 gap-inline' : 'grid-cols-2 gap-component')}>
                 <AgeInputSection disabled={!isClient} />
-                <WeightInputSection audience={audience} disabled={!isClient} />
+                <WeightInputSection audience={'paediatric'} disabled={!isClient} />
               </div>
             </CardContent>
           </Card>

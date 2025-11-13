@@ -1,3 +1,3 @@
 // src/lib/types.ts
 
-export type AudienceMode = 'paediatric' | 'adult'
+// The AudienceMode type has been removed as it is no longer needed.

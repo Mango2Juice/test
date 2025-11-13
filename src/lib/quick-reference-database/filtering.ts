@@ -2,7 +2,6 @@
  * Filtering and search functionality for the Quick Reference Database
  */
 
-import type { AudienceMode } from '@/lib/types'
 import type { QuickReferenceComplaintCategory, QuickReferenceMedication } from './types'
 
 /**
@@ -21,19 +20,14 @@ export function filterByComplaintCategory(
 }
 
 /**
- * Filter medications by audience
+ * Filter medications for pediatric audience
  */
-export function filterByAudience(medications: QuickReferenceMedication[], audience: AudienceMode): QuickReferenceMedication[] {
-  // For now, all medications are considered pediatric. This can be expanded.
+export function filterByAudience(medications: QuickReferenceMedication[], audience: 'paediatric' | 'adult'): QuickReferenceMedication[] {
   if (audience === 'paediatric') {
     return medications.filter((medication) => medication.dosingProfiles && medication.dosingProfiles.length > 0)
   }
-  // Adult filtering logic would go here
-  return medications.filter((medication) => {
-    // A simple heuristic: if a med has a dosing profile without age limits, it might be for adults.
-    // This should be replaced with a proper `audience` flag in the medication data.
-    return medication.dosingProfiles.some((p) => p.minAge === undefined && p.maxAge === undefined)
-  })
+  // This app is pediatric-only, so adult will return an empty array.
+  return []
 }
 
 /**
@@ -88,7 +82,7 @@ export function getFilteredMedications(
     categoryId?: string
     enabledOnly?: boolean
     searchTerm?: string
-    audience?: AudienceMode
+    audience?: 'paediatric' | 'adult'
   } = {},
 ): QuickReferenceMedication[] {
   let filtered = medications
