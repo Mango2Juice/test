@@ -16,14 +16,15 @@ export const AriaLabels = {
       : 'Patient weight in kilograms',
   weightInputDescription: (audience: AudienceMode) =>
     audience === 'paediatric'
-      ? 'Enter the patient\'s weight in kilograms. If left blank, an estimated weight will be used based on age.'
-      : 'Enter the patient\'s weight in kilograms.',
+      ? "Enter the patient's weight in kilograms. If left blank, an estimated weight will be used based on age."
+      : "Enter the patient's weight in kilograms.",
   ageInput: 'Patient age in years or months',
   complaintFilter: 'Filter medications by complaint category',
   drugDosageCard: (name: string, dosage: string) => `${name}: ${dosage}`,
 
   // Search
   searchMedications: 'Search for medications by name',
+  searchResults: (count: number) => `Search results grid, displaying ${count} medications.`,
 
   // Medical Calculators
   centorScoreForm: 'Centor Score clinical criteria form',
