@@ -2,8 +2,7 @@
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type React from 'react'
-import type { WeekNumberProps } from 'react-day-picker'
+import type { DayModifiers, DayProps, WeekNumberProps } from 'react-day-picker'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarDayButton } from './calendar'
 
@@ -11,8 +10,8 @@ import { Calendar, CalendarDayButton } from './calendar'
 function getChevronButtons() {
   const buttons = screen.getAllByRole('button') as HTMLButtonElement[]
   // Prev/Next are rendered first in nav. Filter by aria-labels from react-day-picker defaults
-  const prev = buttons.find((b) => b.className.includes('rdp-button_previous')) || buttons[0]
-  const next = buttons.find((b) => b.className.includes('rdp-button_next')) || buttons[1]
+  const prev = buttons.find((b) => b.className.includes('rdp-button_previous')) ?? buttons[0]
+  const next = buttons.find((b) => b.className.includes('rdp-button_next')) ?? buttons[1]
   return { prev, next }
 }
 
@@ -30,7 +29,7 @@ describe('Calendar', () => {
 
     // By default showOutsideDays=true means we should see days from previous/next month
     // Validate by finding more than 28 day buttons carrying data-day
-    const dayButtons = screen.getAllByRole('button').filter((b: HTMLButtonElement) => b?.dataset.day)
+    const dayButtons = screen.getAllByRole('button').filter((b) => b instanceof HTMLButtonElement && b.dataset.day)
     expect(dayButtons.length).toBeGreaterThan(28)
   })
 
@@ -90,11 +89,17 @@ describe('CalendarDayButton', () => {
   })
 
   it('focuses when modifiers.focused is true', async () => {
+    const day: DayProps = {
+      date: new Date('2024-05-15'),
+      displayMonth: new Date('2024-05-01'),
+    }
+    const modifiers: DayModifiers = { focused: true }
+
     render(
       <table>
         <tbody>
           <tr>
-            <CalendarDayButton day={{ date: new Date('2024-05-15') } as any} modifiers={{ focused: true } as any} />
+            <CalendarDayButton day={day} modifiers={modifiers} />
           </tr>
         </tbody>
       </table>,
@@ -108,14 +113,22 @@ describe('CalendarDayButton', () => {
   })
 
   it('sets data attributes based on selection and range modifiers', () => {
+    const day: DayProps = {
+      date: new Date('2024-05-15'),
+      displayMonth: new Date('2024-05-01'),
+    }
+    const modifiers: DayModifiers = {
+      selected: true,
+      range_start: true,
+      range_end: false,
+      range_middle: false,
+    }
+
     render(
       <table>
         <tbody>
           <tr>
-            <CalendarDayButton
-              day={{ date: new Date('2024-05-15') } as any}
-              modifiers={{ selected: true, range_start: true, range_end: false, range_middle: false } as any}
-            />
+            <CalendarDayButton day={day} modifiers={modifiers} />
           </tr>
         </tbody>
       </table>,
@@ -129,11 +142,17 @@ describe('CalendarDayButton', () => {
   })
 
   it('marks single selected when no range modifiers are set', () => {
+    const day: DayProps = {
+      date: new Date('2024-05-20'),
+      displayMonth: new Date('2024-05-01'),
+    }
+    const modifiers: DayModifiers = { selected: true }
+
     render(
       <table>
         <tbody>
           <tr>
-            <CalendarDayButton day={{ date: new Date('2024-05-20') } as any} modifiers={{ selected: true } as any} />
+            <CalendarDayButton day={day} modifiers={modifiers} />
           </tr>
         </tbody>
       </table>,
