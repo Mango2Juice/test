@@ -19,6 +19,7 @@ export function SuccessCheckmark({ size = 'md', className }: SuccessCheckmarkPro
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       aria-label='Success'
+      role='img'
     >
       <path
         className='animate-check'

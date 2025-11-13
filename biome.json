@@ -29,7 +29,10 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "a11y": "off"
+      "a11y": "off",
+      "suspicious": {
+        "noArrayIndexKey":"off"
+      }
     },
     "includes": ["**"],
     "domains": {

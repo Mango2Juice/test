@@ -2,7 +2,7 @@
 
 'use client'
 import type React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDevice } from '@/hooks/use-device'
 import { cn } from '@/lib/utils'
 
@@ -24,12 +24,20 @@ export const OrientationAwareLayout: React.FC<OrientationAwareLayoutProps> = ({
   onOrientationChange: _onOrientationChange,
 }) => {
   const { orientation } = useDevice()
+  const prevOrientationRef = useRef<string | null>(null)
 
   const currentOrientation = orientation
   const isTransitioning = false
   const isStable = true
   const layoutMode = orientation === 'portrait' ? 'single-column' : 'two-column'
   const getLayoutClasses = () => `orientation-${orientation}`
+
+  useEffect(() => {
+    if (_onOrientationChange && prevOrientationRef.current !== orientation) {
+      _onOrientationChange(orientation, prevOrientationRef.current)
+    }
+    prevOrientationRef.current = orientation
+  }, [orientation, _onOrientationChange])
 
   // Handle viewport meta tag adjustments for better orientation handling
   useEffect(() => {

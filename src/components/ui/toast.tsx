@@ -90,7 +90,7 @@ ToastDescription.displayName = Description.displayName
 
 type ToastProps = ComponentPropsWithoutRef<typeof Toast>
 
-type ToastActionElement = ElementRef<typeof ToastAction>
+type ToastActionElement = ReturnType<typeof ToastAction>
 
 export {
   type ToastProps,

@@ -2,7 +2,7 @@
 'use client'
 
 import { Search } from 'lucide-react'
-import type { FC, ReactNode } from 'react'
+import type { FC } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
@@ -26,7 +26,6 @@ interface SearchableSelectProps {
   emptyMessage?: string
   error?: string
   disabled?: boolean
-  label?: ReactNode
 }
 
 export const SearchableSelect: FC<SearchableSelectProps> = ({

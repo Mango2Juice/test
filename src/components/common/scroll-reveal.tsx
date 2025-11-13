@@ -2,10 +2,9 @@
  * @fileoverview Scroll reveal component using Intersection Observer for performance.
  * Provides smooth reveal animations when elements enter viewport.
  */
-
 'use client'
 
-import { type ReactNode, useId } from 'react'
+import { Children, type ReactNode, useId } from 'react'
 import { useScrollReveal } from '@/hooks/useScrollOptimization'
 import { cn } from '@/lib/utils'
 
@@ -67,7 +66,7 @@ export function ScrollReveal({
 }
 
 interface ScrollRevealListProps {
-  children: ReactNode[]
+  children: ReactNode
   className?: string
   itemClassName?: string
   animation?: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'scale'
@@ -90,10 +89,11 @@ export function ScrollRevealList({
   triggerOnce = true,
 }: ScrollRevealListProps) {
   const componentId = useId()
+  const childArray = Children.toArray(children)
 
   return (
     <div className={className}>
-      {children.map((child, index) => (
+      {childArray.map((child, index) => (
         <ScrollReveal
           key={`${componentId}-reveal-${index}`}
           animation={animation}
