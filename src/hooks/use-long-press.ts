@@ -74,9 +74,13 @@ export function useLongPress({
         isLongPressRef.current = true
         onLongPress(event)
 
-        // Trigger haptic feedback if available
-        if ('vibrate' in navigator) {
-          navigator.vibrate(50) // Heavy impact
+        // Trigger haptic feedback if available, with error handling
+        try {
+          if ('vibrate' in navigator && navigator.vibrate) {
+            navigator.vibrate(50) // Heavy impact
+          }
+        } catch (e) {
+          // Silently ignore if vibration fails (e.g., due to browser permissions)
         }
       }, duration)
     },

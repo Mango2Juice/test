@@ -126,8 +126,6 @@ export const averageWeights: GrowthDataPoint[] = (() => {
     const maleData = maleMap.get(femaleData.ageMonths)
 
     if (!maleData) {
-      // Optionally log missing male data
-      console.warn(`No male weight data for ageMonths ${femaleData.ageMonths}, using female data only.`)
       return { ...femaleData } as GrowthDataPoint
     }
 
