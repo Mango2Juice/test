@@ -1,3 +1,4 @@
+
 'use client'
 
 import { usePathname } from 'next/navigation'
@@ -23,8 +24,10 @@ export function PageTransition({ children }: PageTransitionProps) {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const prefersReducedMotion = useReducedMotion()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is intentionally included to trigger on route changes
   useEffect(() => {
+    let exitTimer: NodeJS.Timeout | undefined
+    let enterTimer: NodeJS.Timeout | undefined
+
     // If reduced motion is preferred, skip animations
     if (prefersReducedMotion) {
       setDisplayChildren(children)
@@ -35,19 +38,25 @@ export function PageTransition({ children }: PageTransitionProps) {
     setIsTransitioning(true)
 
     // Wait for exit animation to complete (200ms)
-    const exitTimer = setTimeout(() => {
+    exitTimer = setTimeout(() => {
       // Update content
       setDisplayChildren(children)
 
       // Start enter animation after a brief delay
-      const enterTimer = setTimeout(() => {
+      enterTimer = setTimeout(() => {
         setIsTransitioning(false)
       }, 50)
-
-      return () => clearTimeout(enterTimer)
     }, 200)
 
-    return () => clearTimeout(exitTimer)
+    // Cleanup function to clear both timers
+    return () => {
+      if (exitTimer) {
+        clearTimeout(exitTimer)
+      }
+      if (enterTimer) {
+        clearTimeout(enterTimer)
+      }
+    }
   }, [pathname, children, prefersReducedMotion])
 
   // Don't apply animation classes if reduced motion is preferred
