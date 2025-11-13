@@ -2,16 +2,16 @@
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { DayModifiers, DayProps, WeekNumberProps } from 'react-day-picker'
+import type { CalendarDay, Modifiers, WeekNumberProps } from 'react-day-picker'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarDayButton } from './calendar'
 
 // Helpers
 function getChevronButtons() {
-  const buttons = screen.getAllByRole('button') as HTMLButtonElement[]
+  const buttons = screen.getAllByRole('button')
   // Prev/Next are rendered first in nav. Filter by aria-labels from react-day-picker defaults
-  const prev = buttons.find((b) => b.className.includes('rdp-button_previous')) ?? buttons[0]
-  const next = buttons.find((b) => b.className.includes('rdp-button_next')) ?? buttons[1]
+  const prev = buttons.find((b) => b.classList.contains('rdp-button_previous'))
+  const next = buttons.find((b) => b.classList.contains('rdp-button_next'))
   return { prev, next }
 }
 
@@ -28,8 +28,8 @@ describe('Calendar', () => {
     expect(screen.getByRole('grid')).toBeInTheDocument()
 
     // By default showOutsideDays=true means we should see days from previous/next month
-    // Validate by finding more than 28 day buttons carrying data-day
-    const dayButtons = screen.getAllByRole('button').filter((b) => b instanceof HTMLButtonElement && b.dataset.day)
+    // Validate by finding more than 28 day buttons
+    const dayButtons = screen.getAllByRole('button', { name: /\d/ })
     expect(dayButtons.length).toBeGreaterThan(28)
   })
 
@@ -38,11 +38,11 @@ describe('Calendar', () => {
 
     // The nav chevrons should render custom lucide icons; clicking should navigate months
     const { prev, next } = getChevronButtons()
-    expect(prev).toBeTruthy()
-    expect(next).toBeTruthy()
+    expect(prev).toBeInTheDocument()
+    expect(next).toBeInTheDocument()
 
-    await userEvent.click(next)
-    await userEvent.click(prev)
+    if (next) await userEvent.click(next)
+    if (prev) await userEvent.click(prev)
 
     // After navigation, caption should reflect a valid month label
     expect(screen.getByText(/\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i)).toBeInTheDocument()
@@ -57,13 +57,13 @@ describe('Calendar', () => {
   })
 
   it('forwards custom components and preserves built-ins', () => {
-    const CustomWeekNumber = ({ number }: WeekNumberProps) => <td data-testid='custom-week'>{number}</td>
+    const CustomWeekNumber = ({ weekNumber }: { weekNumber: number }) => <td data-testid='custom-week'>{weekNumber}</td>
 
     render(
       <Calendar
         showWeekNumber
         components={{
-          WeekNumber: CustomWeekNumber,
+          WeekNumber: (props: WeekNumberProps) => <CustomWeekNumber weekNumber={props.number} />,
         }}
       />,
     )
@@ -77,8 +77,8 @@ describe('Calendar', () => {
     const { prev, next } = getChevronButtons()
 
     // Variant classes from buttonVariants should be applied; we assert presence of base button class
-    expect(prev.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
-    expect(next.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+    expect(prev?.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+    expect(next?.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
   })
 })
 
@@ -89,11 +89,13 @@ describe('CalendarDayButton', () => {
   })
 
   it('focuses when modifiers.focused is true', async () => {
-    const day: DayProps = {
+    const day: CalendarDay = {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
-    }
-    const modifiers: DayModifiers = { focused: true }
+      activeModifiers: { focused: true },
+    } as unknown as CalendarDay
+
+    const modifiers: Modifiers = { focused: true }
 
     render(
       <table>
@@ -106,18 +108,18 @@ describe('CalendarDayButton', () => {
     )
 
     // Find button by data-day attribute formatted by toLocaleDateString
-    const btn = screen.getByRole('button') as HTMLButtonElement
+    const btn = screen.getByRole('button')
     // run effects
     await vi.runOnlyPendingTimersAsync()
     expect(document.activeElement === btn || btn.matches(':focus')).toBe(true)
   })
 
   it('sets data attributes based on selection and range modifiers', () => {
-    const day: DayProps = {
+    const day: CalendarDay = {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
-    }
-    const modifiers: DayModifiers = {
+    } as unknown as CalendarDay
+    const modifiers: Modifiers = {
       selected: true,
       range_start: true,
       range_end: false,
@@ -134,7 +136,7 @@ describe('CalendarDayButton', () => {
       </table>,
     )
 
-    const btn = screen.getByRole('button') as HTMLButtonElement
+    const btn = screen.getByRole('button')
     expect(btn.getAttribute('data-selected-single')).toBe('false')
     expect(btn.getAttribute('data-range-start')).toBe('true')
     expect(btn.getAttribute('data-range-end')).toBe('false')
@@ -142,11 +144,11 @@ describe('CalendarDayButton', () => {
   })
 
   it('marks single selected when no range modifiers are set', () => {
-    const day: DayProps = {
+    const day: CalendarDay = {
       date: new Date('2024-05-20'),
       displayMonth: new Date('2024-05-01'),
-    }
-    const modifiers: DayModifiers = { selected: true }
+    } as unknown as CalendarDay
+    const modifiers: Modifiers = { selected: true }
 
     render(
       <table>
@@ -158,7 +160,7 @@ describe('CalendarDayButton', () => {
       </table>,
     )
 
-    const btn = screen.getByRole('button') as HTMLButtonElement
+    const btn = screen.getByRole('button')
     expect(btn.getAttribute('data-selected-single')).toBe('true')
   })
 })
