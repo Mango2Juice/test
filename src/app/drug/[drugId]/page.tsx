@@ -13,9 +13,9 @@ import { medications as allDrugData } from '@/lib/quick-reference-database/medic
 import { Callout } from '@/mdx-components'
 
 interface DrugPageProps {
-  params: {
+  params: Promise<{
     drugId: string
-  }
+  }>
 }
 
 /**
@@ -81,7 +81,7 @@ async function getDrugPageData(drugId: string) {
  * @returns An object with `title` and `description` strings. If the drug or MDX data is missing, `title` will be `"Drug Not Found"` and `description` will be a default not-found message.
  */
 export async function generateMetadata({ params }: DrugPageProps) {
-  const { drugId } = params
+  const { drugId } = await params
   const data = await getDrugPageData(drugId)
 
   if (!data) {
@@ -108,7 +108,7 @@ export async function generateMetadata({ params }: DrugPageProps) {
  * @returns The page's React element. If the drug or its MDX content cannot be found, triggers `notFound()` to render a 404 page.
  */
 export default async function DrugPage({ params }: DrugPageProps) {
-  const { drugId } = params
+  const { drugId } = await params
   const data = await getDrugPageData(drugId)
 
   // If no data is returned (either drug not found or MDX file missing), show a 404 page.
