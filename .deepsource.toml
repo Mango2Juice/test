@@ -17,10 +17,10 @@ enabled = true
 
   [analyzers.meta]
   plugins = ["react"]
-  environment = [
-    "nodejs",
-    "vitest"
   module_system = "es-modules"
   dialect = "typescript"
   style_guide = "google"
+  environment = [
+    "nodejs",
+    "vitest"
   ]
