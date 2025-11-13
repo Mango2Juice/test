@@ -18,7 +18,7 @@ interface BottomSheetProps extends ComponentPropsWithoutRef<'div'> {
 export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
   ({ open, onOpenChange, title, description, children, className, ...props }, ref) => {
     const [mounted, setMounted] = useState(false)
-    const sheetRef = useRef<HTMLDivElement>(null)
+    const internalSheetRef = useRef<HTMLDivElement>(null)
     const triggerRef = useRef<HTMLElement | null>(null)
     const titleId = useId()
     const descriptionId = useId()
@@ -32,7 +32,7 @@ export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
         triggerRef.current = document.activeElement as HTMLElement
         document.body.style.overflow = 'hidden'
         const timer = setTimeout(() => {
-          sheetRef.current?.focus()
+          internalSheetRef.current?.focus()
         }, 100)
         return () => {
           clearTimeout(timer)
@@ -48,8 +48,8 @@ export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           onOpenChange(false)
-        } else if (e.key === 'Tab' && open && sheetRef.current) {
-          const focusableElements = sheetRef.current.querySelectorAll<HTMLElement>(
+        } else if (e.key === 'Tab' && open && internalSheetRef.current) {
+          const focusableElements = internalSheetRef.current.querySelectorAll<HTMLElement>(
             'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
           )
           const firstElement = focusableElements[0]
@@ -98,7 +98,14 @@ export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
         aria-label='Close bottom sheet'
       >
         <div
-          ref={sheetRef}
+          ref={(node) => {
+            if (typeof ref === 'function') {
+              ref(node)
+            } else if (ref) {
+              ref.current = node
+            }
+            ;(internalSheetRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+          }}
           role='dialog'
           aria-modal='true'
           aria-labelledby={title ? titleId : undefined}
