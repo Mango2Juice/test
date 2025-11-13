@@ -1,6 +1,7 @@
 // src/hooks/use-toast.ts
 'use client'
 import type React from 'react'
+import { useEffect } from 'react'
 import { create } from 'zustand'
 import type { ToastProps } from '@/components/ui/toast'
 
@@ -22,6 +23,7 @@ interface ToastState {
   updateToast: (toast: Partial<ToasterToast>) => void
   dismissToast: (toastId?: string) => void
   removeToast: (toastId?: string) => void
+  cleanupTimeouts: () => void
 }
 
 const useToastStore = create<ToastState>((set, get) => ({
@@ -114,6 +116,13 @@ const useToastStore = create<ToastState>((set, get) => ({
       }
     })
   },
+  cleanupTimeouts: () => {
+    const { timeouts } = get()
+    timeouts.forEach((timeoutId) => {
+      clearTimeout(timeoutId)
+    })
+    set({ timeouts: new Map() })
+  },
 }))
 
 let count = 0
@@ -153,6 +162,15 @@ function toast(props: Toast) {
 
 function useToast() {
   const state = useToastStore()
+
+  useEffect(() => {
+    const cleanup = useToastStore.getState().cleanupTimeouts
+    window.addEventListener('beforeunload', cleanup)
+    return () => {
+      window.removeEventListener('beforeunload', cleanup)
+    }
+  }, [])
+
   return {
     ...state,
     toast,
