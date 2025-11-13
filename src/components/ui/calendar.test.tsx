@@ -97,7 +97,7 @@ describe('CalendarDayButton', () => {
   })
 
   // A minimal mock for the dateLib prop required by CalendarDay
-  const mockDateLib = {
+  const mockDateLib: any = {
     addDays: vi.fn(),
     addMonths: vi.fn(),
     addYears: vi.fn(),
