@@ -64,7 +64,7 @@ function PatientDataCard({ state, handleInputChange, handleSelectChange, handleR
           <div className='space-y-2'>
             <Label htmlFor='isSmoker'>Smoker</Label>
             <Select value={state.isSmoker} onValueChange={(value) => handleSelectChange('isSmoker', value)}>
-              <SelectTrigger>
+              <SelectTrigger id='isSmoker'>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -109,7 +109,7 @@ function PatientDataCard({ state, handleInputChange, handleSelectChange, handleR
           <div className='space-y-2'>
             <Label htmlFor='isTreatedForBP'>Treated for HBP?</Label>
             <Select value={state.isTreatedForBP} onValueChange={(value) => handleSelectChange('isTreatedForBP', value)}>
-              <SelectTrigger>
+              <SelectTrigger id='isTreatedForBP'>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

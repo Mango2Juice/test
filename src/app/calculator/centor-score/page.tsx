@@ -56,7 +56,14 @@ function ResultCard({
     alertVariant = 'default'
   }
 
-  const alertIcon = score >= 3 ? <AlertTriangle className='w-4 h-4' /> : <Check className='w-4 h-4' />
+  const alertIcon =
+    score >= 3 ? (
+      <AlertTriangle className='w-4 h-4' />
+    ) : score >= 1 ? (
+      <AlertTriangle className='w-4 h-4' />
+    ) : (
+      <Check className='w-4 h-4' />
+    )
 
   return (
     <Card>

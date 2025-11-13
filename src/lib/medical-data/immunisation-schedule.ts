@@ -13,11 +13,6 @@ interface Vaccine {
   doses: readonly VaccineDose[]
 }
 
-interface VaccineDescription {
-  name: string
-  description: string
-}
-
 export const vaccines: readonly Vaccine[] = [
   { name: 'BCG', doses: [{ age: '0m', label: 'Dos Tunggal' }] },
   {

@@ -13,11 +13,11 @@ project-level developer guides in `docs/`.
 - Read `.kiro/steering/*.md` for the task area.
 - BEFORE making changes: create and maintain a short todo list to track work
   (use the provided todo-list tool / API). Always keep it updated.
-- Use `pnpm install --frozen-lockfile` for reproducible installs when you need dependencies.
+- Use `npm ci` for reproducible installs when you need dependencies.
 - Validate changes with the full preflight before merging:
 
   ```powershell
-  pnpm run preflight
+  npm run preflight
   ```
 
   `preflight` runs install, format, lint, build, typecheck and tests.
@@ -41,7 +41,7 @@ project-level developer guides in `docs/`.
 
 ## Build & run (practical)
 
-- Preferred install: `pnpm install --frozen-lockfile` (reproducible; do not use npm or yarn for this repo).
+- Preferred install: `npm ci` (reproducible; do not use pnpm or yarn for this repo).
 - Development server: `npm run dev` (runs on port 9002 in this project).
 - Production build: `npm run build`; run with `npm run start`.
 
@@ -69,7 +69,7 @@ project-level developer guides in `docs/`.
 
 1. Create/update a todo list using the todo-list tool.
 2. Make the smallest clear change required.
-3. Run `pnpm run preflight` locally to validate formatting, lint, typecheck,
+3. Run `npm run preflight` locally to validate formatting, lint, typecheck,
    tests and build.
 4. Run Codacy CLI analyze for each edited file (see Codacy section).
 5. If Codacy returns issues from your edits, propose and apply fixes, then

@@ -37,11 +37,20 @@ export function AnimatedList({
       startStaggered()
       hasAnimatedRef.current = true
     }
+  }, [animate, startStaggered])
 
+  useEffect(() => {
+    if (!animate) {
+      hasAnimatedRef.current = false
+      reset()
+    }
+  }, [animate, reset])
+
+  useEffect(() => {
     return () => {
       reset()
     }
-  }, [animate, startStaggered, reset])
+  }, [reset])
 
   return (
     <div className={className}>
@@ -90,11 +99,20 @@ export function AnimatedGrid({
       startStaggered()
       hasAnimatedRef.current = true
     }
+  }, [animate, startStaggered])
 
+  useEffect(() => {
+    if (!animate) {
+      hasAnimatedRef.current = false
+      reset()
+    }
+  }, [animate, reset])
+
+  useEffect(() => {
     return () => {
       reset()
     }
-  }, [animate, startStaggered, reset])
+  }, [reset])
 
   return (
     <div

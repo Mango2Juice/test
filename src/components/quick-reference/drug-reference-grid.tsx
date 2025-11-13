@@ -71,7 +71,7 @@ function LoadingGrid({ count = 8 }: { count?: number }) {
       )}
     >
       {Array.from({ length: count }, (_, index) => {
-        const skeletonId = `skeleton-${count}-${index}-${Math.random().toString(36).substr(2, 9)}`
+        const skeletonId = `skeleton-${count}-${index}`
         return (
           <div key={skeletonId} className='animate-pulse'>
             <div

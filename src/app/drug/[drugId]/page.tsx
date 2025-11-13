@@ -132,12 +132,16 @@ export default async function DrugPage({ params }: DrugPageProps) {
     TriangleAlert,
   }
 
-  const aliases = Array.isArray(frontmatter.aliases) ? frontmatter.aliases.join(', ') : frontmatter.aliases
+  const aliases = Array.isArray(frontmatter?.aliases)
+    ? frontmatter.aliases.join(', ')
+    : typeof frontmatter?.aliases === 'string'
+    ? frontmatter.aliases
+    : undefined
 
   return (
     <div className='w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24'>
       <article className='prose dark:prose-invert lg:prose-lg'>
-        <h1>{frontmatter.title}</h1>
+      <h1>{frontmatter?.title || data.quickRefDrug.name}</h1>
         {aliases && <p className='text-muted-foreground italic'>Also known as: {aliases}</p>}
         <MDXRemote source={content} components={components} />
       </article>

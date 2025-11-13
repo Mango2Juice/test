@@ -5,13 +5,13 @@ interface SkeletonLoaderProps {
   variant?: 'text' | 'circular' | 'rectangular'
 }
 
-export function SkeletonLoader({ className, variant = 'rectangular' }: SkeletonLoaderProps) {
-  const variantClasses = {
-    text: 'h-4 w-full rounded',
-    circular: 'rounded-full',
-    rectangular: 'rounded-md',
-  }
+const variantClasses = {
+  text: 'h-4 w-full rounded',
+  circular: 'rounded-full',
+  rectangular: 'rounded-md',
+}
 
+export function SkeletonLoader({ className, variant = 'rectangular' }: SkeletonLoaderProps) {
   return (
     <div className={cn('animate-pulse bg-muted', variantClasses[variant], className)} aria-label='Loading content' />
   )

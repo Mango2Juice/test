@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { ageMonths, ageYears, vaccineDescriptions, vaccines } from '@/lib/medical-data/immunisation-schedule'
+import { ageMonths, ageYears, vaccines } from '@/lib/medical-data/immunisation-schedule'
 import { cn } from '@/lib/utils'
 
 export const metadata = {
@@ -13,7 +13,7 @@ export default function NationalImmunisationSchedulePage() {
   return (
     <div className='w-full max-w-6xl mx-auto'>
       <div className='mb-8 text-center'>
-        <h1 className='text-3xl font-bold tracking-tight'>Jadual Imunisasi Kebangsaan</h1>
+        <h1 className='text-3xl font-bold tracking-tight'>National Immunisation Schedule</h1>
         <p className='text-muted-foreground mt-2'>Kementerian Kesihatan Malaysia (Kemaskini Ogos 2023)</p>
       </div>
 
