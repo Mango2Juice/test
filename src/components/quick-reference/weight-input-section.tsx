@@ -2,7 +2,7 @@
 'use client'
 
 import { Weight } from 'lucide-react'
-import { useCallback, useEffect, useRef, useId } from 'react'
+import { useCallback, useEffect, useId, useRef } from 'react'
 import { Label } from '@/components/ui/label'
 import { MobileFormField } from '@/components/ui/mobile-form'
 import { MobileInput } from '@/components/ui/mobile-input'
@@ -10,7 +10,6 @@ import { useDevice } from '@/hooks/use-device'
 import { useScreenReader } from '@/hooks/use-screen-reader'
 import { useCalculatorStore } from '@/lib/stores/calculator-store'
 import { cn } from '@/lib/utils'
-import { AriaLabels } from '@/lib/utils/accessibility/labels'
 
 interface WeightInputSectionProps {
   disabled?: boolean
@@ -83,7 +82,6 @@ export function WeightInputSection({ disabled }: WeightInputSectionProps) {
     }
   }, [])
 
-  const weightDescription = AriaLabels.weightInput('paediatric')
   const displayValue = displayWeight === undefined ? '' : String(displayWeight)
 
   return (
@@ -100,7 +98,6 @@ export function WeightInputSection({ disabled }: WeightInputSectionProps) {
         </div>
 
         <div id={descriptionId} className='sr-only'>
-          {weightDescription}
         </div>
 
         <div className='flex items-center gap-2'>

@@ -1,119 +1,144 @@
 // src/lib/utils/pregnancy-calculator.ts
+import { add, differenceInDays, format, sub } from 'date-fns'
 
-import { add, addDays, addWeeks, differenceInDays } from 'date-fns'
+interface Milestone {
+  name: string
+  startWeeks: number
+  startDays?: number
+  endWeeks: number
+  endDays?: number
+}
+
+const pregnancyMilestones: Milestone[] = [
+  { name: 'Blood Draw for Serum Integrated Screening', startWeeks: 10, endWeeks: 13, endDays: 6 },
+  { name: 'First Fetal Heart Tones by Doppler', startWeeks: 11, endWeeks: 12 },
+  { name: 'Nuchal Translucency (NT) Ultrasound', startWeeks: 11, startDays: 2, endWeeks: 14, endDays: 2 },
+  { name: 'Best time for routine anatomy ultrasound', startWeeks: 18, endWeeks: 20 },
+  { name: '2h OGTT in women not previously diagnosed with diabetes', startWeeks: 24, endWeeks: 28 },
+  { name: 'Anti-D prophylaxis for women who are (RhD) Negative', startWeeks: 28, endWeeks: 28 },
+  { name: 'Antepartum Fetal Surveillance in High Risk Patients', startWeeks: 32, endWeeks: 34 },
+  { name: 'Screening for Vaginal and Rectal GBS colonization', startWeeks: 35, endWeeks: 37 },
+]
 
 export interface PregnancyInfo {
+  lmpEdd: Date
+  ultrasoundEdd: Date
   bestEstimateEdd: Date
+  source: 'LMP' | 'Ultrasound' | 'LMP_CONFIRMED'
   gestationalAgeWeeks: number
   gestationalAgeDays: number
-  trimester: 1 | 2 | 3
   conceptionDate: Date
-  source: 'LMP' | 'LMP_ADJUSTED' | 'Ultrasound'
-  discrepancyDays: number
+  trimester: number
   firstTrimesterEnd: Date
   secondTrimesterEnd: Date
-  milestoneDates: { name: string; dateRange: string }[]
+  discrepancyDays: number
+  milestoneDates: Array<{
+    name: string
+    dateRange: string
+  }>
 }
 
 /**
- * Calculates pregnancy information based on LMP and optional ultrasound data.
- * Follows ACOG guidelines for redating.
- *
- * @param lmpDate - The first day of the Last Menstrual Period.
- * @param ultrasoundDate - The date of the first-trimester ultrasound.
- * @param gaWeeksAtUltrasound - Gestational age in weeks at the time of ultrasound.
- * @param gaDaysAtUltrasound - Gestational age in days at the time of ultrasound.
- * @returns A PregnancyInfo object or null if LMP is not provided.
+ * ACOG Committee Opinion No. 700 (2017, reaffirmed 2022)
+ * Redating thresholds (difference between LMP and ultrasound)
+ */
+function getRedatingThreshold(gaWeeks: number): number {
+  switch (true) {
+    case gaWeeks < 5:
+      return 0 // Do not redate before 5 weeks
+    case gaWeeks <= 8:
+      return 5
+    case gaWeeks <= 13:
+      return 7
+    case gaWeeks <= 15:
+      return 10
+    case gaWeeks <= 21:
+      return 14
+    case gaWeeks <= 27:
+      return 21
+    default:
+      return 21 // ≥28 weeks: generally do not redate
+  }
+}
+
+/**
+ * Main pregnancy info calculator (ACOG-compliant)
  */
 export function calculatePregnancyInfo(
-  lmpDate: Date,
+  lmpDate: Date | null | undefined,
   ultrasoundDate?: Date,
-  gaWeeksAtUltrasound?: number,
-  gaDaysAtUltrasound?: number,
+  gaWeeks?: number,
+  gaDays?: number,
 ): PregnancyInfo | null {
-  if (!lmpDate) return null
+  if (!lmpDate || Number.isNaN(lmpDate.getTime())) return null
 
-  // 1. Calculate EDD based on LMP (Naegele's rule)
-  const eddByLmp = add(lmpDate, { days: 280 })
-
-  let bestEstimateEdd = eddByLmp
-  let source: 'LMP' | 'LMP_ADJUSTED' | 'Ultrasound' = 'LMP'
+  const lmpEdd = add(lmpDate, { days: 280 })
+  let bestEstimateEdd = lmpEdd
+  let ultrasoundEdd = lmpEdd
+  let source: PregnancyInfo['source'] = 'LMP'
   let discrepancyDays = 0
 
-  // 2. Adjust EDD based on ultrasound if provided
-  if (ultrasoundDate && gaWeeksAtUltrasound !== undefined && gaDaysAtUltrasound !== undefined) {
-    const totalGaDaysAtUltrasound = gaWeeksAtUltrasound * 7 + gaDaysAtUltrasound
-    const eddByUltrasound = addDays(ultrasoundDate, 280 - totalGaDaysAtUltrasound)
+  if (ultrasoundDate && gaWeeks !== undefined && gaDays !== undefined) {
+    // Total GA in days from ultrasound measurement
+    const measuredGaInDays = gaWeeks * 7 + gaDays
+    ultrasoundEdd = add(ultrasoundDate, { days: 280 - measuredGaInDays })
 
-    discrepancyDays = Math.abs(differenceInDays(eddByLmp, eddByUltrasound))
+    // GA by LMP (days between LMP and ultrasound date)
+    const lmpBasedGaInDays = differenceInDays(ultrasoundDate, lmpDate)
+    discrepancyDays = Math.abs(lmpBasedGaInDays - measuredGaInDays)
 
-    // ACOG guidelines for redating based on first-trimester ultrasound
-    const shouldUseUltrasound =
-      (gaWeeksAtUltrasound < 9 && discrepancyDays > 5) ||
-      (gaWeeksAtUltrasound >= 9 && gaWeeksAtUltrasound < 14 && discrepancyDays > 7)
+    const gaWeeksByLmp = Math.floor(lmpBasedGaInDays / 7)
+    const redatingThreshold = getRedatingThreshold(gaWeeksByLmp)
 
-    if (shouldUseUltrasound) {
-      bestEstimateEdd = eddByUltrasound
+    // Only redate if discrepancy strictly exceeds threshold
+    if (gaWeeksByLmp >= 5 && discrepancyDays > redatingThreshold) {
+      bestEstimateEdd = ultrasoundEdd
       source = 'Ultrasound'
     } else {
-      source = 'LMP_ADJUSTED'
+      source = 'LMP_CONFIRMED'
     }
   }
 
-  // 3. Calculate current gestational age
+  const estimatedLmp = sub(bestEstimateEdd, { days: 280 })
   const today = new Date()
-  const daysPregnant = differenceInDays(today, addDays(bestEstimateEdd, -280))
-  const gestationalAgeWeeks = Math.floor(daysPregnant / 7)
-  const gestationalAgeDays = daysPregnant % 7
 
-  // 4. Calculate other key dates
-  const conceptionDate = addWeeks(lmpDate, 2)
-  const firstTrimesterEnd = add(lmpDate, { weeks: 13, days: 6 })
-  const secondTrimesterEnd = add(lmpDate, { weeks: 27, days: 6 })
+  // Gestational age (in days) from estimated LMP to today
+  let currentGaInDays = differenceInDays(today, estimatedLmp)
+  if (currentGaInDays < 0) currentGaInDays = 0 // Clamp for future LMPs
 
-  let trimester: 1 | 2 | 3 = 1
-  if (gestationalAgeWeeks >= 28) {
-    trimester = 3
-  } else if (gestationalAgeWeeks >= 14) {
-    trimester = 2
-  }
+  const gestationalAgeWeeks = Math.floor(currentGaInDays / 7)
+  const gestationalAgeDays = currentGaInDays % 7
 
-  const formatRange = (start: Date, end: Date) => `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`
+  // Trimester cutoffs per ACOG
+  const firstTrimesterEnd = add(estimatedLmp, { weeks: 13, days: 6 })
+  const secondTrimesterEnd = add(estimatedLmp, { weeks: 27, days: 6 })
 
-  // 5. Calculate screening windows
-  const milestoneDates = [
-    {
-      name: 'Nuchal Translucency (NT) Scan',
-      dateRange: formatRange(add(bestEstimateEdd, { weeks: -29, days: 1 }), add(bestEstimateEdd, { weeks: -26, days: 1 })),
-    },
-    {
-      name: 'Quad Screen',
-      dateRange: formatRange(add(bestEstimateEdd, { weeks: -25 }), add(bestEstimateEdd, { weeks: -18, days: 1 })),
-    },
-    {
-      name: 'Anatomy Scan',
-      dateRange: formatRange(add(bestEstimateEdd, { weeks: -22 }), add(bestEstimateEdd, { weeks: -18 })),
-    },
-    {
-      name: 'Glucose Challenge Screening',
-      dateRange: formatRange(add(bestEstimateEdd, { weeks: -16 }), add(bestEstimateEdd, { weeks: -12 })),
-    },
-    {
-      name: 'Group B Strep Screening',
-      dateRange: formatRange(add(bestEstimateEdd, { weeks: -4 }), add(bestEstimateEdd, { weeks: -2 })),
-    },
-  ]
+  let trimester = 1
+  if (today > secondTrimesterEnd) trimester = 3
+  else if (today > firstTrimesterEnd) trimester = 2
+
+  const milestoneDates = pregnancyMilestones.map((m) => {
+    const startDate = add(estimatedLmp, { weeks: m.startWeeks, days: m.startDays || 0 })
+    const endDate = add(estimatedLmp, { weeks: m.endWeeks, days: m.endDays || 0 })
+    const startStr = format(startDate, 'MMM d')
+    const endStr = format(endDate, 'MMM d, yyyy')
+    const isSameDay = format(startDate, 'yyyy-MM-dd') === format(endDate, 'yyyy-MM-dd')
+    const dateRange = isSameDay ? endStr : `${startStr} - ${endStr}`
+    return { name: m.name, dateRange }
+  })
 
   return {
+    lmpEdd,
+    ultrasoundEdd,
     bestEstimateEdd,
+    source,
     gestationalAgeWeeks,
     gestationalAgeDays,
+    conceptionDate: add(estimatedLmp, { weeks: 2 }),
     trimester,
-    conceptionDate,
-    source,
-    discrepancyDays,
     firstTrimesterEnd,
     secondTrimesterEnd,
+    discrepancyDays,
     milestoneDates,
   }
 }

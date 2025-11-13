@@ -411,7 +411,7 @@ function QuickDrugReferenceContent({
             <CardContent className={cn('padding-component', isMobile && 'pt-2 px-2 pb-2')}>
               <div className={cn('grid', isMobile ? 'grid-cols-1 gap-inline' : 'grid-cols-2 gap-component')}>
                 <AgeInputSection disabled={!isClient} />
-                <WeightInputSection audience={'paediatric'} disabled={!isClient} />
+                <WeightInputSection disabled={!isClient} />
               </div>
             </CardContent>
           </Card>

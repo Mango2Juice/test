@@ -58,6 +58,4 @@ const nextConfig: NextConfig = {
     },
   ],
 }
-
-// Export Next.js configuration (Sentry removed)
 export default nextConfig

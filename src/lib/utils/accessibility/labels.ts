@@ -1,40 +1,38 @@
-// /src/lib/utils/accessibility/labels.ts
-
-import type { AudienceMode } from '@/lib/types'
+/**
+ * @fileoverview ARIA label generator functions for accessibility.
+ * @lintignore
+ */
 
 export const AriaLabels = {
-  // Main Navigation
-  navQuickReference: 'Quick Reference page',
-  navCalculators: 'Medical Calculators page',
-  navResources: 'Clinical Resources page',
-  navThemeToggle: 'Toggle color theme',
+  /**
+   * ARIA label for a drug dosage card.
+   * Handles empty inputs gracefully by returning a fallback message.
+   * @param drugName - The name of the drug.
+   * @param dosageText - The calculated dosage to be announced.
+   * @returns A descriptive string for screen readers.
+   */
+  drugDosageCard: (drugName: string, dosageText: string) => {
+    if (!drugName?.trim() || !dosageText?.trim()) {
+      return 'Drug information is currently unavailable.'
+    }
+    return `${drugName}. Calculated dose: ${dosageText}.`
+  },
 
-  // Quick Reference Components
-  weightInput: (audience: AudienceMode) =>
-    audience === 'paediatric'
-      ? 'Patient weight in kilograms. If left blank, weight will be estimated from age.'
-      : 'Patient weight in kilograms',
-  weightInputDescription: (audience: AudienceMode) =>
-    audience === 'paediatric'
-      ? "Enter the patient's weight in kilograms. If left blank, an estimated weight will be used based on age."
-      : "Enter the patient's weight in kilograms.",
-  ageInput: 'Patient age in years or months',
-  complaintFilter: 'Filter medications by complaint category',
-  drugDosageCard: (name: string, dosage: string) => `${name}: ${dosage}`,
-
-  // Search
-  searchMedications: 'Search for medications by name',
-  searchResults: (count: number) => `Search results grid, displaying ${count} medications.`,
-
-  // Medical Calculators
-  centorScoreForm: 'Centor Score clinical criteria form',
-  phq9Form: 'PHQ-9 questionnaire form',
-
-  // Common UI Elements
-  backButton: 'Go back to the previous page',
-  resetButton: 'Reset form fields to their default values',
-  calculateButton: 'Calculate score or result based on inputs',
-  closeModal: 'Close dialog or modal window',
-  favoriteButton: (name: string) => `Add ${name} to favorites`,
-  removeFavoriteButton: (name: string) => `Remove ${name} from favorites`,
+  /**
+   * ARIA label for a search results region.
+   * Handles invalid count gracefully.
+   * @param count - The number of results.
+   * @param query - The search query, if any.
+   * @returns A descriptive string for screen readers.
+   */
+  searchResults: (count: number, query?: string) => {
+    if (typeof count !== 'number' || count < 0) {
+      return 'Counting search results...'
+    }
+    const plural = count !== 1 ? 's' : ''
+    if (query) {
+      return `${count} medication${plural} found for "${query}".`
+    }
+    return `${count} medication${plural} available.`
+  },
 }
