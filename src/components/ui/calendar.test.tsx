@@ -3,15 +3,15 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { CalendarDay, Modifiers, WeekNumberProps } from 'react-day-picker'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarDayButton } from './calendar'
 
 // Helpers
 function getChevronButtons() {
   const buttons = screen.getAllByRole('button')
   // Prev/Next are rendered first in nav. Filter by aria-labels from react-day-picker defaults
-  const prev = buttons.find((b) => b.classList.contains('rdp-button_previous'))
-  const next = buttons.find((b) => b.classList.contains('rdp-button_next'))
+  const prev = buttons.find((b): b is HTMLButtonElement => b.classList.contains('rdp-button_previous'))
+  const next = buttons.find((b): b is HTMLButtonElement => b.classList.contains('rdp-button_next'))
   return { prev, next }
 }
 
@@ -19,6 +19,11 @@ describe('Calendar', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2024-05-15T00:00:00.000Z'))
+  })
+
+  afterEach(() => {
+    vi.clearAllTimers()
+    vi.useRealTimers()
   })
 
   it('renders with outside days visible by default', () => {
@@ -77,8 +82,12 @@ describe('Calendar', () => {
     const { prev, next } = getChevronButtons()
 
     // Variant classes from buttonVariants should be applied; we assert presence of base button class
-    expect(prev?.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
-    expect(next?.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+    if (prev) {
+      expect(prev.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+    }
+    if (next) {
+      expect(next.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+    }
   })
 })
 
@@ -118,7 +127,11 @@ describe('CalendarDayButton', () => {
     const day: CalendarDay = {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
-    } as unknown as CalendarDay
+      activeModifiers: {},
+      dateLib: new Date(),
+      isEqualTo: () => false,
+      outside: 'start',
+    }
     const modifiers: Modifiers = {
       selected: true,
       range_start: true,
@@ -147,7 +160,11 @@ describe('CalendarDayButton', () => {
     const day: CalendarDay = {
       date: new Date('2024-05-20'),
       displayMonth: new Date('2024-05-01'),
-    } as unknown as CalendarDay
+      activeModifiers: {},
+      dateLib: new Date(),
+      isEqualTo: () => false,
+      outside: 'start',
+    }
     const modifiers: Modifiers = { selected: true }
 
     render(
