@@ -103,12 +103,7 @@ const MobileViewport = forwardRef<HTMLDivElement, MobileViewportProps>(
           'relative w-full',
 
           // Safe area support
-          addSafeArea && [
-            'pb-safe-area-inset-bottom',
-            'pl-safe-area-inset-left',
-            'pr-safe-area-inset-right',
-            'pt-safe-area-inset-top',
-          ],
+          addSafeArea && 'mobile-safe-area-full',
 
           // Keyboard adjustment classes
           adjustForKeyboard && keyboard.isVisible && [keyboardAdjustment === 'scroll' && 'overflow-y-auto'],
