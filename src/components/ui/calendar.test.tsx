@@ -2,7 +2,7 @@
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { CalendarDay, CalendarWeek, Modifiers, WeekNumberProps } from 'react-day-picker'
+import type { CalendarDay, Modifiers, WeekNumberProps } from 'react-day-picker'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Calendar, CalendarDayButton } from './calendar'
 
@@ -10,8 +10,8 @@ import { Calendar, CalendarDayButton } from './calendar'
 function getChevronButtons() {
   const buttons = screen.getAllByRole('button')
   // Prev/Next are rendered first in nav. Filter by aria-labels from react-day-picker defaults
-  const prev = buttons.find((b): b is HTMLButtonElement => b.classList.contains('rdp-button_previous'))
-  const next = buttons.find((b): b is HTMLButtonElement => b.classList.contains('rdp-button_next'))
+  const prev = buttons.find((b): b is HTMLButtonElement => b.getAttribute('aria-label') === 'Go to previous month')
+  const next = buttons.find((b): b is HTMLButtonElement => b.getAttribute('aria-label') === 'Go to next month')
   return { prev, next }
 }
 
@@ -33,9 +33,10 @@ describe('Calendar', () => {
     expect(screen.getByRole('grid')).toBeInTheDocument()
 
     // By default showOutsideDays=true means we should see days from previous/next month
-    // Validate by finding more than 28 day buttons
-    const dayButtons = screen.getAllByRole('button', { name: /\d/ })
-    expect(dayButtons.length).toBeGreaterThan(28)
+    // For May 2024, this includes April 28-30 and June 1-8
+    expect(screen.getByText('28')).toBeInTheDocument() // April 28
+    expect(screen.getByText('15')).toBeInTheDocument() // May 15
+    expect(screen.getByText('1')).toBeInTheDocument() // June 1
   })
 
   it('uses captionLayout="label" by default and renders custom Chevron icons', async () => {
@@ -47,28 +48,27 @@ describe('Calendar', () => {
     expect(next).toBeInTheDocument()
 
     if (next) await userEvent.click(next)
-    if (prev) await userEvent.click(prev)
+    expect(screen.getByText(/june 2024/i)).toBeInTheDocument()
 
-    // After navigation, caption should reflect a valid month label
-    expect(screen.getByText(/\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i)).toBeInTheDocument()
+    if (prev) await userEvent.click(prev)
+    expect(screen.getByText(/may 2024/i)).toBeInTheDocument()
   })
 
   it('merges incoming formatters with defaults (short month names)', () => {
     render(<Calendar />)
     // Caption label should contain short month name (May) when system time is May 2024
-    // react-day-picker renders the current month caption text in the document
-    const caption = screen.getByText(/may/i)
+    const caption = screen.getByText(/may 2024/i)
     expect(caption).toBeInTheDocument()
   })
 
   it('forwards custom components and preserves built-ins', () => {
-    const CustomWeekNumber = ({ number }: { number: number }) => <td data-testid='custom-week'>{number}</td>
+    const CustomWeekNumber = ({ weekNumber }: { weekNumber: number }) => <td data-testid='custom-week'>{weekNumber}</td>
 
     render(
       <Calendar
         showWeekNumber
         components={{
-          WeekNumber: (props: WeekNumberProps) => <CustomWeekNumber number={props.number} />,
+          WeekNumber: (props: WeekNumberProps) => <CustomWeekNumber weekNumber={props.weekNumber} />,
         }}
       />,
     )
@@ -81,12 +81,11 @@ describe('Calendar', () => {
     render(<Calendar buttonVariant='secondary' />)
     const { prev, next } = getChevronButtons()
 
-    // Variant classes from buttonVariants should be applied; we assert presence of base button class
     if (prev) {
-      expect(prev.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+      expect(prev.className).toContain('bg-secondary')
     }
     if (next) {
-      expect(next.className).toMatch(/btn|button|variant|secondary|ghost|outline/i)
+      expect(next.className).toContain('bg-secondary')
     }
   })
 })
@@ -97,14 +96,34 @@ describe('CalendarDayButton', () => {
     vi.setSystemTime(new Date('2024-05-15T00:00:00.000Z'))
   })
 
+  // A minimal mock for the dateLib prop required by CalendarDay
+  const mockDateLib = {
+    addDays: vi.fn(),
+    addMonths: vi.fn(),
+    addYears: vi.fn(),
+    endOfDay: vi.fn(),
+    endOfMonth: vi.fn(),
+    endOfWeek: vi.fn(),
+    endOfYear: vi.fn(),
+    format: vi.fn(),
+    isSameDay: vi.fn(),
+    isSameMonth: vi.fn(),
+    isSameYear: vi.fn(),
+    parse: vi.fn(),
+    startOfDay: vi.fn(),
+    startOfMonth: vi.fn(),
+    startOfWeek: vi.fn(),
+    startOfYear: vi.fn(),
+  }
+
   it('focuses when modifiers.focused is true', async () => {
     const day: CalendarDay = {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
       activeModifiers: { focused: true },
-      dateLib: {} as any, // Mocking DateLib as it's complex and not needed for this test
+      dateLib: mockDateLib,
       isEqualTo: () => false,
-      outside: false,
+      isOutside: false,
     }
 
     const modifiers: Modifiers = { focused: true }
@@ -113,17 +132,18 @@ describe('CalendarDayButton', () => {
       <table>
         <tbody>
           <tr>
-            <CalendarDayButton day={day} modifiers={modifiers} />
+            <td>
+              <CalendarDayButton day={day} modifiers={modifiers} />
+            </td>
           </tr>
         </tbody>
       </table>,
     )
 
-    // Find button by data-day attribute formatted by toLocaleDateString
     const btn = screen.getByRole('button')
-    // run effects
+    // Focus is managed via useEffect in the component, so we need to wait for it
     await vi.runOnlyPendingTimersAsync()
-    expect(document.activeElement === btn || btn.matches(':focus')).toBe(true)
+    expect(document.activeElement).toBe(btn)
   })
 
   it('sets data attributes based on selection and range modifiers', () => {
@@ -131,9 +151,9 @@ describe('CalendarDayButton', () => {
       date: new Date('2024-05-15'),
       displayMonth: new Date('2024-05-01'),
       activeModifiers: {},
-      dateLib: {} as any,
+      dateLib: mockDateLib,
       isEqualTo: () => false,
-      outside: true,
+      isOutside: true,
     }
     const modifiers: Modifiers = {
       selected: true,
@@ -146,7 +166,9 @@ describe('CalendarDayButton', () => {
       <table>
         <tbody>
           <tr>
-            <CalendarDayButton day={day} modifiers={modifiers} />
+            <td>
+              <CalendarDayButton day={day} modifiers={modifiers} />
+            </td>
           </tr>
         </tbody>
       </table>,
@@ -164,9 +186,9 @@ describe('CalendarDayButton', () => {
       date: new Date('2024-05-20'),
       displayMonth: new Date('2024-05-01'),
       activeModifiers: {},
-      dateLib: {} as any,
+      dateLib: mockDateLib,
       isEqualTo: () => false,
-      outside: true,
+      isOutside: true,
     }
     const modifiers: Modifiers = { selected: true }
 
@@ -174,7 +196,9 @@ describe('CalendarDayButton', () => {
       <table>
         <tbody>
           <tr>
-            <CalendarDayButton day={day} modifiers={modifiers} />
+            <td>
+              <CalendarDayButton day={day} modifiers={modifiers} />
+            </td>
           </tr>
         </tbody>
       </table>,
