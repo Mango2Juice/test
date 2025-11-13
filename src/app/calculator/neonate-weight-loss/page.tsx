@@ -150,7 +150,7 @@ export default function NeonateWeightLossPage() {
           )}
 
           <div className='space-y-2'>
-            <Label htmlFor='ageInHours'>Infant's Age (hours)</Label>
+            <Label htmlFor='ageInHours'>{`Infant's Age (hours)`}</Label>
             <Input
               id='ageInHours'
               type='number'
