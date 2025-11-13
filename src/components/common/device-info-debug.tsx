@@ -11,11 +11,14 @@ import { useDevice, useDeviceType, useHasTouch, useOrientation } from '@/hooks/u
  *
  * @returns The JSX element for the device information debug panel
  */
-export function DeviceInfoDebug() {
+export function DeviceInfoDebug() {// Only render in development
+
   const deviceContext = useDevice()
   const deviceType = useDeviceType()
   const orientation = useOrientation()
   const hasTouch = useHasTouch()
+
+  if (process.env.NODE_ENV === 'production') return null
 
   return (
     <div className='fixed bottom-4 right-4 bg-background border rounded-lg p-4 text-xs space-y-2 shadow-lg z-50'>
