@@ -72,7 +72,7 @@ For data mutations (e.g., form submissions), the AI will use Server Actions to c
 
 *Example of a simple Server Action:*
 
-```ts
+```typescript
 // app/actions.ts
 'use server'
 
