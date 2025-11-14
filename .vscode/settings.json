@@ -36,6 +36,7 @@
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
+    "source.fixAll.markdownlint": "explicit",
     "source.action.useSortedKeys.biome": "explicit",
     "source.organizeImports.biome": "explicit",
   },
@@ -190,5 +191,9 @@
   ],
   "chat.instructionsFilesLocations": {
     ".kiro/steering": true
-  }
+  },
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+},
 }

@@ -111,7 +111,7 @@ export const MobileLabel = forwardRef<HTMLLabelElement, MobileLabelProps>(
         ref={ref}
         className={cn(
           'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-          touchOptimized && 'min-h-[44px] flex items-center py-2',
+          touchOptimized && 'min-h-11 flex items-center py-2',
           className,
         )}
         {...props}

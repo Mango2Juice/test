@@ -18,7 +18,7 @@ interface BottomSheetProps extends ComponentPropsWithoutRef<'div'> {
 export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
   ({ open, onOpenChange, title, description, children, className, ...props }, ref) => {
     const [mounted, setMounted] = useState(false)
-    const internalSheetRef = useRef<HTMLDivElement>(null)
+    const internalSheetRef = useRef<HTMLDivElement | null>(null)
     const triggerRef = useRef<HTMLElement | null>(null)
     const titleId = useId()
     const descriptionId = useId()
@@ -104,7 +104,7 @@ export const BottomSheet = forwardRef<ElementRef<'div'>, BottomSheetProps>(
             } else if (ref) {
               ref.current = node
             }
-            ;(internalSheetRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+            internalSheetRef.current = node
           }}
           role='dialog'
           aria-modal='true'

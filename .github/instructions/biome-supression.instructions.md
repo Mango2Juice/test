@@ -1,18 +1,18 @@
-# How to use suppressions in biome
+# Biome Suppression Instructions
 
-The Biome analyzer is the foundation of the [linter](/linter) and [assist](/assist); in fact, both tools share a lot of similarities.
+## Introduction
 
-Among them, they share the same suppression engine, which means that you can suppress a lint rule the same way you would suppress an assist action.
+The Biome analyzer is the foundation of the `linter` and `assist`; in fact, both tools share a lot of similarities.
 
-With suppression, it's possible to turn off a lint rule (or action) for a specific line of code, a range, or the entire file.
-
-Suppression is achievable with **suppression comments**.
+- Among them, they share the same suppression engine, which means that you can suppress a lint rule the same way you would suppress an assist action.
+- With suppression, it's possible to turn off a lint rule (or action) for a specific line of code, a range, or the entire file.
+- Suppression is achievable with **suppression comments**.
 
 ## Suppression syntax
 
 Suppression comments have the following format:
 
-```js
+```javascript
 // biome-ignore lint: <explanation>
 // biome-ignore assist: <explanation>
 // biome-ignore syntax: <explanation>
@@ -38,6 +38,7 @@ If you're unsure of the exact category of a rule/action, you can refer to their 
 From here onwards, JavaScript is used to explain suppression comments, and the `lint` category is used.
 :::
 
+## Types of suppressions
 
 ### Inline suppressions
 
@@ -45,7 +46,7 @@ They disable a lint rule for the **next line** of code.
 
 In the following example, the suppression comment `biome-ignore lint/suspicious/noDebugger: reason` will disable the `debugger;` statement at line 2, but the `debugger` at line 3 will still raise a diagnostic:
 
-```js title="file.js" ins={1}
+```javascript
 // biome-ignore lint/suspicious/noDebugger: reason
 debugger;
 debugger;
@@ -59,7 +60,7 @@ These suppression comments are very useful when you want to suppression some lin
 
 In the following example, the suppression comment `biome-ignore-all lint/suspicious/noDebugger: reason` will disable the lint rule for all lines in `generated.js`:
 
-```js title="generated.js" ins={1}
+```javascript
 // biome-ignore-all lint/suspicious/noDebugger: reason
 
 debugger
@@ -71,13 +72,13 @@ When a top-level suppression comment isn't at the top of the file, it is conside
 
 ### Range suppressions
 
-They disable a lint rule from a particular _range_ in the file, starting from the line with the start comment, until the line with the end comment.
+They disable a lint rule from a particular *range* in the file, starting from the line with the start comment, until the line with the end comment.
 
 To mark the beginning of a range suppression, the suppression comment must start with `// biome-ignore-start`. To mark the end of it, the suppression comment must start with `// biome-ignore-end`.
 
 The following example will disable the rule `lint/suspicious/noDoubleEquals` for line 2 and 3, but line 5 will raise a diagnostic:
 
-```js name="file.js" ins={1} ins={4}
+```javascript
 // biome-ignore-start lint/suspicious/noDoubleEquals: reason
 a == b;
 c == d;
@@ -91,7 +92,7 @@ Range suppressions must have a matching `biome-ignore-end` suppression.
 
 Range suppressions can also overlap.  Consider the following example:
 
-```js name="file.js"
+```javascript
 debugger;
 // biome-ignore-start lint/suspicious/noDebugger: reason
 debugger

@@ -37,32 +37,36 @@ To get the project up and running on your local machine, follow these steps.
 
 ### Installation
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
+
     ```bash
     git clone https://github.com/Mango2Juice/doseright.git
     cd doseright
     ```
 
-2.  **Install dependencies:**
+2. **Install dependencies:**
+
     ```bash
     npm install
     ```
 
-3.  **Run the development server:**
+3. **Run the development server:**
+
     ```bash
     npm run dev
     ```
+
     The application will be available at `http://localhost:9002`.
 
 ## Available Scripts
 
--   `npm run dev`: Starts the development server.
--   `npm run build`: Creates a production-ready build.
--   `npm run start`: Starts the production server.
--   `npm test`: Runs the test suite using Vitest.
--   `npm run lint`: Lints the codebase using Biome.
--   `npm run format`: Formats the code using Biome.
--   `npm run typecheck`: Runs the TypeScript compiler to check for type errors.
+- `npm run dev`: Starts the development server.
+- `npm run build`: Creates a production-ready build.
+- `npm run start`: Starts the production server.
+- `npm test`: Runs the test suite using Vitest.
+- `npm run lint`: Lints the codebase using Biome.
+- `npm run format`: Formats the code using Biome.
+- `npm run typecheck`: Runs the TypeScript compiler to check for type errors.
 
 ## Contributing
 

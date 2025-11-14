@@ -221,5 +221,3 @@
 58. **useIterableCallbackReturn**: Enforce consistent return values in iterable callbacks.
 59. **useNamespaceKeyword**: Require `namespace` keyword instead of `module`.
 60. **useDefaultSwitchClauseLast**: Enforce default clause last in switch statements.
-
----

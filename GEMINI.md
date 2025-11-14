@@ -6,15 +6,15 @@ These guidelines define the operational principles and capabilities of an AI age
 
 The AI operates within the Firebase Studio development environment, which provides a Code OSS-based IDE and a pre-configured environment for Next.js development.
 
-* **Project Structure (App Router):** The AI assumes a standard Next.js project structure using the App Router.
-  * `/app`: The core directory for file-based routing.
-  * `layout.tsx`: The root layout.
-  * `page.tsx`: The page UI for a route.
-  * `/components`: For reusable UI components.
-  * `/lib`: For utility functions and libraries.
-* **`dev.nix` Configuration:** The AI is aware of the `.idx/dev.nix` file for environment configuration, which includes `pkgs.nodejs` and other necessary tools.
-* **Preview Server:** Firebase Studio provides a running preview server. The AI **will not** run `next dev`, but will instead monitor the output of the already running server for real-time feedback.
-* **Firebase Integration:** The AI can integrate Firebase services, following standard procedures for Next.js projects, including using the Firebase Admin SDK in server-side code.
+- **Project Structure (App Router):** The AI assumes a standard Next.js project structure using the App Router.
+  - `/app`: The core directory for file-based routing.
+  - `layout.tsx`: The root layout.
+  - `page.tsx`: The page UI for a route.
+  - `/components`: For reusable UI components.
+  - `/lib`: For utility functions and libraries.
+- **`dev.nix` Configuration:** The AI is aware of the `.idx/dev.nix` file for environment configuration, which includes `pkgs.nodejs` and other necessary tools.
+- **Preview Server:** Firebase Studio provides a running preview server. The AI **will not** run `next dev`, but will instead monitor the output of the already running server for real-time feedback.
+- **Firebase Integration:** The AI can integrate Firebase services, following standard procedures for Next.js projects, including using the Firebase Admin SDK in server-side code.
 
 ## Firebase MCP
 
@@ -37,11 +37,11 @@ When requested for Firebase add the following the server configurations to .idx/
 
 The AI is empowered to modify the codebase autonomously based on user requests. The AI is creative and anticipates features that the user might need even if not explicitly requested.
 
-* **Core Code Assumption:** The AI will primarily work with React components (`.tsx` or `.jsx`) within the `/app` directory. It will create new routes, layouts, and components as needed.
-* **Package Management:** The AI will use `pnpm` for package management.
-* **Next.js CLI:** The AI will use the Next.js CLI for common development tasks:
-  * `pnpm build`: To build the project for production.
-  * `pnpm lint`: To run biomejs and check for code quality issues.
+- **Core Code Assumption:** The AI will primarily work with React components (`.tsx` or `.jsx`) within the `/app` directory. It will create new routes, layouts, and components as needed.
+- **Package Management:** The AI will use `pnpm` for package management.
+- **Next.js CLI:** The AI will use the Next.js CLI for common development tasks:
+  - `pnpm build`: To build the project for production.
+  - `pnpm lint`: To run biomejs and check for code quality issues.
 
 ## **Next.js Core Concepts (App Router)**
 
@@ -49,26 +49,26 @@ The AI is empowered to modify the codebase autonomously based on user requests. 
 
 The AI understands that components in the `/app` directory are React Server Components (RSCs) by default.
 
-* **Data Fetching:** The AI will perform data fetching directly in Server Components using `async/await`, colocating data access with the component that uses it.
-* **"use client" Directive:** For components that require interactivity, state, or browser-only APIs, the AI will use the `"use client"` directive to mark them as Client Components.
-* **Best Practice:** Keep Client Components as small as possible and push them to the leaves of the component tree to minimize the client-side JavaScript bundle.
+- **Data Fetching:** The AI will perform data fetching directly in Server Components using `async/await`, colocating data access with the component that uses it.
+- **"use client" Directive:** For components that require interactivity, state, or browser-only APIs, the AI will use the `"use client"` directive to mark them as Client Components.
+- **Best Practice:** Keep Client Components as small as possible and push them to the leaves of the component tree to minimize the client-side JavaScript bundle.
 
 ### **File-based Routing**
 
 The AI will manage routing by creating folders and `page.tsx` files within the `/app` directory.
 
-* **Layouts (`layout.tsx`):** Define shared UI for a segment and its children.
-* **Pages (`page.tsx`):** Define the unique UI of a route.
-* **Loading UI (`loading.tsx`):** Create instant loading states that show while a route segment loads.
-* **Error Handling (`error.tsx`):** Isolate errors to specific route segments.
+- **Layouts (`layout.tsx`):** Define shared UI for a segment and its children.
+- **Pages (`page.tsx`):** Define the unique UI of a route.
+- **Loading UI (`loading.tsx`):** Create instant loading states that show while a route segment loads.
+- **Error Handling (`error.tsx`):** Isolate errors to specific route segments.
 
 ### **Server Actions**
 
 For data mutations (e.g., form submissions), the AI will use Server Actions to call server-side functions directly from components.
 
-* **Definition:** The AI will define an `async` function with the `"use server"` directive.
-* **Invocation:** Actions will be invoked using the `action` prop on a `<form>` element or from custom event handlers.
-* **Security:** Server Actions are the preferred way to handle mutations as they provide built-in protection against POST-only requests.
+- **Definition:** The AI will define an `async` function with the `"use server"` directive.
+- **Invocation:** Actions will be invoked using the `action` prop on a `<form>` element or from custom event handlers.
+- **Security:** Server Actions are the preferred way to handle mutations as they provide built-in protection against POST-only requests.
 
 *Example of a simple Server Action:*
 
@@ -101,12 +101,12 @@ export async function-save-email(prevState: any, formData: FormData) {
 
 A critical function of the AI is to continuously monitor for and automatically resolve errors.
 
-* **Post-Modification Checks:** After every code modification, the AI will:
-  * Run `pnpm lint -- --fix` to catch and fix linting issues.
-  * Monitor the IDE's diagnostics (problem pane).
-  * Check the output of the running dev server for compilation and runtime errors.
-* **Automatic Error Correction:** The AI will attempt to fix common Next.js and React errors.
-* **Problem Reporting:** If an error cannot be resolved, the AI will report the specific error message, its location, and a concise explanation with a suggested fix.
+- **Post-Modification Checks:** After every code modification, the AI will:
+  - Run `pnpm lint -- --fix` to catch and fix linting issues.
+  - Monitor the IDE's diagnostics (problem pane).
+  - Check the output of the running dev server for compilation and runtime errors.
+- **Automatic Error Correction:** The AI will attempt to fix common Next.js and React errors.
+- **Problem Reporting:** If an error cannot be resolved, the AI will report the specific error message, its location, and a concise explanation with a suggested fix.
 
 ## **Visual Design**
 
@@ -133,15 +133,15 @@ A critical function of the AI is to continuously monitor for and automatically r
 
 The AI's workflow is iterative, transparent, and responsive to user input.
 
-* **Plan Generation & Blueprint Management:** Each time the user requests a change, the AI will first generate a clear plan overview and a list of actionable steps. This plan will then be used to **create or update a `blueprint.md` file** in the project's root directory.
-  * The blueprint.md file will serve as a single source of truth, containing:
-    * A section with a concise overview of the purpose and capabilities.
-    * A section with a detailed outline documenting the project, including *all style, design, and features* implemented in the application from the initial version to the current version.
-    * A section with a detailed outline of the plan and steps for the current requested change.
-  * Before initiating any new change or at the start of a new chat session, the AI will reference the blueprint.md to ensure full context and understanding of the application's current state and existing features. This ensures consistency and avoids redundant or conflicting modifications.
-* **Prompt Understanding:** The AI will interpret user prompts to understand the desired changes. It will ask clarifying questions if the prompt is ambiguous.
-* **Contextual Responses:** The AI will provide conversational responses, explaining its actions, progress, and any issues encountered.
-* **Error Checking Flow:**
+- **Plan Generation & Blueprint Management:** Each time the user requests a change, the AI will first generate a clear plan overview and a list of actionable steps. This plan will then be used to **create or update a `blueprint.md` file** in the project's root directory.
+  - The blueprint.md file will serve as a single source of truth, containing:
+    - A section with a concise overview of the purpose and capabilities.
+    - A section with a detailed outline documenting the project, including *all style, design, and features* implemented in the application from the initial version to the current version.
+    - A section with a detailed outline of the plan and steps for the current requested change.
+  - Before initiating any new change or at the start of a new chat session, the AI will reference the blueprint.md to ensure full context and understanding of the application's current state and existing features. This ensures consistency and avoids redundant or conflicting modifications.
+- **Prompt Understanding:** The AI will interpret user prompts to understand the desired changes. It will ask clarifying questions if the prompt is ambiguous.
+- **Contextual Responses:** The AI will provide conversational responses, explaining its actions, progress, and any issues encountered.
+- **Error Checking Flow:**
   1. **Important:** The AI will **not** start the dev server (`next dev`), as it is already managed by Firebase Studio.
   2. **Code Change:** AI applies a code modification.
   3. **Dependency Check:** If a new package is needed, AI runs `pnpm install`.
