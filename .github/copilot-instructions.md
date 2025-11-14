@@ -1,320 +1,54 @@
-# Copilot Agent Instructions for Doses
-
-## Repository Overview
-
-**Doses** is a Progressive Web Application (PWA) for calculating medication dosages for pediatric and adult patients. It's designed to assist healthcare professionals with accurate, weight-based dosage calculations and includes a comprehensive drug glossary and various medical calculators.
-
-### Key Statistics
-- **Primary Language**: TypeScript (100%)
-- **Framework**: Next.js 16.x with App Router
-- **Size**: ~224 TypeScript source files
-- **Node Version**: 20.x (specified in `.nvmrc`)
-- **Package Manager**: npm (ALWAYS use npm, never yarn or pnpm)
-
-### Technology Stack
-- **Next.js**: React framework with App Router for hybrid server/client rendering
-- **TypeScript**: Strict type checking enabled throughout
-- **Tailwind CSS**: Utility-first styling
-- **shadcn/ui + Radix UI**: Accessible, customizable UI components
-- **Zustand**: Lightweight state management
-- **Vitest**: Unit and integration testing framework
-- **Biome**: Code formatting and linting (replaces ESLint/Prettier)
-
----
-
-## Critical Build & Test Commands
-
-### Installation
-```bash
-npm ci
-```
-**CRITICAL**: Prefer `npm install` for clean, reproducible installs (especially in CI/CD). Use `npm install` only when adding/updating dependencies. This takes ~20-30 seconds. The repository uses `package-lock.yaml`, which must not be modified manually.
-
-### Individual Commands
-
-#### Formatting & Linting (Biome)
-```bash
-npm format      # Auto-fix formatting issues
-npm lint        # Auto-fix linting issues
-npm check       # Run both format + lint together
-npm ci          # Check-only mode (no fixes, for CI)
-```
-- Uses Biome.js (configured in `biome.json`)
-- 120 character line width
-- Single quotes, semicolons only when needed
-- Runs in ~1-3 seconds
-- **Scope**: Only checks `src/**` (excludes node_modules, .next, public, .kiro, .vscode)
-
-#### Type Checking
-```bash
-npm run typecheck
-```
-- Runs TypeScript compiler with `--noEmit`
-- Takes ~5-10 seconds
-- Very strict settings enabled (see tsconfig.json)
-
-#### Testing
-```bash
-npm test              # Run all tests once
-npm test:watch        # Watch mode for development
-npm test:coverage     # Generate coverage report
-```
-- Uses Vitest with jsdom environment
-- **Test setup file**: `src/test/setup.ts` must exist and import `@testing-library/jest-dom` (already created in this repository)
-- **Pre-existing failures**: 5 tests fail in the current codebase (device detection, centor score, IBW, pregnancy calculator). These are NOT your responsibility to fix unless directly related to your changes.
-- Tests run in ~5-6 seconds
-- Test files use `.test.ts` or `.test.tsx` suffix, co-located with source files
-
-#### Building
-```bash
-npm build         # Production build
-npm dev           # Development server (port 9002)
-npm start         # Run production build locally
-```
-- **Production build time**: ~4-5 minutes with Turbopack
-- **Build artifacts**: Output to `.next/` directory (already in .gitignore, do not commit)
-- **Known build warnings**: Sentry CLI timeout errors are expected in isolated environments (no network access to sentry.io). These do NOT fail the build.
-- **Development server**: Runs on port 9002 (not default 3000)
-
----
-
-## Project Structure
-
-### Root Configuration Files
-- `package.json`: Dependencies and npm scripts
-- `tsconfig.json`: Strict TypeScript configuration
-- `biome.json`: Biome linting and formatting rules
-- `vitest.config.ts`: Test configuration with jsdom setup
-- `vitest.mobile.config.ts`: Mobile-specific test configuration
-- `next.config.ts`: Next.js config with PWA support and Sentry integration
-- `.nvmrc`: Node 20 version lock
-
-### Key Directories
-
-#### `src/app/` - Next.js App Router Pages
-- `/` - Quick Drug Reference homepage (main entry point)
-- `/calculator/*` - Medical calculators (centor-score, framingham-risk-score, ideal-body-weight, neonate-weight-loss, phq-9-score, pregnancy, stop-bang, dass-score)
-- `/calculators` - Calculator directory page
-- `/drug/[drugId]` - Dynamic drug detail pages
-
-#### `src/components/` - React Components
-- `ui/` - shadcn/ui base components (Button, Card, Input, etc.)
-- `common/` - App-wide components (LoadingSpinner, ErrorMessage)
-- `layout/` - Layout components (AppLayout, BottomNavBar)
-- `quick-reference/` - Homepage-specific components
-- `calculator/` - Calculator-specific components
-- `glossary/` - Drug glossary components
-
-#### `src/lib/` - Core Logic & Data
-- `quick-reference-database/` - **Modular medication database**
-  - `medications/` - Individual medication files (one per drug)
-  - `index.ts` - Auto-aggregates all medications
-  - `types.ts` - TypeScript definitions
-  - `validation/` - Data validation schemas
-  - `calculations/` - Dose calculation engine
-- `stores/` - Zustand state stores (app-store, calculator-store)
-- `utils/` - Utility functions and calculator logic
-- `types/` - Shared TypeScript types
-- `search/` - Search functionality
-
-#### `src/hooks/` - Custom React Hooks
-- Co-located with components or in dedicated `__tests__/` subdirectories
-
----
-
-## Core Architecture & Data Flow
-
-### Medication Database Engine
-The heart of Doses is its modular medication database system:
-
-- **Data Source**: Individual medication files in `src/lib/quick-reference-database/medications/[category]/`
-- **Auto-Discovery**: Files are automatically imported via `medications/index.ts` - supports nested categories
-- **Type Safety**: All medications must conform to `QuickReferenceMedication` interface
-- **Calculation Engine**: `calculations/` directory handles dose computations with formulas like `weight`, `age`, `fixed`, `weight-tiered`
-- **Runtime Validation**: Zod schemas validate medication data structure and dosing parameters
-
-### State Management Strategy
-- **Zustand Stores**: Minimal, persistent client state
-  - `app-store.ts`: Global app settings (audience mode: pediatric/adult)
-  - `calculator-store.ts`: Medical calculator state
-- **URL State**: Search params for shareable calculator states
-- **Local Storage**: Persistent user preferences via Zustand persist middleware
-- **No Global Cache**: Medication data is imported statically at build time
-
-### Component Architecture Patterns
-- **Server Components**: Default for static content and data fetching
-- **Client Components**: Only for interactivity (`'use client'` directive)
-- **Suspense Boundaries**: Used for loading states (see `HomePage`)
-- **Error Boundaries**: Global error handling via `global-error.tsx`
-- **Compound Components**: UI components follow radix-ui patterns with composition
-
-## Development Workflow
-
-1. **Read steering docs**: Check `GEMINI.md` for relevant guidelines
-2. **Install dependencies**: `npm ci` (if starting fresh)
-3. **Check existing state**: Run `npm run typecheck && npm run check` to ensure baseline passes
-
-### Making Changes
-1. **Write code** following TypeScript/React guidelines (see `AGENTS.md`)
-2. **Add tests** if touching critical logic (calculations, validations)
-3. **Format & lint**: `npm run check` (runs Biome)
-4. **Run tests**: `npm test` (skip if only docs changed)
-5. **Type check**: `npm typecheck`
-6. **Build**: `npm build` (critical validation)
-
----
-
-## Troubleshooting & Common Issues
-
-### Issue: Vitest Fails with Missing Module
-**Symptom**: `Error: Cannot find module 'src/test/setup.ts'`
-
-**Solution**: The file `src/test/setup.ts` should exist with:
-```typescript
-import '@testing-library/jest-dom'
-```
-This has been added to the repository.
-
-### Issue: Sentry Build Errors
-**Symptom**: `error: API request failed` or `error: Command failed`
-```
-> Sentry CLI Plugin: Notifying Sentry of release...
-> Sentry CLI Plugin: Running `sentry-cli releases ...`
-...
-error: API request failed
-  reason: The request failed due to a timeout
-```
-**Expected**: These are timeout warnings when building without network access to sentry.io. They do NOT fail the build. The build completes successfully.
-
-### Issue: Pre-existing Test Failures
-**Known Failures** (as of current state):
-- `use-mobile.test.ts` - Device detection test
-- `centor-score.test.ts` - Risk calculation
-- `ideal-body-weight.test.ts` - Robinson formula precision
-- `pregnancy-calculator.test.ts` - Date calculations (2 tests)
-
-**Action**: Do NOT fix these unless directly related to your task. They are pre-existing issues.
-
-### Issue: Build Takes Too Long
-**Typical time**: 4-5 minutes for production build
-
-**Don't**: Try to cancel or optimize. This is expected for Next.js with Turbopack.
-
-**Do**: Use `npm run dev` for faster iteration during development.
-
-### Issue: Medication Not Appearing
-**Symptom**: New medication file created but not showing in app
-
-**Debug Steps**:
-1. Check file exports `QuickReferenceMedication` interface
-2. Verify file is in correct category directory
-3. Run `npm typecheck` to catch schema errors
-4. Check `medications/index.ts` auto-discovery (should not need manual editing)
-5. Restart dev server (`npm run dev`)
-
-### Issue: Calculation Errors
-**Symptom**: Incorrect dosage calculations
-
-**Debug Approach**:
-1. Check `DosingProfile` configuration in medication file
-2. Test calculation logic in `src/lib/quick-reference-database/calculations/`
-3. Verify units match between `amount` and `unit` fields
-4. Check `maxDose` and `minAge`/`maxAge` constraints
-5. Use browser dev tools to inspect calculation inputs/outputs
-
----
-
-## Key Coding Conventions
-
-### TypeScript Rules (from `AGENTS.md`)
-- **NO** `any` types - use `unknown` and type narrowing
-- **NO** classes - use plain objects with interfaces
-- **NO** type assertions unless absolutely necessary
-- **YES** to exhaustive switch statements with `checkExhaustive` helper
-- **YES** to ES module encapsulation (export/unexported)
-
-### React Rules (from `AGENTS.md`)
-- **Functional components only** - no class components
-- **Hooks at top level** - follow Rules of Hooks
-- **Pure render functions** - no side effects in component body
-- **Avoid useEffect** - only for synchronization with external systems
-- **NO** manual memoization (useMemo, useCallback, React.memo) in new code - React Compiler handles optimization. Note: Some existing code may use these patterns; follow existing patterns when modifying those areas.
-- **Immutable state updates** - never mutate state directly
-
-### Biome Style (from `.kiro/steering/style.md`)
-- Single quotes
-- 2 spaces indentation
-- 120 character line width
-- Semicolons only when needed (ASI-safe)
-- Organized imports (auto-sort enabled)
-
-### Testing Conventions (from `AGENTS.md`)
-- Use Vitest (`describe`, `it`, `expect`, `vi`)
-- Co-locate tests with source files (`.test.ts`, `.test.tsx`)
-- Mock with `vi.mock()` - place at top of file for critical deps
-- Use `beforeEach/afterEach` for setup/teardown
-- Test behavior, not implementation
-
----
-
-## Adding Medications
-
-### File Location
-```
-src/lib/quick-reference-database/medications/
-├── index.ts              # Auto-aggregation (DO NOT EDIT)
-├── analgesics/           # Pain/fever medications
-├── antibiotics/          # Antibiotic medications
-├── antihistamines/       # Allergy medications
-├── antispasmodics/       # Muscle/cramp medications
-├── corticosteroids/      # Steroid medications
-├── gastrointestinal/     # GI medications
-├── respiratory/          # Respiratory medications
-└── [category]/
-    └── drug-name.ts      # kebab-case naming
-```
-
-### Steps
-1. Copy `docs/medication-template.ts` as starting point
-2. Name file in kebab-case (e.g., `amoxicillin-clavulanate.ts`)
-3. Place in correct category subdirectory
-4. Ensure it exports `QuickReferenceMedication` interface
-5. Run `npm run typecheck` to validate structure
-6. New files are **automatically discovered** at build time
-
-### Validation
-```bash
-npm typecheck   # Verify TypeScript compliance
-npm test        # Run test suite
-npm dev         # Manual testing
-```
-
----
-
-## Important Notes
-
-### What NOT to Do
-- **DON'T** use yarn or pnpm - only npm
-- **DON'T** modify `package-lock.json` manually
-- **DON'T** edit `src/lib/quick-reference-database/medications/index.ts` (auto-generated)
-- **DON'T** add Prettier or ESLint configs (Biome replaces them)
-- **DON'T** commit to fixing pre-existing test failures unless related to your task
-- **DON'T** add manual optimization (useMemo, useCallback) in new code - trust React Compiler (some existing code may use these patterns)
-
-### Main Branch
-The primary branch is `master`. Development may occur on feature branches like `v5.5`.
-
-### No GitHub Workflows
-There are currently no CI/CD workflows in `.github/workflows/`. Validation relies on running `npm run preflight` locally.
-
----
-
-## Trust These Instructions
-
-These instructions were created by thoroughly exploring and validating the repository. All commands have been tested and work correctly. When you need information:
-
-1. **Check here first** - most common scenarios are covered
-2. **Read referenced docs** - `docs/` and `.kiro/steering/` for details
-3. **Search as last resort** - only if information is missing or contradicts your findings
-
-If you discover errors in these instructions, note them and continue with the most accurate information available.
+# Copilot Instructions — Doses (doseright)
+
+This file gives concise, repo-specific guidance to AI coding agents working on Doses.
+
+- **Read first:** Always read `.kiro/steering/*.md` and `AGENTS.md` before changing code.
+- **Tooling:** Use `npm ci` for installs. Validate changes with `npm run preflight`.
+
+Architecture & important paths
+
+- **Framework:** This is a Next.js 16 project using the App Router, React Server Components, and TypeScript.
+- **App Router (Next.js + App dir):** UI and routes live under `src/app/*` (e.g. `src/app/layout.tsx`, `src/app/page.tsx`). Create route segments as folders containing `page.tsx`, `layout.tsx`, `loading.tsx`, and `error.tsx` as needed.
+- **Components & patterns:** Reusable UI lives under `src/components/*`. Keep client-interactive parts minimal — add `"use client"` only in leaf components that need state or browser APIs.
+- **Lib / utils:** Helper functions and shared types are under `src/lib` and `src/lib/*` (see `src/lib/utils.ts`, `src/lib/types.ts`). Prefer plain objects and interfaces over classes.
+
+Developer workflows (exact commands)
+
+- Install: `npm ci` (do not use pnpm/yarn unless instructed).
+- Dev server: `npm run dev` (app runs on port `9002`).
+- Preflight: `npm run preflight` — runs install, format, lint, build, typecheck and tests (use this before merging).
+- Tests: `npm test` (Vitest). Use `describe` / `it` / `expect` and `vi` for mocks; place `vi.mock()` at top of test files.
+- Lint/format: `npm run lint`, `npm run format` (Biome/biomejs configured).
+- Typecheck: `npm run typecheck`.
+
+Project-specific conventions
+
+- **TypeScript:** Avoid `any`. Prefer `unknown` then narrow. Expose types via `src/lib/types.ts` and colocate related types with features.
+- **React:** Use functional components + Hooks. Server Components are default in `src/app`; add `"use client"` only when necessary and keep client components small.
+- **State:** Project uses `zustand` stores — prefer small focused stores for local UI state.
+- **Styling:** Tailwind + `shadcn/ui` patterns. Follow existing utility classes for spacing and color tokens.
+
+Security & checks (required)
+
+- **Codacy / Trivy:** After editing files, run the Codacy CLI analyze step for each edited file (rootPath=repo root, file=edited path). If dependencies change, run Trivy scan and do not proceed if vulnerabilities are introduced.
+- **If required tools are missing:** Notify the user and offer to install or run via the repo's MCP server integrations.
+
+Examples (how to implement common edits)
+
+- To add a new route: create `src/app/my-route/page.tsx` and `src/app/my-route/layout.tsx` (if shared UI is needed). Use server components for data fetching; add `"use client"` inside small interactive components only.
+- To add a server action: create an exported `async` function in a server file and use `"use server"` (see `GEMINI.md` for pattern). Invoke via a `<form action={myAction}>` or from server-handled events.
+- To add tests: create `src/.../component.test.tsx` adjacent to code. Use `vi.mock()` at top when mocking module-level constants.
+
+What to check before creating a PR
+
+- Create/update a todo list with the provided todo tool (this repo requires tracking work).
+- Run `npm run preflight` and fix all lint/type/test failures.
+- Run Codacy CLI analysis for each changed file and address its issues.
+
+Where to look for context
+
+- `AGENTS.md` — repository agent rules and Codacy requirements.
+- `GEMINI.md` — examples and Next.js App Router patterns used by automated agents.
+- `README.md` and `ARCHITECTURE.md` — high-level project purpose and components.
+- `src/app`, `src/components`, `src/lib` — canonical examples of routing, components, and utilities.
+- `.github/instructions/` — additional instructions for specific tools and patterns used in this repo.

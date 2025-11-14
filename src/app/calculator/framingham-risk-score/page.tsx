@@ -178,7 +178,7 @@ export default function FraminghamRiskScorePage() {
           <Card className={cn('transition-opacity duration-300', showResult ? 'opacity-100' : 'opacity-50')}>
             <CardHeader>
               <CardTitle>Risk Score</CardTitle>
-              <CardDescription>The patient's 10-year risk assessment.</CardDescription>
+              <CardDescription>{`The patient's 10-year risk assessment.`}</CardDescription>
             </CardHeader>
             <CardContent className='text-center space-y-6'>
               {showResult && result !== null ? (

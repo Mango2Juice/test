@@ -1,17 +1,19 @@
+# Sentry Instrumentation Instructions
+
 These examples should be used as guidance when configuring Sentry functionality within a project.
 
-# Exception Catching
+## Exception Catching
 
 - Use `Sentry.captureException(error)` to capture an exception and log the error in Sentry.
 - Use this in try catch blocks or areas where exceptions are expected
 
-# Tracing Examples
+## Tracing Examples
 
 - Spans should be created for meaningful actions within applications like button clicks, API calls, and function calls
 - Use the `Sentry.startSpan` function to create a span
 - Child spans can exist within a parent span
 
-## Custom Span instrumentation in component actions
+### Custom Span instrumentation in component actions
 
 - The `name` and `op` properties should be meaningful for the activities in the call.
 - Attach attributes based on relevant information and metrics from the request
@@ -46,7 +48,7 @@ function TestComponent() {
 }
 ```
 
-## Custom span instrumentation in API calls
+### Custom span instrumentation in API calls
 
 - The `name` and `op` properties should be meaningful for the activities in the call.
 - Attach attributes based on relevant information and metrics from the request
@@ -67,7 +69,7 @@ async function fetchUserData(userId) {
 }
 ```
 
-# Logs
+## Logs
 
 - Where logs are used, ensure Sentry is imported using `import * as Sentry from "@sentry/nextjs"`
 - Enable logging in Sentry using `Sentry.init({ enableLogs: true })`
@@ -103,7 +105,7 @@ Sentry.init({
 });
 ```
 
-## Logger Examples
+### Logger Examples
 
 `logger.fmt` is a template literal function that should be used to bring variables into the structured logs.
 

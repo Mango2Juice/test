@@ -18,7 +18,7 @@ The application is built on a modern, robust technology stack chosen for perform
 
 The project follows a feature-oriented structure within the Next.js App Router paradigm.
 
-```
+```text
 /src
 |-- /app/                # Next.js App Router (pages and layouts)
 |   |-- /calculator/     # Medical calculator pages

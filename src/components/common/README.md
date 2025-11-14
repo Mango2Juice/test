@@ -22,6 +22,7 @@ Similar to AnimatedList, these components use indices for animation timing with 
 ## Performance Considerations
 
 All animation components are optimized for 60fps performance:
+
 - GPU-accelerated transforms (translateZ, scale, opacity)
 - Limited simultaneous animations (max 3)
 - Passive event listeners for scroll

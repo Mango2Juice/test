@@ -2,8 +2,6 @@
  * @fileoverview Mobile-optimized form components with proper touch targets and spacing
  */
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
 import { cva, type VariantProps } from 'class-variance-authority'
 import { type ComponentProps, forwardRef } from 'react'
 
@@ -105,7 +103,6 @@ export interface MobileLabelProps extends ComponentProps<'label'> {
 
 /**
  * Label component optimized for mobile touch interactions
- * Note: This component should be used with htmlFor prop or contain an input element
  */
 export const MobileLabel = forwardRef<HTMLLabelElement, MobileLabelProps>(
   ({ className, touchOptimized = false, ...props }, ref) => {
@@ -114,7 +111,7 @@ export const MobileLabel = forwardRef<HTMLLabelElement, MobileLabelProps>(
         ref={ref}
         className={cn(
           'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-          touchOptimized && 'min-h-[44px] flex items-center py-2',
+          touchOptimized && 'min-h-11 flex items-center py-2',
           className,
         )}
         {...props}
